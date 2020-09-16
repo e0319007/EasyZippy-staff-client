@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Button, Card, CardBody, CardHeader, CardTitle, Col, FormGroup, Input, Label, Row } from 'reactstrap';
 import { UseForm, Form } from '../components/UseForm';
+import * as kioskService from "../services/kioskService";
 
 const initialValues = {
     location: '',
@@ -41,6 +42,7 @@ function CreateKioskForm() {
 
     const handleSubmit = e => {
         e.preventDefault()
+        kioskService.insertKiosk(values)
         window.alert("submitted!")
         resetForm()
         // if (validate()) {
