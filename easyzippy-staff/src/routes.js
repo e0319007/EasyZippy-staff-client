@@ -18,12 +18,6 @@
 */
 
 import Dashboard from "views/Dashboard.js";
-import Notifications from "views/Notifications.js";
-import Icons from "views/Icons.js";
-import Typography from "views/Typography.js";
-import TableList from "views/Tables.js";
-import Maps from "views/Map.js";
-import UserPage from "views/User.js";
 import Lockers from "views/Lockers.js"
 import Profile from "views/Profile";
 import Staffs from "views/Staffs";
@@ -35,7 +29,6 @@ import Bookings from "views/Bookings";
 import Kiosks from "views/Kiosks";
 import Category from "views/Category";
 import Announcements from "views/Announcements";
-import Test from "views/Test";
 
 var routes = [
   {
@@ -121,14 +114,7 @@ var routes = [
     icon: "nc-icon nc-chat-33",
     component: Announcements,
     layout: "/admin"
-  },
-  {
-    path: "/test",
-    name: "Test",
-    icon: "nc-icon nc-chat-33",
-    component: Test,
-    layout: "/admin"
-  },
-  
+  }
 ];
-export default routes;
+
+export default routes
