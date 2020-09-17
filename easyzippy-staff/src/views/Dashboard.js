@@ -44,6 +44,8 @@ function Dashboard() {
   const logout = () => {
     Cookies.remove('authToken')
     Cookies.remove('staffUser')
+    // remember to remove current staff from localstorage
+    localStorage.removeItem('currentStaff')
     history.push('/login')
     document.location.reload()
   }

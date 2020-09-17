@@ -11,6 +11,7 @@ import {
     Button,
     Navbar
 } from "reactstrap";
+import { data } from 'jquery';
 
 const API_SERVER = "http://localhost:5000/staff"
 
@@ -35,6 +36,13 @@ function Login() {
         setPassword(password)
     }
 
+    const staff = {
+        firstName: '',
+        lastName: '',
+        mobileNum: '',
+        email: ''
+    }
+
     const postLogin = () =>  {
         console.log("in login function")
 
@@ -53,17 +61,25 @@ function Login() {
             console.log("axios call went through")
             history.push('/admin/dashboard')
             document.location.reload()
-            // store to cookie
             console.log(response.data.token)
             Cookies.set('authToken', JSON.stringify(response.data.token));
-            // document.cookie = "token=" + response.data.token;
-            // maybe change later 
             Cookies.set('staffUser', JSON.stringify(response.data.staff.id));
+
+            staff.firstName = response.data.staff.firstName
+            staff.lastName = response.data.staff.lastName
+            staff.mobileNum = response.data.staff.mobileNumber
+            staff.email = response.data.staff.email
+
+            console.log(staff)
+
+            localStorage.setItem('currentStaff', JSON.stringify(staff))
+
         }).catch(function (error) {
             console.log(error.response.data)
             isError(true)
             setError("Your email or password is incorrect!")
-            history.push('/login')
+            // check below line again,, ideally dont want to refresh, want to show error caught from backend
+            history.push('/login') 
             //add customised alerts according to errors
         })
     };
