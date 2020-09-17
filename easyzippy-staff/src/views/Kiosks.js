@@ -21,10 +21,12 @@ import ConfirmModal from "../components/ConfirmModal";
 
 const headCells = [
     {id:'id', label:'ID'},
-    {id:'location', label:'Location'},
+    // {id:'location', label:'Location'},
+    {id: 'long', label:'Long'},
+    {id: 'lat', label: 'Lat'},
     {id:'description', label:'Description'},
-    {id:'dateInstalled', label:'Date Installed'},
-    {id:'enabled', label:'Enabled'},
+    // {id:'dateInstalled', label:'Date Installed'},
+    // {id:'enabled', label:'Enabled'},
     //if want to disable sorting for a particular column 
     //{id:'enabled', label:'Enabled', disableSorting:true},
     {id:'actions', label:'Actions', disableSorting:true}
@@ -124,10 +126,11 @@ function Kiosks() {
                                             recordsAfterPagingAndSorting().map(item => (
                                                 <tr key={item.id}>
                                                     <td>{item.id}</td>
-                                                    <td>{item.location}</td>
+                                                    <td>{item.long}</td>
+                                                    <td>{item.lat}</td>
                                                     <td>{item.description}</td>
-                                                    <td>{item.dateInstalled}</td>
-                                                    <td>{item.enabled}</td>
+                                                    {/* <td>{item.dateInstalled}</td>
+                                                    <td>{item.enabled}</td> */}
                                                     <td>
                                                         <Button size="sm" color="info" 
                                                             onClick={() => {openInPopup(item)}}>

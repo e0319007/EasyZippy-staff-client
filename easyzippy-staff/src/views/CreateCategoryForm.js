@@ -41,11 +41,6 @@ function CreateCategoryForm(props) {
                 <Row>
                     <Col md="12">
                         <Card>
-                            {/* <CardHeader>
-                                <div className="form-row">
-                                <CardTitle tag="h5">Create a New Kiosk</CardTitle>
-                                </div>
-                            </CardHeader> */}
                             <CardBody>
                                 <form>
                                     <div className="form-row">

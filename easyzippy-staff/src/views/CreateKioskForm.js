@@ -5,10 +5,11 @@ import { UseForm, Form } from '../components/UseForm';
 
 const initialValues = {
     id: '0',
-    location: '',
+    long: '',
+    lat:'',
     description: '',
-    dateInstalled: new Date(),
-    enabled: 'false',
+    // dateInstalled: new Date(),
+    // enabled: 'false',
 
 };
 
@@ -75,7 +76,7 @@ function CreateKioskForm(props) {
                             <CardBody>
                                 <form>
                                     <div className="form-row">
-                                        <FormGroup className="col-md-12">
+                                        {/* <FormGroup className="col-md-12">
                                             <Label for="inputLocation">Location</Label>
                                             <Input 
                                                 type="text" 
@@ -85,7 +86,30 @@ function CreateKioskForm(props) {
                                                 onChange={handleInputChange}
                                                 required
                                             />
+                                        </FormGroup> */}
+                                        <FormGroup className="col-md-12">
+                                            <Label for="inputLong">Long</Label>
+                                            <Input 
+                                                type="text" 
+                                                id="inputLong" 
+                                                name="long" 
+                                                value={values.long} 
+                                                onChange={handleInputChange}
+                                                required
+                                            />
                                         </FormGroup>
+                                        <FormGroup className="col-md-12">
+                                            <Label for="inputLat">Lat</Label>
+                                            <Input 
+                                                type="text" 
+                                                id="inputLat" 
+                                                name="lat" 
+                                                value={values.lat} 
+                                                onChange={handleInputChange}
+                                                required
+                                            />
+                                        </FormGroup>
+                                        
                                     </div>
                                     <div className="form-row">
                                         <FormGroup className="col-md-12">
@@ -100,7 +124,7 @@ function CreateKioskForm(props) {
                                             />
                                         </FormGroup> 
                                     </div>    
-                                    <div className="form-row"> 
+                                    {/* <div className="form-row"> 
                                         <FormGroup className="col-md-8">
                                             <Label for="inputDate">Date Installed</Label>
                                             <Input 
@@ -112,8 +136,8 @@ function CreateKioskForm(props) {
                                                 required
                                             />
                                         </FormGroup>
-                                    </div>
-                                    <div className="form-row">
+                                    </div> */}
+                                    {/* <div className="form-row">
                                         <FormGroup className="col-md-3">
                                             <Label for="enabled">Enabled?</Label>
                                             <div check className="form-check-radio">
@@ -145,7 +169,7 @@ function CreateKioskForm(props) {
                                                 </Label>
                                             </div>                                     
                                         </FormGroup>                          
-                                    </div>
+                                    </div> */}
                                         <Row>
                                             <div className="update ml-auto mr-auto">
                                                 <Button className="btn-round" color="success" type="submit">Submit</Button>

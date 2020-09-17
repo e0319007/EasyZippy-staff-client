@@ -1,4 +1,5 @@
-import React, { useState }from 'react'
+import React, { useState, useEffect }from 'react'
+import axios from "axios";
 import { Table } from 'reactstrap'
 import { TablePagination, TableSortLabel } from '@material-ui/core'
 
@@ -7,7 +8,14 @@ export default function UseTable(records, headCells, filterFunction) {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(pages[page])
     const [order, setOrder] = useState()
+
     const [orderBy, setOrderBy] = useState()
+    const [data, getData] = useState([]);
+    useEffect (() => {
+        axios
+        .get('http://localhost:5000/categories')
+        .then(result => getData(result.data))
+    },[])
     
     const TblContainer = props => (
         <Table responsive hover>
@@ -89,7 +97,7 @@ export default function UseTable(records, headCells, filterFunction) {
         return 0;
     }
 
-    const recordsAfterPagingAndSorting = () => {
+    const recordsAfterPagingAndSorting = (data) => {
         return stableSort(filterFunction.fn(records), getComparator(order,orderBy)).slice(page*rowsPerPage, (page+1) * rowsPerPage)
     }
 

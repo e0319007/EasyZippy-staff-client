@@ -7,12 +7,12 @@ export default function Popup(props) {
 
     return (
         <Modal isOpen={openPopup}>
-            <ModalHeader>
-                    {title}     
-                    <Button color="danger" size="sm" style={{float:"right"}}
-                        onClick={() => {setOpenPopup(false)}}
-                    >x</Button>
-            </ModalHeader>
+                <ModalHeader style={{display:"inline-block", textAlign:"right"}}>
+                        {title} 
+                        <Button color="danger" size="sm" 
+                            onClick={() => {setOpenPopup(false)}}
+                        >x</Button>
+                </ModalHeader>
             <ModalBody>
                {children}
             </ModalBody>

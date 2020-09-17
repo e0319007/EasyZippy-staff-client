@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-
+import React, { useState, useEffect } from "react";
+import axios from 'axios';
 import {
     Card,
     CardBody,
@@ -12,12 +12,14 @@ import {
 } from "reactstrap";
 import CreateCategoryForm from "./CreateCategoryForm";
 import UseTable from "../components/UseTable";
-import * as CategoryService from "../services/categoryService";
+import * as CategoryService from "../services/categoryService1";
 import Popup from "../components/Popup"
 import { AiOutlineEdit } from 'react-icons/ai';
 import { AiOutlineClose } from 'react-icons/ai';
 import Noti from "../components/Noti";
 import ConfirmModal from "../components/ConfirmModal";
+import CategoryDataService from "../services/categoryService";
+
 
 const headCells = [
     {id:'id', label:'ID'},
@@ -34,6 +36,14 @@ function Category() {
     const [openPopup, setOpenPopup] = useState(false)
     const [notify, setNotify] = useState({isOpen: false, message:'', type:''})
     const [confirmModal, setConfirmModal] = useState({isOpen:false, title:''})
+
+    // const [data, getData] = useState([]);
+    // useEffect (() => {
+    //     axios
+    //     .get('http://localhost:5000/categories')
+    //     .then(result => result.data.map(item => CategoryService.insertCategory({id: item.id, description: item.description, name: item.name})))
+    //     // .then(result => CategoryService.insertCategory({id: result.data.id, description: result.data.description, name: result.data.name}))
+    // },[])
 
     const {
         TblContainer,
@@ -54,11 +64,15 @@ function Category() {
         })
     }
 
+
     const addOrEdit = (category, resetForm) => {
           if (category.id == 0) 
-            CategoryService.insertCategory(category)
+          CategoryService.insertCategory(category)
+        //   console.log(category);
           else 
             CategoryService.updateCategory(category)
+            // localStorage.setItem('categoryToBeUpdated', category)
+            // CategoryDataService.updateCategoryBackend(category)
         resetForm()
         setRecordForEdit(null)
         setOpenPopup(false)
@@ -81,6 +95,8 @@ function Category() {
             isOpen:false
         })
         CategoryService.deleteCategory(id);
+        localStorage.setItem('categoryToBeDeleted', id)
+        CategoryDataService.deleteCategoryBackend(id)
         setRecords(CategoryService.getAllCategory())
         setNotify({
             isOpen:true,
@@ -140,7 +156,6 @@ function Category() {
                                                 </tr>
                                             ))
                                         }
-
                                     </tbody>
                                 </TblContainer>
                                 <TblPagination />
@@ -152,7 +167,6 @@ function Category() {
                                 <CreateCategoryForm 
                                 recordForEdit={recordForEdit}
                                 addOrEdit={addOrEdit} />
-
                             </Popup>
                             <Noti 
                             notify={notify}
