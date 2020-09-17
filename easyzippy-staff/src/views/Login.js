@@ -27,19 +27,7 @@ function Login() {
     const onChangeEmail = e => {
         // console.log("inside on change email")
         const email = e.target.value;
-        let reg = /\S+@\S+\.\S+/;
-        if (reg.test(e) === true){
-            setEmail(email)
-            isError(false)
-            isValid(true)
-            console.log("valid")
-        } else {
-            setEmail(email)
-            setError("Your email has an invalid syntax")
-            isError(true)
-            isValid(false)
-            console.log("invalid")
-        }
+        setEmail(email)
     }
 
     const onChangePassword = e => {
@@ -110,6 +98,7 @@ function Login() {
                     placeholder="Enter email"
                     value={email}
                     onChange={onChangeEmail}
+                    required
                     />
                 </FormGroup>
                 <FormGroup>
@@ -121,6 +110,7 @@ function Login() {
                     placeholder="Password"
                     value={password}
                     onChange={onChangePassword}
+                    required
                     />
                 </FormGroup>
                 <Button color="primary" type="submit" onClick={postLogin} > 
