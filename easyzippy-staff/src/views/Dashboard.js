@@ -17,8 +17,10 @@
 
 */
 import React from "react";
+import { useHistory } from 'react-router-dom';
 // react plugin used to create charts
 import { Line } from "react-chartjs-2";
+import Cookies from 'js-cookie';
 // reactstrap components
 import {
   Card,
@@ -28,6 +30,7 @@ import {
   CardTitle,
   Row,
   Col,
+  Button
 } from "reactstrap";
 // core components
 import {
@@ -35,6 +38,16 @@ import {
 } from "variables/charts.js";
 
 function Dashboard() {
+
+  const history = useHistory()
+
+  const logout = () => {
+    Cookies.remove('authToken')
+    Cookies.remove('staffUser')
+    history.push('/login')
+    document.location.reload()
+  }
+
   return (
     <>
       <div className="content">
@@ -161,7 +174,7 @@ function Dashboard() {
             </Card>
           </Col>
         </Row>
-
+        <Button onClick={logout} color="secondary" style={{float: "right"}}>Logout</Button>
       </div>
     </>
   )

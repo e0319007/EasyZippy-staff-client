@@ -18,6 +18,8 @@
 */
 import React from "react";
 import { Link } from "react-router-dom";
+import Login from "../../views/Login.js"
+
 import {
   Collapse,
   Navbar,
@@ -30,9 +32,11 @@ import {
   DropdownMenu,
   DropdownItem,
   Container,
+  Button
 } from "reactstrap";
 
 import routes from "routes.js";
+import Cookies from "js-cookie"
 
 class Header extends React.Component {
   constructor(props) {
@@ -91,6 +95,24 @@ class Header extends React.Component {
       });
     }
   }
+
+  // logout() {
+  //   Cookies.remove('authToken')
+  //   Cookies.remove('staffUser')
+  //   window.location.href("../../views/Login.js")
+  // }
+
+  // setRedirect = () => {
+  //   this.setState({
+  //     redirect: true
+  //   })
+  // }
+  // renderRedirect = () => {
+  //   if (this.state.redirect) {
+  //     return <Redirect to='/target' />
+  //   }
+  // }
+
   componentDidMount() {
     window.addEventListener("resize", this.updateColor.bind(this));
   }
@@ -157,6 +179,7 @@ class Header extends React.Component {
                 </InputGroupAddon>
               </InputGroup>
             </form> */}
+            {/* <Button onClick={this.logout()} color="secondary" size="sm">Logout</Button> */}
             <Nav navbar>
               {/* <NavItem>
                 <Link to="#pablo" className="nav-link btn-magnify">
