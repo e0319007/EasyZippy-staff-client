@@ -1,3 +1,4 @@
+
 const KEYS = {
     kiosks: 'kiosks', 
     kioskId: 'kioskId'
@@ -8,6 +9,19 @@ export function insertKiosk(data) {
     data['id'] = generateKioskId();
     kiosks.push(data);
     localStorage.setItem(KEYS.kiosks, JSON.stringify(kiosks))
+}
+
+export function updateKiosk(data) {
+    let kiosks = getAllKiosks();
+    let recordIndex = kiosks.findIndex(x => x.id === data.id);
+    kiosks[recordIndex] = { ...data }
+    localStorage.setItem(KEYS.kiosks, JSON.stringify(kiosks))
+}
+
+export function deleteKiosk(id) {
+    let kiosks = getAllKiosks();
+    kiosks = kiosks.filter(x => x.id !== id) 
+    localStorage.setItem(KEYS.kiosks, JSON.stringify(kiosks));
 }
 
 export function generateKioskId() {

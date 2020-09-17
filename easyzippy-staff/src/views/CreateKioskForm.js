@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react'
-import { Button, Card, CardBody, CardHeader, CardTitle, Col, FormGroup, Input, Label, Row } from 'reactstrap';
+import React, { useEffect } from 'react'
+import { Button, Card, CardBody, Col, FormGroup, Input, Label, Row } from 'reactstrap';
 import { UseForm, Form } from '../components/UseForm';
-import * as kioskService from "../services/kioskService";
+
 
 const initialValues = {
+    id: '0',
     location: '',
     description: '',
     dateInstalled: new Date(),
@@ -11,7 +12,8 @@ const initialValues = {
 
 };
 
-function CreateKioskForm() {
+function CreateKioskForm(props) {
+    const {addOrEdit, recordForEdit} = props
 
     // const validate=(fieldValues = values) => {
     //     let temp = {...errors}
@@ -42,15 +44,21 @@ function CreateKioskForm() {
 
     const handleSubmit = e => {
         e.preventDefault()
-        kioskService.insertKiosk(values)
-        window.alert("submitted!")
-        resetForm()
+        addOrEdit(values, resetForm);
+        
         // if (validate()) {
         //     window.alert('submitted')
         //     resetForm()
         // }
         
     }
+
+    useEffect(() => { 
+        if(recordForEdit != null) 
+        setValues({
+            ...recordForEdit
+        })
+     },[recordForEdit])
 
     return (
         
@@ -59,11 +67,11 @@ function CreateKioskForm() {
                 <Row>
                     <Col md="12">
                         <Card>
-                            <CardHeader>
+                            {/* <CardHeader>
                                 <div className="form-row">
                                 <CardTitle tag="h5">Create a New Kiosk</CardTitle>
                                 </div>
-                            </CardHeader>
+                            </CardHeader> */}
                             <CardBody>
                                 <form>
                                     <div className="form-row">
@@ -93,7 +101,7 @@ function CreateKioskForm() {
                                         </FormGroup> 
                                     </div>    
                                     <div className="form-row"> 
-                                        <FormGroup className="col-md-3">
+                                        <FormGroup className="col-md-8">
                                             <Label for="inputDate">Date Installed</Label>
                                             <Input 
                                                 type="date" 
