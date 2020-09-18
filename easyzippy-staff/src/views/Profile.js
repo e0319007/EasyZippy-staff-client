@@ -2,6 +2,7 @@ import { Form } from "components/UseForm";
 import React, {useState} from "react";
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import Popup from "../components/Popup"
 
 import {
     Card,
@@ -14,6 +15,11 @@ import {
     Label,
     Input,
     Button,
+    Alert,
+    Modal, 
+    ModalHeader, 
+    ModalBody, 
+    ModalFooter
 } from "reactstrap";
 
 const API_SERVER = "http://localhost:5000/staff"
@@ -30,6 +36,18 @@ function Profile() {
     const [lastName, setLastName] = useState(staff.lastName)
     const [email, setEmail] = useState(staff.email)
     const [mobileNumber, setMobileNumber] = useState(staff.mobileNum)
+
+    const [error, setError] = useState('')
+    const [err, isError] = useState(false)
+
+    const [successful, isSuccessful] = useState(false)
+    const [successMsg, setMsg] = useState('')
+
+    // const [openPopup, setOpenPopup] = useState(false)
+
+    const [modal, setModal] = useState(false);
+
+    const toggle = () => setModal(!modal);
 
     const staff_toupdate = {
         firstName: '',
@@ -82,12 +100,20 @@ function Profile() {
             staff_toupdate.email = response.data.email
             localStorage['currentStaff'] = JSON.stringify(staff_toupdate)
 
-            // change to proper alert later
-            alert('profile updated successfully!') 
+            isError(false)
+            isSuccessful(true)
+            setMsg("profile updated successfully!")
         }).catch(function (error) {
             console.log(error.response.data)
+            isError(true)
+            setError(error.response.data)
         })
     }
+
+    // const openInPopup = e => {
+    //     e.preventDefault()
+    //     setOpenPopup(true)
+    // }
 
     return(
         <>
@@ -108,7 +134,6 @@ function Profile() {
                                             <Input 
                                                 type="text" 
                                                 id="inputFirstName" 
-                                                // defaultValue={staff.firstName} 
                                                 placeholder="First Name"
                                                 value={firstName}
                                                 onChange={onChangeFirstName}
@@ -119,7 +144,6 @@ function Profile() {
                                             <Input 
                                                 type="text" 
                                                 id="inputLastName" 
-                                                // defaultValue={staff.lastName} 
                                                 placeholder="Last Name"
                                                 value={lastName}
                                                 onChange={onChangeLastName}
@@ -131,7 +155,6 @@ function Profile() {
                                         <Input 
                                             type="email" 
                                             id="inputEmail" 
-                                            // defaultValue={staff.email} 
                                             placeholder="Email" 
                                             value={email}
                                             onChange={onChangeEmail}
@@ -142,7 +165,6 @@ function Profile() {
                                         <Input 
                                             type="text" 
                                             id="inputMobile" 
-                                            // defaultValue={staff.mobileNum} 
                                             placeholder="Mobile Number" 
                                             value={mobileNumber}
                                             onChange={onChangeMobile}
@@ -152,12 +174,44 @@ function Profile() {
                                         <div className="update ml-auto mr-auto" >
                                             <Button color="success" size="sm" type="submit" onClick={updateProfile}>Update Profile</Button>
                                             {' '}
-                                            {/* redirects to change password page */}
-                                            <Button color="primary" size="sm">Change Password</Button>
+                                            <Button color="primary" size="sm" onClick={toggle}>Change Password</Button>
                                         </div>
                                     </Row>
+                                    { err &&<Alert color="danger">{error}</Alert> }
+                                    { successful &&<Alert color="success">{successMsg}</Alert> }
                                 </form>
                             </CardBody>
+                            <Modal isOpen={modal} toggle={toggle}>
+                                <ModalHeader toggle={toggle}>Change Password</ModalHeader>
+                                <ModalBody>
+                                    <form>
+                                    <FormGroup>
+                                        <Label for="inputEmail">Email</Label>
+                                        <Input 
+                                            type="email" 
+                                            id="inputEmail" 
+                                            placeholder="Email" 
+                                            value={email}
+                                            onChange={onChangeEmail}
+                                            />
+                                    </FormGroup>
+                                    <FormGroup>
+                                        <Label for="inputMobile">Mobile Number</Label>
+                                        <Input 
+                                            type="text" 
+                                            id="inputMobile" 
+                                            placeholder="Mobile Number" 
+                                            value={mobileNumber}
+                                            onChange={onChangeMobile}
+                                            />
+                                    </FormGroup>
+                                    </form>
+                                </ModalBody>
+                                <ModalFooter>
+                                <Button color="primary" onClick={toggle}>Do Something</Button>{' '}
+                                <Button color="secondary" onClick={toggle}>Cancel</Button>
+                                </ModalFooter>
+                            </Modal>
                         </Card>
                     </Col>
                 </Row>

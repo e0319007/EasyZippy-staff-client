@@ -21,19 +21,33 @@ function Login() {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('')
+
     const [error, setError] = useState('')
     const [err, isError] = useState(false)
     const [valid, isValid] = useState(true)
+    const [visible, setVisible] = useState(false);
 
     const onChangeEmail = e => {
         // console.log("inside on change email")
         const email = e.target.value;
         setEmail(email)
+        if (email.trim().length == 0) {
+            setError("Email is a required field")
+            isError(true)
+        } else {
+            isError(false)
+        }
     }
 
     const onChangePassword = e => {
         const password = e.target.value;
         setPassword(password)
+        if (password.trim().length == 0) {
+            setError("Password is a required field")
+            isError(true)
+        } else {
+            isError(false)
+        }
     }
 
     const staff = {
@@ -43,14 +57,14 @@ function Login() {
         email: ''
     }
 
-    const postLogin = () =>  {
+    const postLogin = e =>  {
         console.log("in login function")
-
-        history.push('/admin/dashboard')
+        e.preventDefault()
+        // history.push('/admin/dashboard')
 
         if (email.length === 0 || password.length === 0) {
             isError(true)
-            setError("Email or password field cannot be empty")
+            setError("Email field is required")
             return;
         }
         axios.post(API_SERVER + '/login', {
@@ -59,11 +73,12 @@ function Login() {
         })
         .then(response => {
             console.log("axios call went through")
+            isError(false)
             history.push('/admin/dashboard')
             document.location.reload()
             console.log(response.data.token)
-            Cookies.set('authToken', JSON.stringify(response.data.token));
-            Cookies.set('staffUser', JSON.stringify(response.data.staff.id));
+            Cookies.set('authToken', JSON.stringify(response.data.token))
+            Cookies.set('staffUser', JSON.stringify(response.data.staff.id))
 
             staff.firstName = response.data.staff.firstName
             staff.lastName = response.data.staff.lastName
@@ -75,10 +90,10 @@ function Login() {
             localStorage.setItem('currentStaff', JSON.stringify(staff))
 
         }).catch(function (error) {
-            console.log(error.response.data)
+            // alert(error.response.data)
             isError(true)
-            setError("Your email or password is incorrect!")
-            // check below line again,, ideally dont want to refresh, want to show error caught from backend
+            setError(error.response.data)
+            console.log(error.response.data)
             history.push('/login') 
             //add customised alerts according to errors
         })
@@ -99,7 +114,7 @@ function Login() {
                     <span style={{fontWeight:"bold", color: 'white', width:'100%'}}>&nbsp;&nbsp;Easy Zippy</span>
                 </div>
             </Navbar>
-            <form style={{...padding(65, 77, 0, 77)}}>
+            <form onSubmit={e => { e.preventDefault(); }} style={{...padding(65, 77, 0, 77)}}>
                 <FormGroup>
                     <p className="h3" style={{textAlign: 'center'}}>
                         Welcome to Ez2Keep Staff Portal!
@@ -132,10 +147,10 @@ function Login() {
                 <Button color="primary" type="submit" onClick={postLogin} > 
                     Log In
                 </Button>
-                {/* <FormGroup> 
-                    <Link to="/apply">Don't have an account? Click here to apply.</Link>
-                </FormGroup> */}
-                { !valid && err &&<Alert color="danger">{error}</Alert> }
+                <FormGroup> 
+                    <Link to="/apply">Forgot Password?</Link>
+                </FormGroup>
+                { err &&<Alert color="danger">{error}</Alert> }
             </form>
         </div>
     );
