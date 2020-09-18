@@ -15,6 +15,7 @@ import ForgotPassword from "./views/ForgotPassword.js";
 import CheckValidToken from "./views/CheckValidToken.js";
 import ResetPassword from "./views/ResetPassword.js";
 
+
 const hist = createBrowserHistory();
 
 function App(props) {

@@ -1,40 +1,46 @@
+import axios from "axios"; 
 
-const KEYS = {
-    category: 'category', 
-    cartegoryId: 'cartegoryId'
-}
+const api_url = "http://localhost:5000"
 
-export function insertCategory(data) {
-    let category=getAllCategory();
-    data['id'] = generateCategoryId();
-    category.push(data);
-    localStorage.setItem(KEYS.category, JSON.stringify(category))
-}
+const createCategoryBackend = (name, description) => {
+    return axios.post(api_url + '/category', {
+        name: name,
+        description: description
+    })
+    .then((response) => {
+        console.log(response);
+        
+    })
+}; 
 
-export function updateCategory(data) {
-    let category = getAllCategory();
-    let recordIndex = category.findIndex(x => x.id === data.id);
-    category[recordIndex] = { ...data }
-    localStorage.setItem(KEYS.category, JSON.stringify(category))
-}
+const deleteCategoryBackend = (id) => {
+    return axios.delete(api_url + `/category${id}`, {
+        id:id
+    })
+    .then((response) => {
+        console.log(response);
+    })
+    .catch(function(error) {
+        console.log(error.response.data)
+    })
+}; 
 
-export function deleteCategory(id) {
-    let category = getAllCategory();
-    category = category.filter(x => x.id !== id) 
-    localStorage.setItem(KEYS.category, JSON.stringify(category));
-}
+const getAllCategoryBackend = () => {
+    return axios.get(api_url + "/categories")
+};
 
-export function generateCategoryId() {
-    if(localStorage.getItem(KEYS.cartegoryId) == null) 
-        localStorage.setItem(KEYS.cartegoryId, '0')
-    var id = parseInt(localStorage.getItem(KEYS.cartegoryId))
-    localStorage.setItem(KEYS.cartegoryId, (++id).toString())
-    return id; 
-}
+const updateCategoryBackend = (id) => {
+    return axios.put(api_url + `/category/${id}`, {
+        
+    })
+    .then((response) => {
+        console.log(response);
+    })
+};
 
-export function getAllCategory() {
-    if (localStorage.getItem(KEYS.category) == null) 
-        localStorage.setItem(KEYS.category, JSON.stringify([]))
-    let category = JSON.parse(localStorage.getItem(KEYS.category));
-    return category;
-}
+export default {
+    createCategoryBackend,
+    getAllCategoryBackend,
+    updateCategoryBackend,
+    deleteCategoryBackend
+};
