@@ -29,9 +29,9 @@ import Bookings from "views/Bookings";
 import Kiosks from "views/Kiosks";
 import Category from "views/Category";
 import Announcements from "views/Announcements";
-import Category2 from "views/Category2";
-import UpdateCategory from "views/UpdateCategory";
-import Category3 from "views/Category3";
+
+
+
 
 var routes = [
   {
@@ -109,20 +109,6 @@ var routes = [
     name: "Category",
     icon: "nc-icon nc-tile-56",
     component: Category,
-    layout: "/admin"
-  },
-  {
-    path: "/category2",
-    name: "Category2",
-    icon: "nc-icon nc-tile-56",
-    component: Category2,
-    layout: "/admin"
-  },
-  {
-    path: "/category3",
-    name: "Category3",
-    icon: "nc-icon nc-tile-56",
-    component: Category3,
     layout: "/admin"
   },
   {

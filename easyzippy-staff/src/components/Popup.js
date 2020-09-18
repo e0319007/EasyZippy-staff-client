@@ -8,7 +8,7 @@ export default function Popup(props) {
     return (
         <Modal isOpen={openPopup}>
                 <ModalHeader style={{display:"inline-block", textAlign:"right"}}>
-                        {title} 
+                        {/* {title}  */}
                         <Button color="danger" size="sm" 
                             onClick={() => {setOpenPopup(false)}}
                         >x</Button>
