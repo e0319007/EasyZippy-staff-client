@@ -37,15 +37,17 @@ function Profile() {
     const [email, setEmail] = useState(staff.email)
     const [mobileNumber, setMobileNumber] = useState(staff.mobileNum)
 
+    const [currentPw, setCurrentPw] = useState('')
+    const [newPw, setNewPw] = useState('')
+
     const [error, setError] = useState('')
     const [err, isError] = useState(false)
 
     const [successful, isSuccessful] = useState(false)
     const [successMsg, setMsg] = useState('')
 
-    // const [openPopup, setOpenPopup] = useState(false)
-
-    const [modal, setModal] = useState(false);
+    const [modal, setModal] = useState(false)
+    const [inModal, isInModal] = useState(false)
 
     const toggle = () => setModal(!modal);
 
@@ -76,6 +78,16 @@ function Profile() {
         setMobileNumber(mobile.trim())
     }
 
+    const onChangeCurrPassword = e => {
+        const currentPw = e.target.value;
+        setCurrentPw(currentPw.trim())
+    }
+
+    const onChangeNewPassword = e => {
+        const newPw = e.target.value;
+        setNewPw(newPw.trim())
+    }
+
     const updateProfile = e => {
         e.preventDefault()
         console.log("in update profile")
@@ -99,21 +111,46 @@ function Profile() {
             staff_toupdate.mobileNum = response.data.mobileNumber
             staff_toupdate.email = response.data.email
             localStorage['currentStaff'] = JSON.stringify(staff_toupdate)
-
+            
+            isInModal(false)
             isError(false)
             isSuccessful(true)
             setMsg("profile updated successfully!")
         }).catch(function (error) {
             console.log(error.response.data)
+            isInModal(false)
             isError(true)
             setError(error.response.data)
         })
     }
 
-    // const openInPopup = e => {
-    //     e.preventDefault()
-    //     setOpenPopup(true)
-    // }
+    const updatePassword = e => {
+        e.preventDefault()
+        console.log("inside update password")
+
+        axios.put(`http://localhost:5000/staff/${staffid}/changePassword`, {
+            currentPassword: currentPw,
+            newPassword: newPw
+        }).then((response) => {
+            console.log("axios call went through")
+            isInModal(true)
+            isError(false)
+            isSuccessful(true)
+            setMsg("Password successfully updated!")
+        }).catch(function (error) {
+            console.log(error.response.data)
+            isInModal(true)
+            isError(true)
+            setError(error.response.data)
+        })
+    }
+
+    const reset = e => {
+        e.preventDefault()
+        console.log("inside reset form")
+        setCurrentPw('')
+        setNewPw('')
+    }
 
     return(
         <>
@@ -177,39 +214,41 @@ function Profile() {
                                             <Button color="primary" size="sm" onClick={toggle}>Change Password</Button>
                                         </div>
                                     </Row>
-                                    { err &&<Alert color="danger">{error}</Alert> }
-                                    { successful &&<Alert color="success">{successMsg}</Alert> }
+                                    { !inModal && err &&<Alert color="danger">{error}</Alert> }
+                                    { !inModal && successful &&<Alert color="success">{successMsg}</Alert> }
                                 </form>
                             </CardBody>
                             <Modal isOpen={modal} toggle={toggle}>
                                 <ModalHeader toggle={toggle}>Change Password</ModalHeader>
                                 <ModalBody>
                                     <form>
-                                    <FormGroup>
-                                        <Label for="inputEmail">Email</Label>
-                                        <Input 
-                                            type="email" 
-                                            id="inputEmail" 
-                                            placeholder="Email" 
-                                            value={email}
-                                            onChange={onChangeEmail}
-                                            />
-                                    </FormGroup>
-                                    <FormGroup>
-                                        <Label for="inputMobile">Mobile Number</Label>
-                                        <Input 
-                                            type="text" 
-                                            id="inputMobile" 
-                                            placeholder="Mobile Number" 
-                                            value={mobileNumber}
-                                            onChange={onChangeMobile}
-                                            />
-                                    </FormGroup>
+                                        <FormGroup>
+                                            <Label for="inputPassword">Current password</Label>
+                                            <Input 
+                                                type="password" 
+                                                id="inputPassword" 
+                                                placeholder="Enter current password" 
+                                                value={currentPw}
+                                                onChange={onChangeCurrPassword}
+                                                />
+                                        </FormGroup>
+                                        <FormGroup>
+                                            <Label for="inputNewPassword">New password</Label>
+                                            <Input 
+                                                type="password" 
+                                                id="inputNewPassword" 
+                                                placeholder="Enter new password" 
+                                                value={newPw}
+                                                onChange={onChangeNewPassword}
+                                                />
+                                        </FormGroup>
+                                        { inModal && err &&<Alert color="danger">{error}</Alert> }
+                                        { inModal && successful &&<Alert color="success">{successMsg}</Alert>}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
                                     </form>
                                 </ModalBody>
                                 <ModalFooter>
-                                <Button color="primary" onClick={toggle}>Do Something</Button>{' '}
-                                <Button color="secondary" onClick={toggle}>Cancel</Button>
+                                <Button color="primary" onClick={updatePassword}>Update</Button>{' '}
+                                <Button color="secondary" onClick={reset}>Reset</Button>
                                 </ModalFooter>
                             </Modal>
                         </Card>
