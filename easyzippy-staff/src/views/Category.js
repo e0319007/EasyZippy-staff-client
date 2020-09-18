@@ -21,6 +21,7 @@ import ConfirmModal from "../components/ConfirmModal";
 import CategoryDataService from "../services/categoryService";
 
 
+//table headings
 const headCells = [
     {id:'id', label:'ID'},
     {id:'name', label:'Name'},
@@ -33,9 +34,12 @@ function Category() {
     const [recordForEdit, setRecordForEdit] = useState(null)
     const [records, setRecords] = useState(CategoryService.getAllCategory())
     const [filterFunction, setFilterFunction] = useState({fn: items => { return items; }})
+    //popup for creating and editing category
     const [openPopup, setOpenPopup] = useState(false)
+    //alert notification after successful submit/delete 
     const [notify, setNotify] = useState({isOpen: false, message:'', type:''})
     const [confirmModal, setConfirmModal] = useState({isOpen:false, title:''})
+  
 
     // const [data, getData] = useState([]);
     // useEffect (() => {
@@ -44,6 +48,22 @@ function Category() {
     //     .then(result => result.data.map(item => CategoryService.insertCategory({id: item.id, description: item.description, name: item.name})))
     //     // .then(result => CategoryService.insertCategory({id: result.data.id, description: result.data.description, name: result.data.name}))
     // },[])
+
+
+    // const [categoryList, setCategoryList] = useState([])
+
+    // const [data, setData] = useState({
+    //     name:"",
+    //     description:""
+    // })
+
+    // useEffect (() => {
+    //     axios
+    //     .get('http://localhost:5000/categories')
+    //     .then( res => {
+    //         setCategoryList(res.data)
+    //     }).catch(err => console.log(console.error(err)))
+    // })
 
     const {
         TblContainer,
@@ -64,8 +84,10 @@ function Category() {
         })
     }
 
-
+    //to add or edit category 
     const addOrEdit = (category, resetForm) => {
+  
+
           if (category.id == 0) 
           CategoryService.insertCategory(category)
         //   console.log(category);
@@ -124,7 +146,8 @@ function Category() {
                                     </InputGroup>
                                     <Button 
                                         color="success"
-                                        onClick={() => { setOpenPopup(true); setRecordForEdit(null); }}>Create New Category</Button>
+                                        onClick={() => { setOpenPopup(true); setRecordForEdit(null); }}>Create New Category
+                                    </Button>
                                 </div>
                             </CardHeader>
                             <CardBody>
@@ -132,7 +155,8 @@ function Category() {
                                     <TblHead />
                                     <tbody>
                                         {
-                                            recordsAfterPagingAndSorting().map(item => (
+                                             recordsAfterPagingAndSorting().map(item => (
+                                                // categoryList.map(item => (
                                                 <tr key={item.id}>
                                                     <td>{item.id}</td>
                                                     <td>{item.name}</td>
@@ -154,7 +178,7 @@ function Category() {
                                                         </Button>                                               
                                                     </td>
                                                 </tr>
-                                            ))
+                                             ))
                                         }
                                     </tbody>
                                 </TblContainer>

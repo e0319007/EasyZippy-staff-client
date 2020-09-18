@@ -8,21 +8,26 @@ export default function UseTable(records, headCells, filterFunction) {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(pages[page])
     const [order, setOrder] = useState()
-
     const [orderBy, setOrderBy] = useState()
-    const [data, getData] = useState([]);
-    useEffect (() => {
-        axios
-        .get('http://localhost:5000/categories')
-        .then(result => getData(result.data))
-    },[])
+
+  
+
+    // const [data, getData] = useState([]);
+    // useEffect (() => {
+    //     axios
+    //     .get('http://localhost:5000/categories')
+    //     .then(result => getData(result.data))
+    // },[])
     
+    //responsive table with hover
     const TblContainer = props => (
         <Table responsive hover>
             {props.children}
         </Table>
     )
 
+
+    //Table headings with sorting function.     
     const TblHead = props => {
 
         const handleSortRequest = cellId => {
@@ -97,7 +102,28 @@ export default function UseTable(records, headCells, filterFunction) {
         return 0;
     }
 
-    const recordsAfterPagingAndSorting = (data) => {
+    //axios
+    // const [categoryList, setCategoryList] = useState([])
+
+    // const [data, setData] = useState({
+    //     name:"",
+    //     description:""
+    // })
+
+    // const [recordsAfterPagingAndSorting, setRecordsAfterPagingAndSorting] = useState([])
+
+    // useEffect (() => {
+    //     axios
+    //     .get('http://localhost:5000/categories')
+    //     .then( res => {
+    //         setCategoryList(res.data)
+    //         setRecordsAfterPagingAndSorting.stableSort(filterFunction.fn(data), getComparator(order, orderBy)).slice(page*rowsPerPage, (page+1) * rowsPerPage) 
+    //     }).catch(err => console.log(console.error(err)))
+    // })
+
+    
+
+     const recordsAfterPagingAndSorting = () => {
         return stableSort(filterFunction.fn(records), getComparator(order,orderBy)).slice(page*rowsPerPage, (page+1) * rowsPerPage)
     }
 

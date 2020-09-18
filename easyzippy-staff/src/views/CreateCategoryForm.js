@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
+import axios from "axios";
 import { Button, Card, CardBody, Col, FormGroup, Input, Label, Row } from 'reactstrap';
 import { UseForm, Form } from '../components/UseForm';
 
@@ -26,6 +27,25 @@ function CreateCategoryForm(props) {
         e.preventDefault()
         addOrEdit(values, resetForm);
     }
+
+    //axios
+    // const[categoryList, setCategoryList] = useState([])
+    // const [data, setData] = useState({
+    //     name:"",
+    //     description: ""
+    // })
+
+    // const handleSubmit = e => {
+    //     e.preventDefault()
+    //     axios
+    //     .post("http://localhost:5000/category", data)
+    //     .then(res => {
+    //         console.log(res.data)
+    //         const myData=[...categoryList, res.data]
+    //         setCategoryList(myData)
+    //         addOrEdit(values, resetForm)
+    //     })
+    // }
 
     useEffect(() => { 
         if(recordForEdit != null) 

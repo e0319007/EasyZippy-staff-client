@@ -11,6 +11,7 @@ import "perfect-scrollbar/css/perfect-scrollbar.css";
 import AdminLayout from "./layouts/Admin.js";
 import Login from "./views/Login.js"
 import Error from "./views/Error.js"
+import UpdateCategory from "views/UpdateCategory.js";
 
 const hist = createBrowserHistory();
 
@@ -31,6 +32,7 @@ function App(props) {
                     <Route path="/admin" render={(props) => <AdminLayout {...props} />} />
                 }
                 <Route exact path="/error" component={Error} />
+                <Route path="/updateCategory" component={UpdateCategory} />
                 {/* <Redirect to="/error" component={Error} /> */}
             </Switch>
         </Router>
