@@ -11,6 +11,9 @@ import "perfect-scrollbar/css/perfect-scrollbar.css";
 import AdminLayout from "./layouts/Admin.js";
 import Login from "./views/Login.js"
 import Error from "./views/Error.js"
+import ForgotPassword from "./views/ForgotPassword.js";
+import CheckValidToken from "./views/CheckValidToken.js";
+import ResetPassword from "./views/ResetPassword.js";
 
 const hist = createBrowserHistory();
 
@@ -31,6 +34,9 @@ function App(props) {
                     <Route path="/admin" render={(props) => <AdminLayout {...props} />} />
                 }
                 <Route exact path="/error" component={Error} />
+                <Route exact path="/forgotPassword" component={ForgotPassword}/>
+                <Route exact path="/checkValidToken" component={CheckValidToken}/>
+                <Route exact path="/resetPassword" component={ResetPassword}/>
                 {/* <Redirect to="/error" component={Error} /> */}
             </Switch>
         </Router>

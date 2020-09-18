@@ -1,8 +1,6 @@
-import { Form } from "components/UseForm";
 import React, {useState} from "react";
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import Popup from "../components/Popup"
 
 import {
     Card,
@@ -31,6 +29,9 @@ function Profile() {
 
     const staffid = parseInt(Cookies.get('staffUser'))
     console.log(typeof staffid)
+
+    const authToken = JSON.parse(Cookies.get('authToken'))
+    console.log(typeof authToken + " " + authToken)
 
     const [firstName, setFirstName] = useState(staff.firstName)
     const [lastName, setLastName] = useState(staff.lastName)
@@ -97,6 +98,11 @@ function Profile() {
             lastName: lastName,
             email: email,
             mobileNumber: mobileNumber
+        },
+        {
+            headers: {
+                AuthToken: authToken
+            }
         }).then((response) => {
             console.log("axios call went through")
             // set response data to view
@@ -121,6 +127,7 @@ function Profile() {
             isInModal(false)
             isError(true)
             setError(error.response.data)
+            isSuccessful(false)
         })
     }
 
@@ -131,6 +138,11 @@ function Profile() {
         axios.put(`http://localhost:5000/staff/${staffid}/changePassword`, {
             currentPassword: currentPw,
             newPassword: newPw
+        },
+        {
+            headers: {
+                AuthToken: authToken
+            }
         }).then((response) => {
             console.log("axios call went through")
             isInModal(true)
@@ -142,6 +154,7 @@ function Profile() {
             isInModal(true)
             isError(true)
             setError(error.response.data)
+            isSuccessful(false)
         })
     }
 

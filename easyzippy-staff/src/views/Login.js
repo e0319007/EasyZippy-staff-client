@@ -57,6 +57,10 @@ function Login() {
         email: ''
     }
 
+    const forgotPassword = () => {
+        history.push('/forgotPassword')
+    }
+
     const postLogin = e =>  {
         console.log("in login function")
         e.preventDefault()
@@ -90,15 +94,12 @@ function Login() {
             localStorage.setItem('currentStaff', JSON.stringify(staff))
 
         }).catch(function (error) {
-            // alert(error.response.data)
             isError(true)
             setError(error.response.data)
             console.log(error.response.data)
             history.push('/login') 
-            //add customised alerts according to errors
         })
     };
-
 
     return (
         <div style={{backgroundColor:'#f4f3ef', height:'100vh'}}>
@@ -148,7 +149,7 @@ function Login() {
                     Log In
                 </Button>
                 <FormGroup> 
-                    <Link to="/apply">Forgot Password?</Link>
+                    <Link onClick={forgotPassword}>Forgot Password?</Link>
                 </FormGroup>
                 { err &&<Alert color="danger">{error}</Alert> }
             </form>
