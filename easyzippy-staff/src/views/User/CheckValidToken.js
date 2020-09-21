@@ -65,7 +65,7 @@ const checkTokenValidity = e => {
                 <div className="navbar-brand">
                     &nbsp;&nbsp;
                     <img 
-                        src={require("../easyzippylogo.jpg")}
+                        src={require("../../easyzippylogo.jpg")}
                         width="30"
                         height="30"
                     />
