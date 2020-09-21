@@ -11,7 +11,12 @@ import {
     CardTitle,
     Row,
     Col,
-    CardText, Label, Input, Button, Table, InputGroup, InputGroupText, InputGroupAddon, CardHeader, FormGroup
+    Label, 
+    Input, 
+    Button, 
+    Table, 
+    CardHeader, 
+    FormGroup
 } from "reactstrap";
 
 import { Form } from "components/UseForm";
