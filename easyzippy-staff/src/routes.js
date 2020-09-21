@@ -30,6 +30,9 @@ import Kiosks from "views/Kiosk/Kiosks";
 import Category from "views/Category/Category";
 import Announcements from "views/Announcement/Announcements";
 
+// TEST
+import TestCategory from "views/Category/TestCategory"
+
 
 
 
@@ -116,6 +119,13 @@ var routes = [
     name: "Announcements",
     icon: "nc-icon nc-chat-33",
     component: Announcements,
+    layout: "/admin"
+  },
+  {
+    path: "/testCategory",
+    name: "Test Category",
+    icon: "nc-icon nc-tile-56",
+    component: TestCategory,
     layout: "/admin"
   }
 ];

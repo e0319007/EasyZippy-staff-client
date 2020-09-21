@@ -13,6 +13,8 @@
     "chart.js": "2.9.3",
     "history": "4.10.1",
     "js-cookie": "^2.2.1",
+    "material-icons": "^0.3.1",
+    "material-table": "^1.69.0",
     "materialui-pagination": "0.0.6",
     "node-sass": "4.14.1",
     "perfect-scrollbar": "1.5.0",
