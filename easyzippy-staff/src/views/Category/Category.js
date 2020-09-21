@@ -2,6 +2,10 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Cookies from 'js-cookie';
 import MaterialTable from "material-table"
+import { createMuiTheme } from '@material-ui/core/styles';
+import { ThemeProvider } from '@material-ui/styles';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import blue from '@material-ui/core/colors/blue';
 
 import {
     Row,
@@ -10,15 +14,27 @@ import {
     Alert
 } from "reactstrap";
 
+const theme = createMuiTheme({
+    typography: {
+        fontFamily: [
+        'Montserrat',
+        ].join(','),
+    },
+    palette: {
+        primary: blue,
+    },
+});
+
+
 function Category() {
 
     const authToken = JSON.parse(Cookies.get('authToken'))
 
     // DECLARING COLUMNS
     var columns = [
-        {title: "Id", field: "id", editable: "never"},
-        {title: "Name", field:"name"},
-        {title: "Description", field:"description"}
+        {title: "ID", field: "id", editable: "never"},
+        {title: "NAME", field:"name"},
+        {title: "DESCRIPTION", field:"description"}
     ]
 
     const[data, setData] = useState([])
@@ -147,38 +163,41 @@ function Category() {
         }
 
     return (
-        <div className="content">
-            <Row>
-                <Col md = "12">
-                    <Card>
-                        <MaterialTable
-                            title="Category"
-                            columns={columns}
-                            data={data}
-                            options = {{
-                                sorting: true
-                            }}
-                            editable={{
-                                onRowUpdate: (newData, oldData) =>
-                                new Promise((resolve) => {
-                                    handleRowUpdate(newData, oldData, resolve);
-                            }),
-                            onRowAdd: (newData) =>
-                                new Promise((resolve) => {
-                                handleRowAdd(newData, resolve)
+        <ThemeProvider theme={theme}>
+        <CssBaseline/>
+            <div className="content">
+                <Row>
+                    <Col md = "12">
+                        <Card>
+                            <MaterialTable
+                                title="Category"
+                                columns={columns}
+                                data={data}
+                                options = {{
+                                    sorting: true
+                                }}
+                                editable={{
+                                    onRowUpdate: (newData, oldData) =>
+                                    new Promise((resolve) => {
+                                        handleRowUpdate(newData, oldData, resolve);
                                 }),
-                            onRowDelete: (oldData) =>
-                                new Promise((resolve) => {
-                                handleRowDelete(oldData, resolve)
-                                }),
-                            }}
-                        />
-                        { err &&<Alert color="danger">{error}</Alert> }
-                        { successful &&<Alert color="success">{successMsg}</Alert>}
-                    </Card>
-                </Col>
-            </Row>
-        </div>        
+                                onRowAdd: (newData) =>
+                                    new Promise((resolve) => {
+                                    handleRowAdd(newData, resolve)
+                                    }),
+                                onRowDelete: (oldData) =>
+                                    new Promise((resolve) => {
+                                    handleRowDelete(oldData, resolve)
+                                    }),
+                                }}
+                            />
+                            { err &&<Alert color="danger">{error}</Alert> }
+                            { successful &&<Alert color="success">{successMsg}</Alert>}
+                        </Card>
+                    </Col>
+                </Row>
+            </div>   
+        </ThemeProvider>     
     )
 }
 
