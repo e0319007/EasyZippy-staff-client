@@ -1,6 +1,6 @@
 import React, {useState} from "react";
 import axios from 'axios';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 import {
     Row,
@@ -12,8 +12,6 @@ import {
     Navbar,
     Alert
 } from "reactstrap";
-
-const API_SERVER = "http://localhost:5000/staff"
 
 function ResetPassword() {
 
@@ -45,7 +43,7 @@ function ResetPassword() {
         console.log("inside update password")
         e.preventDefault()
 
-        axios.post(API_SERVER + "/resetPassword", {
+        axios.post("/staff/resetPassword", {
             token: emailToken,
             email: email,
             newPassword: password,

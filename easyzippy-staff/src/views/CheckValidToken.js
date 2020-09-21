@@ -13,8 +13,6 @@ import {
     Alert
 } from "reactstrap";
 
-const API_SERVER = "http://localhost:5000/staff"
-
 function CheckValidToken() {
     const history = useHistory()
 
@@ -46,7 +44,7 @@ const checkTokenValidity = e => {
         return;
     }
 
-    axios.post(API_SERVER + "/resetPassword/checkValidToken", {
+    axios.post("/staff/resetPassword/checkValidToken", {
         token: emailToken,
         email: email
     }).then (() => {

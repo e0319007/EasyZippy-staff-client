@@ -60,5 +60,6 @@
     "gulp": "4.0.2",
     "gulp-append-prepend": "1.0.8",
     "react-props-history": "^3.0.7"
-  }
+  },
+  "proxy": "http://localhost:3000"
 }

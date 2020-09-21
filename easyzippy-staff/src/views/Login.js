@@ -11,9 +11,6 @@ import {
     Button,
     Navbar
 } from "reactstrap";
-import { data } from 'jquery';
-
-const API_SERVER = "http://localhost:5000/staff"
 
 function Login() {
 
@@ -24,8 +21,6 @@ function Login() {
 
     const [error, setError] = useState('')
     const [err, isError] = useState(false)
-    const [valid, isValid] = useState(true)
-    const [visible, setVisible] = useState(false);
 
     const onChangeEmail = e => {
         // console.log("inside on change email")
@@ -71,7 +66,7 @@ function Login() {
             setError("Email field is required")
             return;
         }
-        axios.post(API_SERVER + '/login', {
+        axios.post('/staff/login', {
             email: email,
             password: password
         })

@@ -13,8 +13,6 @@ import {
     Row
 } from "reactstrap";
 
-const API_SERVER = "http://localhost:5000/staff"
-
 function ForgotPassword() {
 
     const history = useHistory()
@@ -45,7 +43,7 @@ function ForgotPassword() {
             return;
         }
 
-        axios.post(API_SERVER + "/forgotPassword", {
+        axios.post("/staff/forgotPassword", {
             email: email
         }).then(() => {
             console.log("axios call went through")
