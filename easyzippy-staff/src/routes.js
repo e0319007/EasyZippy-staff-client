@@ -18,17 +18,17 @@
 */
 
 import Dashboard from "views/Dashboard.js";
-import Lockers from "views/Lockers.js"
-import Profile from "views/Profile";
-import Staffs from "views/Staffs";
-import Customers from "views/Customers";
-import Merchants from "views/Merchants";
-import Advertisements from "views/Advertisements";
-import Promotions from "views/Promotions";
-import Bookings from "views/Bookings";
-import Kiosks from "views/Kiosks";
-import Category from "views/Category";
-import Announcements from "views/Announcements";
+import Lockers from "views/Locker/Lockers"
+import Profile from "views/User/Profile";
+import Staffs from "views/Staff/Staffs";
+import Customers from "views/Customer/Customers";
+import Merchants from "views/Merchant/Merchants";
+import Advertisements from "views/Advertisement/Advertisements";
+import Promotions from "views/Promotion/Promotions";
+import Bookings from "views/Booking/Bookings";
+import Kiosks from "views/Kiosk/Kiosks";
+import Category from "views/Category/Category";
+import Announcements from "views/Announcement/Announcements";
 
 
 
