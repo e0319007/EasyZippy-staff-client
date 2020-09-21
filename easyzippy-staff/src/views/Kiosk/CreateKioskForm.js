@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
 import { Button, Card, CardBody, Col, FormGroup, Input, Label, Row } from 'reactstrap';
-import { UseForm, Form } from '../components/UseForm';
+import { UseForm, Form } from '../../components/UseForm';
 
 
 const initialValues = {

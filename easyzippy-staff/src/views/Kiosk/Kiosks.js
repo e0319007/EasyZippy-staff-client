@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { AiOutlineDelete, AiOutlineEdit } from 'react-icons/ai';
-import UseTable from "../components/UseTable";
-import ConfirmModal from "../components/ConfirmModal";
-import Noti from "../components/Noti";
+import UseTable from "../../components/UseTable";
+import ConfirmModal from "../../components/ConfirmModal";
+import Noti from "../../components/Noti";
 
 import {
     Card,

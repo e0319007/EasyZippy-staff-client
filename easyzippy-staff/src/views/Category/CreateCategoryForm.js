@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import { Button, Card, CardBody, Col, FormGroup, Input, Label, Row } from 'reactstrap';
-import { UseForm, Form } from '../components/UseForm';
+import { UseForm, Form } from '../../components/UseForm';
 
 
 const initialValues = {
