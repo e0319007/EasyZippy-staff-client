@@ -6,7 +6,8 @@ import MaterialTable from "material-table"
 import {
     Row,
     Col,
-    Card
+    Card,
+    Alert
 } from "reactstrap";
 
 function TestCategory() {
@@ -23,8 +24,11 @@ function TestCategory() {
     const[data, setData] = useState([])
 
     //for error handling
-    const [iserror, setIserror] = useState(false)
-    const [errorMessages, setErrorMessages] = useState([])
+    const [error, setError] = useState('')
+    const [err, isError] = useState(false)
+
+    const [successful, isSuccessful] = useState(false)
+    const [successMsg, setMsg] = useState('')
 
     useEffect(() => {
         console.log("retrieving categories;; axios")
@@ -41,79 +45,79 @@ function TestCategory() {
     },[])
 
     const handleRowAdd = (newData, resolve) => {
-        //validation
-        let errorList = []
+        //validation: if name is empty
         if(newData.name === undefined){
-            errorList.push("Please enter first name")
-        }
-        if(newData.description === undefined){
-            errorList.push("Please enter last name")
-        }
-        if(errorList.length < 1){ //no error
-            axios.post("/category", {
-                name: newData.name,
-                description: newData.description
-            },
-            {
-                headers: {
-                    AuthToken: authToken
-                }
-            })
-            .then(res => {
-                console.log("axios call went through")
-                let dataToAdd = [...data];
-                dataToAdd.push(newData);
-                setData(dataToAdd);
-                resolve()
-                setErrorMessages([])
-                setIserror(false)
-                document.location.reload()
-            })
-            .catch(function (error) {
-                setErrorMessages([error.data.response])
-                setIserror(true)
-                resolve()
-            })
-        }else{
-            setErrorMessages(errorList)
-            setIserror(true)
+            isError(true)
+            setError("Unable to add new category. Please fill in the name field.")
+            isSuccessful(false)
             resolve()
+            return;
         }
+        axios.post("/category", {
+            name: newData.name,
+            description: newData.description
+        },
+        {
+            headers: {
+                AuthToken: authToken
+            }
+        })
+        .then(res => {
+            console.log("axios call went through")
+            let dataToAdd = [...data];
+            dataToAdd.push(newData);
+            setData(dataToAdd);
+            resolve()
+            isError(false)
+            isSuccessful(true)
+            setMsg("Category successfully added!")
+            document.location.reload()
+        })
+        .catch(function (error) {
+            isSuccessful(false)
+            isError(true)
+            setError(error.response.data)
+            console.log(error.response.data)
+            resolve()
+        })
     }
 
     const handleRowUpdate = (newData, oldData, resolve) => {
         //validation
-        let errorList = []
-        if(errorList.length < 1){
-            axios.put("/category/"+oldData.id, {
-                name: newData.name,
-                description: newData.description
-            },
-            {
-                headers: {
-                    AuthToken: authToken
-                }
-            })
-            .then(res => {
-                console.log("axios call went through")
-                const dataUpdate = [...data];
-                const index = oldData.tableData.id;
-                dataUpdate[index] = newData;
-                setData([...dataUpdate]);
-                resolve()
-                setIserror(false)
-                setErrorMessages([])
-            })
-            .catch(function (error) {
-                setErrorMessages([error.data.response])
-                setIserror(true)
-                resolve()
-            })
-        } else{
-            setErrorMessages(errorList)
-            setIserror(true)
+        if(newData.name === undefined || newData.name == ""){
+            isError(true)
+            setError("Unable to update. Please fill in the name field for " + oldData.name + " category entry")
+            isSuccessful(false)
             resolve()
+            return;
         }
+        axios.put("/category/"+oldData.id, {
+            name: newData.name,
+            description: newData.description
+        },
+        {
+            headers: {
+                AuthToken: authToken
+            }
+        })
+        .then(res => {
+            console.log("axios call went through")
+            const dataUpdate = [...data];
+            const index = oldData.tableData.id;
+            dataUpdate[index] = newData;
+            setData([...dataUpdate]);
+            isError(false)
+            isSuccessful(true)
+            setMsg("Category successfully updated!")
+            resolve()
+        })
+        .catch(function (error) {
+            isSuccessful(false)
+            isError(true)
+            setError(error.response.data)
+            console.log(error.response.data)
+            resolve()
+        })
     }
 
     const handleRowDelete = (oldData, resolve) => {
@@ -128,12 +132,17 @@ function TestCategory() {
                 const index = oldData.tableData.id;
                 dataDelete.splice(index, 1);
                 setData([...dataDelete]);
+                isError(false)
+                isSuccessful(true)
+                setMsg("Category successfully deleted!")
                 resolve()
             })
             .catch(function (error) {
-            setErrorMessages([error.data.response])
-            setIserror(true)
-            resolve()
+                isSuccessful(false)
+                isError(true)
+                setError(error.response.data)
+                console.log(error.response.data)
+                resolve()
             })
         }
 
@@ -164,6 +173,8 @@ function TestCategory() {
                                 }),
                             }}
                         />
+                        { err &&<Alert color="danger">{error}</Alert> }
+                        { successful &&<Alert color="success">{successMsg}</Alert>}
                     </Card>
                 </Col>
             </Row>
