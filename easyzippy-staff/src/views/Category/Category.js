@@ -4,8 +4,6 @@ import Cookies from 'js-cookie';
 import MaterialTable from "material-table"
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import blue from '@material-ui/core/colors/blue';
 
 import {
     Row,
@@ -20,9 +18,6 @@ const theme = createMuiTheme({
         'Montserrat',
         ].join(','),
     },
-    palette: {
-        primary: blue,
-    },
 });
 
 
@@ -32,9 +27,10 @@ function Category() {
 
     // DECLARING COLUMNS
     var columns = [
-        {title: "ID", field: "id", editable: "never"},
-        {title: "NAME", field:"name"},
-        {title: "DESCRIPTION", field:"description"}
+        {title: "Id", field: "id", editable: "never"},
+        {title: "Name", field:"name"},
+        {title: "Description", field:"description"}, 
+        
     ]
 
     const[data, setData] = useState([])
@@ -164,18 +160,22 @@ function Category() {
 
     return (
         <ThemeProvider theme={theme}>
-        <CssBaseline/>
             <div className="content">
                 <Row>
                     <Col md = "12">
                         <Card>
-                            <MaterialTable
-                                title="Category"
+                            <MaterialTable 
+                                title="Category List"
                                 columns={columns}
                                 data={data}
-                                options = {{
-                                    sorting: true
-                                }}
+                                options={{   
+                                    //sorting: true, 
+                                    headerStyle: {
+                                        backgroundColor: '#6bd098',
+                                        color: '#FFF',
+                                        fontWeight: 1000,                                      
+                                    }
+                                    }}
                                 editable={{
                                     onRowUpdate: (newData, oldData) =>
                                     new Promise((resolve) => {
