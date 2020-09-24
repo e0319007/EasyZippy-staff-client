@@ -193,23 +193,31 @@ function Kiosks() {
                                         backgroundColor: '#98D0E1',
                                         color: '#FFF',
                                         fontWeight: 1000,                                      
-                                    }
+                                    },
+                                    actionsColumnIndex: -1
                                     }}
                                 editable={{
                                     onRowUpdate: (newData, oldData) =>
                                     new Promise((resolve) => {
                                         handleRowUpdate(newData, oldData, resolve);
+                                }),     
+                                    onRowAdd: (newData) =>
+                                        new Promise((resolve) => {
+                                        handleRowAdd(newData, resolve)
                                 }),
-                                
-                                onRowAdd: (newData) =>
-                                    new Promise((resolve) => {
-                                    handleRowAdd(newData, resolve)
-                                    }),
-                                onRowDelete: (oldData) =>
-                                    new Promise((resolve) => {
-                                    handleRowDelete(oldData, resolve)
-                                    }),
+                                    onRowDelete: (oldData) =>
+                                        new Promise((resolve) => {
+                                        handleRowDelete(oldData, resolve)
+                                }),
+
                                 }}
+                                // actions={[
+                                //     {
+                                //     icon: 'save',
+                                //     tooltip: 'Save User',
+                                //     onClick: (event, rowData) => alert("You saved " + rowData.name)
+                                //     },
+                                // ]}
                             />
                             { err &&<Alert color="danger">{error}</Alert> }
                             { successful &&<Alert color="success">{successMsg}</Alert>}

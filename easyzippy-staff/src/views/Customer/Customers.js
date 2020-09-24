@@ -9,7 +9,7 @@ import {
     Row,
     Col,
     Card, 
-    Button
+    Button, Modal, ModalHeader, ModalBody, FormGroup, Label, ModalFooter, Pagination
 } from "reactstrap";
 
 const theme = createMuiTheme({
@@ -39,6 +39,9 @@ function Customers() {
     ]
 
     const[data, setData] = useState([])
+
+    const [modal, setModal] = useState(false)
+    const toggle = () => setModal(!modal);
 
     useEffect(() => {
         console.log("retrieving customers;; axios")
@@ -71,9 +74,35 @@ function Customers() {
                                         backgroundColor: '#98D0E1',
                                         color: '#FFF',
                                         fontWeight: 1000,                                      
-                                    }
+                                    },
+                                    actionsColumnIndex: -1
                                     }}
+                                    actions={[
+                                            {
+                                            icon: 'info',
+                                            tooltip: 'View Customer Details',
+                                            //onClick: (event, rowData) => alert("You viewed " + rowData.firstName)
+                                            onClick:(event, rowData) => {
+                                                console.log("in onclick")
+
+                                                }
+                                            },
+                                                
+                                            
+                                                // <Modal isOpen={modal} toggle={toggle}>
+                                                //     <ModalHeader toggle={toggle}> Customer Details</ModalHeader>                                          
+                                                // </Modal>                                    
+                                            
+                                            {
+                                            icon:'delete',
+                                            tooltip: "disable",
+                                            onClick:(event, rowData) => alert("You disabled " + rowData.firstName)    
+                                            }
+                                        ]}
                             />
+                            <Modal isOpen={modal} toggle={toggle}>
+                                <ModalHeader toggle={toggle}> Customer Details</ModalHeader>                                          
+                            </Modal> 
                         </Card>
                     </Col>
                 </Row>

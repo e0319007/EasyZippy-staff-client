@@ -9,7 +9,7 @@ import {
     Row,
     Col,
     Card,
-    Alert
+    Alert, Button
 } from "reactstrap";
 
 const theme = createMuiTheme({
@@ -174,7 +174,8 @@ function Category() {
                                         backgroundColor: '#98D0E1',
                                         color: '#FFF',
                                         fontWeight: 1000,                                      
-                                    }
+                                    },
+                                    actionsColumnIndex: -1
                                     }}
                                 editable={{
                                     onRowUpdate: (newData, oldData) =>
