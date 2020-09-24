@@ -4,6 +4,7 @@ import Cookies from 'js-cookie';
 import MaterialTable from "material-table"
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
+import { useHistory } from 'react-router-dom';
 
 import {
     Row,
@@ -24,6 +25,8 @@ const theme = createMuiTheme({
 function Customers() {
 
     const authToken = JSON.parse(Cookies.get('authToken'))
+
+    const history = useHistory()
 
     // DECLARING COLUMNS
     var columns = [
@@ -84,6 +87,7 @@ function Customers() {
                                             //onClick: (event, rowData) => alert("You viewed " + rowData.firstName)
                                             onClick:(event, rowData) => {
                                                 console.log("in onclick")
+                                                history.push('/admin/customerDetails')
 
                                                 }
                                             },
@@ -92,12 +96,7 @@ function Customers() {
                                                 // <Modal isOpen={modal} toggle={toggle}>
                                                 //     <ModalHeader toggle={toggle}> Customer Details</ModalHeader>                                          
                                                 // </Modal>                                    
-                                            
-                                            {
-                                            icon:'delete',
-                                            tooltip: "disable",
-                                            onClick:(event, rowData) => alert("You disabled " + rowData.firstName)    
-                                            }
+                                
                                         ]}
                             />
                             <Modal isOpen={modal} toggle={toggle}>

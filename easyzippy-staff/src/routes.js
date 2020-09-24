@@ -29,6 +29,7 @@ import Bookings from "views/Booking/Bookings";
 import Kiosks from "views/Kiosk/Kiosks";
 import Category from "views/Category/Category";
 import Announcements from "views/Announcement/Announcements";
+import CustomerDetails from "views/Customer/CustomerDetails";
 
 var routes = [
   {
@@ -58,6 +59,14 @@ var routes = [
     icon: "nc-icon nc-single-02",
     component: Customers,
     layout: "/admin"
+  },
+  {
+    path: "/customerDetails",
+    name: "CustomerDetails",
+    icon: "nc-icon nc-single-02",
+    component: CustomerDetails,
+    layout: "/admin",
+    invisible: true
   },
   {
     path: "/merchants",
