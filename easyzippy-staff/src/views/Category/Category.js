@@ -171,7 +171,7 @@ function Category() {
                                 options={{   
                                     //sorting: true, 
                                     headerStyle: {
-                                        backgroundColor: '#6bd098',
+                                        backgroundColor: '#98D0E1',
                                         color: '#FFF',
                                         fontWeight: 1000,                                      
                                     }
