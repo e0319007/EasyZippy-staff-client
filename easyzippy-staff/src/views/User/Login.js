@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import Sidebar from "../../components/Sidebar/Sidebar"
 
 import {
     FormGroup,

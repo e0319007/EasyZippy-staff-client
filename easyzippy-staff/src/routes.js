@@ -113,7 +113,7 @@ var routes = [
     name: "Announcements",
     icon: "nc-icon nc-chat-33",
     component: Announcements,
-    layout: "/admin"
+    layout: "/admin",
   }
 ];
 

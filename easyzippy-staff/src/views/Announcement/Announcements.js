@@ -31,7 +31,8 @@ function Announcements() {
         {title: "Title", field:"title"},
         {title: "Description", field:"description"}, 
         {title: "Date Created", field:"sentTime", editable: "never", 
-            render: row => <span>{ formatDate(row["sentTime"]) }</span>}
+            // render: row => <span>{ formatDate(row["sentTime"]) }</span>
+        }
     ]
 
     const[data, setData] = useState([])
@@ -67,12 +68,15 @@ function Announcements() {
             resolve()
             return;
         } 
+        let today = new Date().toISOString()
+        alert(today)
+        // today = "2020-09-25T08:05:04.709Z"
         axios.post("/announcement", {
             title: newData.title,
             staffId: staffid,
             description: newData.description,
             // SEE WHAT HAPPENS WHEN I PASS THE STRING BACK (see if need to do the plus +08:00 styff)
-            sentTime: (new Date().toISOString())
+            sentTime: today.toString()
         },
         {
             headers: {
