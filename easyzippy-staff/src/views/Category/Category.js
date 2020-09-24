@@ -25,7 +25,6 @@ const theme = createMuiTheme({
     },
 });
 
-
 function Category() {
 
     const authToken = JSON.parse(Cookies.get('authToken'))
@@ -47,7 +46,7 @@ function Category() {
     const [successMsg, setMsg] = useState('')
 
     useEffect(() => {
-        console.log("retrieving categories;; axios")
+        console.log("retrieving categories // axios")
         axios.get("/categories", 
         {
             headers: {
@@ -62,7 +61,7 @@ function Category() {
 
     const handleRowAdd = (newData, resolve) => {
         //validation: if name is empty
-        if(newData.name === undefined){
+        if(newData.name === undefined || newData.name === ""){
             isError(true)
             setError("Unable to add new category. Please fill in the name field.")
             isSuccessful(false)
@@ -100,7 +99,7 @@ function Category() {
 
     const handleRowUpdate = (newData, oldData, resolve) => {
         //validation
-        if(newData.name === undefined || newData.name == ""){
+        if(newData.name === undefined || newData.name === ""){
             isError(true)
             setError("Unable to update. Please fill in the name field for " + oldData.name + " category entry")
             isSuccessful(false)
