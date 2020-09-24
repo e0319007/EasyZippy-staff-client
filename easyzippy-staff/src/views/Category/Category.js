@@ -173,7 +173,8 @@ function Category() {
                                         backgroundColor: '#98D0E1',
                                         color: '#FFF',
                                         fontWeight: 1000,                                      
-                                    }
+                                    },
+                                    actionsColumnIndex: -1
                                     }}
                                 editable={{
                                     onRowUpdate: (newData, oldData) =>
