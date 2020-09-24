@@ -30,9 +30,6 @@ import Kiosks from "views/Kiosk/Kiosks";
 import Category from "views/Category/Category";
 import Announcements from "views/Announcement/Announcements";
 
-
-
-
 var routes = [
   {
     path: "/dashboard",
@@ -116,7 +113,7 @@ var routes = [
     name: "Announcements",
     icon: "nc-icon nc-chat-33",
     component: Announcements,
-    layout: "/admin"
+    layout: "/admin",
   }
 ];
 
