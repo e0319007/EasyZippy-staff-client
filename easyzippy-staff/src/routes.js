@@ -30,9 +30,6 @@ import Kiosks from "views/Kiosk/Kiosks";
 import Category from "views/Category/Category";
 import Announcements from "views/Announcement/Announcements";
 
-
-
-
 var routes = [
   {
     path: "/dashboard",

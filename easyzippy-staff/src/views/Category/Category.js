@@ -179,14 +179,14 @@ function Category() {
                                     onRowUpdate: (newData, oldData) =>
                                     new Promise((resolve) => {
                                         handleRowUpdate(newData, oldData, resolve);
-                                }),
-                                onRowAdd: (newData) =>
-                                    new Promise((resolve) => {
-                                    handleRowAdd(newData, resolve)
                                     }),
-                                onRowDelete: (oldData) =>
-                                    new Promise((resolve) => {
-                                    handleRowDelete(oldData, resolve)
+                                    onRowAdd: (newData) =>
+                                        new Promise((resolve) => {
+                                        handleRowAdd(newData, resolve)
+                                    }),
+                                    onRowDelete: (oldData) =>
+                                        new Promise((resolve) => {
+                                        handleRowDelete(oldData, resolve)
                                     }),
                                 }}
                             />
