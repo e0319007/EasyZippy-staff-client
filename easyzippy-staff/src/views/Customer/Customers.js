@@ -60,6 +60,8 @@ function Customers() {
         .catch (err => console.error(err))
     },[])
 
+    
+
 
     return (
         <ThemeProvider theme={theme}>

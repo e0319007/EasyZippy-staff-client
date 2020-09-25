@@ -15,11 +15,8 @@ import ForgotPassword from "./views/User/ForgotPassword.js";
 import CheckValidToken from "./views/User/CheckValidToken.js";
 import ResetPassword from "./views/User/ResetPassword.js";
 import CustomerDetails from "views/Customer/CustomerDetails.js";
-<<<<<<< HEAD
 import KioskDetails from "views/Kiosk/KioskDetails.js";
-=======
 import MerchantDetails from "views/Merchant/MerchantDetails.js"
->>>>>>> 42d143369aa4b7e616162019e29801a48b1b384d
 
 
 const hist = createBrowserHistory();
