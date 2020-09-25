@@ -15,6 +15,7 @@ import ForgotPassword from "./views/User/ForgotPassword.js";
 import CheckValidToken from "./views/User/CheckValidToken.js";
 import ResetPassword from "./views/User/ResetPassword.js";
 import CustomerDetails from "views/Customer/CustomerDetails.js";
+import KioskDetails from "views/Kiosk/KioskDetails.js";
 
 
 const hist = createBrowserHistory();
@@ -40,6 +41,7 @@ function App(props) {
                 <Route exact path="/checkValidToken" component={CheckValidToken}/>
                 <Route exact path="/resetPassword" component={ResetPassword}/>
                 <Route exact path="/admin/customerDetails" component={CustomerDetails}/>
+                <Route exact path="/admin/kioskDetails" component={KioskDetails}/>
                 {/* <Redirect to="/error" component={Error} /> */}
             </Switch>
         </Router>

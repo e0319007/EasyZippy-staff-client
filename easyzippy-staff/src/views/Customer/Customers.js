@@ -28,6 +28,9 @@ function Customers() {
 
     const history = useHistory()
 
+    // const customer = JSON.parse(localStorage.getItem('currentCustomer'))
+    // console.log("test " + customer.firstName)
+
     // DECLARING COLUMNS
     var columns = [
         {title: "Id", field: "id", editable: "never"},
@@ -41,10 +44,7 @@ function Customers() {
         
     ]
 
-    const[data, setData] = useState([])
-
-    const [modal, setModal] = useState(false)
-    const toggle = () => setModal(!modal);
+    const[data, setData] = useState([])    
 
     useEffect(() => {
         console.log("retrieving customers;; axios")
@@ -90,18 +90,10 @@ function Customers() {
                                                 history.push('/admin/customerDetails')
 
                                                 }
-                                            },
-                                                
-                                            
-                                                // <Modal isOpen={modal} toggle={toggle}>
-                                                //     <ModalHeader toggle={toggle}> Customer Details</ModalHeader>                                          
-                                                // </Modal>                                    
+                                            },                                
                                 
                                         ]}
                             />
-                            <Modal isOpen={modal} toggle={toggle}>
-                                <ModalHeader toggle={toggle}> Customer Details</ModalHeader>                                          
-                            </Modal> 
                         </Card>
                     </Col>
                 </Row>

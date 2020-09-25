@@ -4,6 +4,8 @@ import Cookies from 'js-cookie';
 import MaterialTable from "material-table"
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
+import { useHistory } from 'react-router-dom';
+
 
 import {
     Row,
@@ -24,6 +26,8 @@ const theme = createMuiTheme({
 function Kiosks() {
 
     const authToken = JSON.parse(Cookies.get('authToken'))
+
+    const history = useHistory()
 
     // DECLARING COLUMNS
     var columns = [
@@ -211,6 +215,19 @@ function Kiosks() {
                                 }),
 
                                 }}
+                                actions={[
+                                    {
+                                    icon: 'info',
+                                    tooltip: 'View Kiosk Details',
+                                    //onClick: (event, rowData) => alert("You viewed " + rowData.firstName)
+                                    onClick:(event, rowData) => {
+                                        console.log("in onclick")
+                                        history.push('/admin/kioskDetails')
+
+                                        }
+                                    },                                
+                                
+                                ]}
                                 // actions={[
                                 //     {
                                 //     icon: 'save',

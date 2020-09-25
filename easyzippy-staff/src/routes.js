@@ -30,6 +30,7 @@ import Kiosks from "views/Kiosk/Kiosks";
 import Category from "views/Category/Category";
 import Announcements from "views/Announcement/Announcements";
 import CustomerDetails from "views/Customer/CustomerDetails";
+import KioskDetails from "views/Kiosk/KioskDetails";
 
 var routes = [
   {
@@ -102,6 +103,14 @@ var routes = [
     icon: "nc-icon nc-mobile",
     component: Kiosks,
     layout: "/admin"
+  },
+  {
+    path: "/kioskDetails",
+    name: "KioskDetails",
+    icon: "nc-icon nc-mobile",
+    component: KioskDetails,
+    layout: "/admin",
+    invisible: true
   },
   {
     path: "/lockers",
