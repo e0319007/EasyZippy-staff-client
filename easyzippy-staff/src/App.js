@@ -1,7 +1,6 @@
-import React, {useState} from "react";
-import ReactDOM from "react-dom";
+import React from "react";
 import { createBrowserHistory } from "history";
-import { BrowserRouter as Router, Route, Switch, Redirect } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 import "bootstrap/dist/css/bootstrap.css";
 import "assets/scss/paper-dashboard.scss?v=1.2.0";
@@ -17,6 +16,7 @@ import ResetPassword from "./views/User/ResetPassword.js";
 import CustomerDetails from "views/Customer/CustomerDetails.js";
 import KioskDetails from "views/Kiosk/KioskDetails.js";
 import MerchantDetails from "views/Merchant/MerchantDetails.js"
+import StaffDetails from "views/Staff/StaffDetails.js";
 
 
 const hist = createBrowserHistory();
@@ -41,6 +41,7 @@ function App(props) {
                 <Route exact path="/forgotPassword" component={ForgotPassword}/>
                 <Route exact path="/checkValidToken" component={CheckValidToken}/>
                 <Route exact path="/resetPassword" component={ResetPassword}/>
+                <Route exact path="/admin/staffDetails" component={StaffDetails}/>
                 <Route exact path="/admin/customerDetails" component={CustomerDetails}/>
                 <Route exact path="/admin/kioskDetails" component={KioskDetails}/>
                 <Route exact path="/admin/merchantDetails" component={MerchantDetails}/>

@@ -11,7 +11,7 @@ import {
     Row,
     Col,
     Card,
-    Alert, Button
+    Alert
 } from "reactstrap";
 
 const theme = createMuiTheme({
@@ -59,7 +59,7 @@ function Kiosks() {
             setData(res.data)
         })
         .catch (err => console.error(err))
-    },[])
+    },[authToken])
 
     const handleRowAdd = (newData, resolve) => {
         //validation: if name is empty

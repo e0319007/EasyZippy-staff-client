@@ -10,7 +10,6 @@ import {
     Row,
     Col,
     Card, 
-    Button, Modal, ModalHeader, ModalBody, FormGroup, Label, ModalFooter, Pagination
 } from "reactstrap";
 
 const theme = createMuiTheme({
@@ -44,7 +43,7 @@ function Customers() {
         
     ]
 
-    const[data, setData] = useState([])    
+    const[data, setData] = useState([])
 
     useEffect(() => {
         console.log("retrieving customers;; axios")
@@ -58,9 +57,20 @@ function Customers() {
             setData(res.data)
         })
         .catch (err => console.error(err))
-    },[])
+    },[authToken])
 
-    
+    // const viewDetails = e => {
+    //     e.preventDefault()
+    //     axios.get('/customer/id', 
+    //     {
+    //         headers: {
+    //             AuthToken: authToken
+    //         }
+    //     }).then(res => {
+    //         setData(res.data)
+    //         localStorage.setItem('currentCustomer', JSON.stringify(customer))
+    //     }).catch(err => console.error(err))        
+    // }
 
 
     return (
