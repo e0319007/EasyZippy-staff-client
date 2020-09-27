@@ -81,7 +81,7 @@ function Merchants() {
                                             onClick:(event, rowData) => {
                                                 console.log("in onclick")
                                                 history.push('/admin/merchantDetails')
-
+                                                localStorage.setItem('merchantToView', JSON.stringify(rowData.id))
                                             }
                                         },
                                     ]}

@@ -54,7 +54,7 @@ var routes = [
   },
   {
     path: "/customerDetails",
-    name: "CustomerDetails",
+    name: "Customer Details",
     icon: "nc-icon nc-single-02",
     component: CustomerDetails,
     layout: "/admin",
