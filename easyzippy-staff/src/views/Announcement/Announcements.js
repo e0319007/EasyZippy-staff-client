@@ -107,7 +107,7 @@ function Announcements() {
         //validation
         if(newData.title === undefined || newData.title === ""){
             isError(true)
-            setError("Unable to update. Please fill in the title field for " + oldData.title + " category entry")
+            setError("Unable to update. Please fill in the title field for " + oldData.title + " announcement entry")
             isSuccessful(false)
             resolve()
             return;

@@ -10,6 +10,7 @@ import {
     Row,
     Col,
     Card, 
+    Alert 
 } from "reactstrap";
 
 const theme = createMuiTheme({
@@ -34,13 +35,20 @@ function Staffs() {
         {title: "Last Name", field:"lastName"},
         {title: "Mobile Number", field:"mobileNumber"},
         {title: "Email", field:"email"},
+        {title: "Password", field: "password"},
         {title: "Staff Role", field:"staffRoleEnum"},
-        {title: "Created At", field:"createdAt"},
-        {title: "Disabled", field:"disabled"},
+        // {title: "Created At", field:"createdAt"},
+        // {title: "Disabled", field:"disabled"},
         
     ]
+    const[data, setData] = useState([])
 
-    const[data, setData] = useState([])    
+    //for error handling
+    const [error, setError] = useState('')
+    const [err, isError] = useState(false)
+
+    const [successful, isSuccessful] = useState(false)
+    const [successMsg, setMsg] = useState('') 
 
     useEffect(() => {
         console.log("retrieving staffs;; axios")
@@ -55,8 +63,82 @@ function Staffs() {
         .catch (err => console.error(err))
     },[authToken])
 
-    
-
+    const handleRowAdd = (newData, resolve) => {
+        //validation: if name is empty
+        if(newData.firstName === undefined || newData.firstName === ""){
+            isError(true)
+            setError("Unable to add new staff. Please fill in the first name field.")
+            isSuccessful(false)
+            resolve()
+            return;
+        }
+        if(newData.lastName === undefined || newData.lastName === ""){
+            isError(true)
+            setError("Unable to add new staff. Please fill in the last name field.")
+            isSuccessful(false)
+            resolve()
+            return;
+        }
+        if(newData.mobileNumber === undefined || newData.mobileNumber === ""){
+            isError(true)
+            setError("Unable to add new staff. Please fill in the mobile number field.")
+            isSuccessful(false)
+            resolve()
+            return;
+        }
+        if(newData.password === undefined || newData.password === ""){
+            isError(true)
+            setError("Unable to add new staff. Please fill in the password field.")
+            isSuccessful(false)
+            resolve()
+            return;
+        }
+        if(newData.email === undefined || newData.email === ""){
+            isError(true)
+            setError("Unable to add new staff. Please fill in the email field.")
+            isSuccessful(false)
+            resolve()
+            return;
+        }
+        if(newData.staffRoleEnum === undefined || newData.staffRoleEnum === ""){
+            isError(true)
+            setError("Unable to add new staff. Please fill in the staff role field.")
+            isSuccessful(false)
+            resolve()
+            return;
+        }
+        axios.post("/staff", {
+            firstName: newData.firstName,
+            lastName: newData.lastName,
+            mobileNumber: newData.mobileNumber,
+            email: newData.email,
+            password: newData.password,
+            staffRoleEnum: newData.staffRoleEnum      
+        },
+        {
+            headers: {
+                AuthToken: authToken
+            }
+        })
+        .then(res => {
+            console.log("axios call went through")
+            let dataToAdd = [...data];
+            dataToAdd.push(newData);
+            setData(dataToAdd);
+            resolve()
+            isError(false)
+            isSuccessful(true)
+            setMsg("Staff successfully added!")
+            document.location.reload()
+        })
+        .catch(function (error) {
+            isSuccessful(false)
+            isError(true)
+            setError(error.response.data)
+            console.log(error.response.data)
+            resolve()
+        })
+    }
 
     return (
         <ThemeProvider theme={theme}>
@@ -90,7 +172,19 @@ function Staffs() {
                                             },                                
                                 
                                         ]}
+                                        editable={{
+                                            // onRowUpdate: (newData, oldData) =>
+                                            // new Promise((resolve) => {
+                                            //     handleRowUpdate(newData, oldData, resolve);
+                                            // }),
+                                            onRowAdd: (newData) =>
+                                                new Promise((resolve) => {
+                                                handleRowAdd(newData, resolve)
+                                            }),
+                                        }}
                             />
+                            { err &&<Alert color="danger">{error}</Alert> }
+                            { successful &&<Alert color="success">{successMsg}</Alert>}
                         </Card>
                     </Col>
                 </Row>
