@@ -53,7 +53,7 @@ function Category() {
             setData(res.data)
         })
         .catch (err => console.error(err))
-    },[])
+    },[authToken])
 
     const handleRowAdd = (newData, resolve) => {
         //validation: if name is empty

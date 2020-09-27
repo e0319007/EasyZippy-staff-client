@@ -10,7 +10,6 @@ import {
     Row,
     Col,
     Card, 
-    Button, Modal, ModalHeader, ModalBody, FormGroup, Label, ModalFooter, Pagination
 } from "reactstrap";
 
 const theme = createMuiTheme({
@@ -28,6 +27,9 @@ function Customers() {
 
     const history = useHistory()
 
+    // const customer = JSON.parse(localStorage.getItem('currentCustomer'))
+    // console.log("test " + customer.firstName)
+
     // DECLARING COLUMNS
     var columns = [
         {title: "Id", field: "id", editable: "never"},
@@ -43,9 +45,6 @@ function Customers() {
 
     const[data, setData] = useState([])
 
-    const [modal, setModal] = useState(false)
-    const toggle = () => setModal(!modal);
-
     useEffect(() => {
         console.log("retrieving customers;; axios")
         axios.get("/customers", 
@@ -58,7 +57,20 @@ function Customers() {
             setData(res.data)
         })
         .catch (err => console.error(err))
-    },[])
+    },[authToken])
+
+    // const viewDetails = e => {
+    //     e.preventDefault()
+    //     axios.get('/customer/id', 
+    //     {
+    //         headers: {
+    //             AuthToken: authToken
+    //         }
+    //     }).then(res => {
+    //         setData(res.data)
+    //         localStorage.setItem('currentCustomer', JSON.stringify(customer))
+    //     }).catch(err => console.error(err))        
+    // }
 
 
     return (
@@ -90,18 +102,10 @@ function Customers() {
                                                 history.push('/admin/customerDetails')
 
                                                 }
-                                            },
-                                                
-                                            
-                                                // <Modal isOpen={modal} toggle={toggle}>
-                                                //     <ModalHeader toggle={toggle}> Customer Details</ModalHeader>                                          
-                                                // </Modal>                                    
+                                            },                                
                                 
                                         ]}
                             />
-                            <Modal isOpen={modal} toggle={toggle}>
-                                <ModalHeader toggle={toggle}> Customer Details</ModalHeader>                                          
-                            </Modal> 
                         </Card>
                     </Col>
                 </Row>
