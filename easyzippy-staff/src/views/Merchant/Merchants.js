@@ -26,7 +26,8 @@ function Merchants() {
     const history = useHistory()
     const authToken = JSON.parse(Cookies.get('authToken'))
 
-    // DECLARING COLUMNS
+    // DECLARING COLUMNS 
+    //move created at to view merchant details
     var columns = [
         {title: "Id", field: "id", editable: "never"},
         {title: "Name", field:"name"},
