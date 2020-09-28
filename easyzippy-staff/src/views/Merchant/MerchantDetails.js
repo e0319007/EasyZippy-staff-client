@@ -36,11 +36,11 @@ const theme = createMuiTheme({
 function MerchantDetails() {
 
     const history = useHistory()
-    const authToken = JSON.parse(Cookies.get('authToken'))
+    const authToken = (JSON.parse(Cookies.get('authToken'))).toString()
     console.log(authToken)
 
-    const merchantEmail = JSON.parse(localStorage.getItem('merchantToView'))
-    console.log("test " + merchantEmail)
+    const merchantId = JSON.parse(localStorage.getItem('merchantToView'))
+    console.log("test " + merchantId)
 
     const[data, setData] = useState([])
 
@@ -75,17 +75,19 @@ function MerchantDetails() {
 
     useEffect(() => {
         console.log("getting merchant details")
-        axios.get(`/merchant/${merchantEmail}`, {
-            id: merchantEmail.toString()
-        },
+
+        axios.get(`/merchant/${merchantId}`,
         {
             headers: {
                 AuthToken: authToken
             }
         }).then(res => {
+            console.log("data: " + res.data)
             setData(res.data)
         })
-        .catch (err => console.error(err))
+        .catch (function (error) {
+            console.log(error.response.data)
+        })
     },[])
 
     const DisableSwitch = withStyles((theme) => ({
@@ -139,7 +141,7 @@ function MerchantDetails() {
                             <Card className="card-name">
                                 <CardHeader>
                                     <div className="form-row">
-                                    <CardTitle className="col-md-10" tag="h5">{data.firstName + " " + data.lastName}</CardTitle>
+                                    <CardTitle className="col-md-10" tag="h5">{data.name}</CardTitle>
                                     </div>
                                 </CardHeader>
                                 <CardBody>

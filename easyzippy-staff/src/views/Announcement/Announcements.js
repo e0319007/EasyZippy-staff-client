@@ -76,7 +76,7 @@ function Announcements() {
             staffId: staffid,
             description: newData.description,
             // SEE WHAT HAPPENS WHEN I PASS THE STRING BACK (see if need to do the plus +08:00 styff)
-            sentTime: today.toString()
+            sentTime: today
         },
         {
             headers: {
