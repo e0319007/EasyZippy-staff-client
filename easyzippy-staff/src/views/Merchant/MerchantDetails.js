@@ -83,7 +83,6 @@ function MerchantDetails() {
                 AuthToken: authToken
             }
         }).then(res => {
-            console.log("data: " + res.data)
             setData(res.data)
             if (res.data.approved === true) {
                 setApproved("Approved")
