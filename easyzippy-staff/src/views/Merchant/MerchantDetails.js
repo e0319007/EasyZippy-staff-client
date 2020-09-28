@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Cookies from 'js-cookie';
+import { saveAs } from 'file-saver';
 import { useHistory } from 'react-router-dom';
 import Switch from '@material-ui/core/Switch';
 import Grid from '@material-ui/core/Grid';
@@ -42,8 +43,10 @@ function MerchantDetails() {
     const merchantId = JSON.parse(localStorage.getItem('merchantToView'))
     console.log("test " + merchantId)
 
-    const[data, setData] = useState([])
+    const [data, setData] = useState([])
     const [approve, setApproved] = useState([])
+
+    const [pdf, setPdf] = useState([])
 
     //tooltip
     const [tooltipOpen, setTooltipOpen] = useState(false);
@@ -69,9 +72,12 @@ function MerchantDetails() {
     const toggleTooltipTenancy = () => {
         // toggle tooltip
         setTooltipOpenTenancy(!tooltipOpenTenancy);
+    }
 
-        // // open tenancy agreement
-        // axios.get("/assets'")
+    const downloadPdf = e => {
+        let fileName = data.name + " Tenancy Agreement"
+        saveAs(pdf, fileName)
+        e.preventDefault()
     }
 
     useEffect(() => {
@@ -89,11 +95,32 @@ function MerchantDetails() {
             } else {
                 setApproved("Not Approved")
             }
+            console.log("name: " + res.data.name)
+            let date = formatDate(res.data.createdAt)
             // let creditbalance = "$" + res.data.creditBalance
-            // setData({
-            //     ...data, 
-            //     creditBalance: creditbalance
-            // });
+            setData({
+                ...data, 
+                name: res.data.name,
+                createdAt: date
+            });
+
+            console.log(res.data.tenancyAgreement)
+
+            axios.get(`/assets/${res.data.tenancyAgreement}`, 
+            {
+                responseType: 'arraybuffer'
+            },{
+                headers: {
+                    AuthToken: authToken,
+                    'Content-Type': 'application/json'
+                }
+            }).then(res => {
+                var blob = new Blob([res.data], {type: "application/pdf;charset=utf-8"});
+                setPdf(blob)
+                console.log("pdf set: " + blob)
+            }).catch (function (error) {
+                console.log(error.response.data)
+            })
         })
         .catch (function (error) {
             console.log(error.response.data)
@@ -102,7 +129,6 @@ function MerchantDetails() {
 
     const onApprovalChange = e => {
         console.log("in approval on change")
-        // e.preventDefault()
 
         const status = e.target.value
         let statusBoolean = '';
@@ -111,7 +137,6 @@ function MerchantDetails() {
         } else {
             statusBoolean = false
         }
-        console.log("status: " + status + ", status boolean: " + statusBoolean)
         setData({
             ...data,
             approved: statusBoolean
@@ -128,8 +153,7 @@ function MerchantDetails() {
             console.log("data: " + res.data.approved)
             setData(res)
             window.location.reload()
-        })
-        .catch (function(error) {
+        }).catch (function(error) {
             console.log(error.response.data)
         })
     }
@@ -168,12 +192,31 @@ function MerchantDetails() {
         checked: {},
         }))(Switch);
 
+        let checkedStatus = data.disabled; 
+
         //for disable switch
-        const [state, setState] = useState({
-            checked: true,
-        });
+        const [state, setState] = useState(checkedStatus);
         const handleChange = (event) => {
-            setState({ ...state, [event.target.name]: event.target.checked });
+            console.log("event.target.checked: " + event.target.checked)
+            setState(event.target.checked)
+            setData({
+                ...data,
+                disabled: event.target.checked
+            })
+            axios.put(`/merchant/${merchantId}/toggleDisable`, {
+                disabled: event.target.checked
+            },
+            {
+                headers: {
+                    AuthToken: authToken
+                }
+            }).then(res => {
+                console.log("data disabled: " + res.data.disabled)
+                setData(res)
+                window.location.reload()
+            }).catch (function(error) {
+                console.log(error.response.data)
+            })
         };
 
     // add back button and cleanup function
@@ -261,11 +304,13 @@ function MerchantDetails() {
                                                 </FormGroup>
                                                 <FormGroup className="col-md-10" inline>
                                                     <p/>
-                                                    <Button id="viewTenancyAgreement" onClick={toggleTooltipTenancy}>
-                                                            <i className="fas fa-file-pdf"/>
-                                                    </Button>
+                                                    <a onClick={downloadPdf}>
+                                                        <Button id="viewTenancyAgreement" onClick={toggleTooltipTenancy} >
+                                                                <i className="fas fa-file-pdf"/>
+                                                        </Button>
+                                                    </a>
                                                     <Tooltip placement="right" isOpen={tooltipOpenTenancy} target="viewTenancyAgreement" toggle={toggleTooltipTenancy}>
-                                                            View Tenancy Agreement
+                                                            Click to Download Tenancy Agreement
                                                     </Tooltip>  
                                                 </FormGroup>                              
                                             </div>                    
@@ -320,7 +365,7 @@ function MerchantDetails() {
                                                     <Grid component="label" container alignItems="center" spacing={1}>
                                                     <Grid item>Disabled</Grid>
                                                     <Grid item>
-                                                        <DisableSwitch checked={state.checked} onChange={handleChange} name="checked" />
+                                                        <DisableSwitch checked={state} onChange={handleChange} name="checked" />
                                                     </Grid>
                                                     <Grid item>Enabled</Grid>
                                                     </Grid>
