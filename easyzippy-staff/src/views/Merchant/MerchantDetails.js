@@ -251,7 +251,7 @@ function MerchantDetails() {
                                             <div className="form-row">
                                                 <FormGroup className="col-md-2">
                                                     <Label for="approvalStatus">Approval Status</Label>
-                                                        <Input type="select" name="select" id="approvalStatus">
+                                                        <Input type="select" name="select" id="approvalStatus"  value={approve} onChange={onApprovalChange}>
                                                             <option>Approved</option>
                                                             <option>Not Approved</option>
                                                         </Input>
@@ -268,11 +268,10 @@ function MerchantDetails() {
                                             </div>                    
                                         </fieldset>
 
-                                        <span>
+                                        {/* <span>
                                             <div className="form-row">
                                                 <FormGroup className="col-md-6">
                                                     <Label for="approvalStatus">Approval Status</Label>
-                                                     {/* probs can do a onChange */}
                                                         <Input type="select" name="select" id="approvalStatus" value={approve} onChange={onApprovalChange}>
                                                             <option>Approved</option>
                                                             <option>Not Approved</option>
@@ -285,7 +284,7 @@ function MerchantDetails() {
                                                     View Tenancy Agreement
                                                 </Tooltip>
                                             </div>
-                                        </span> 
+                                        </span>  */}
                                         <Row>
                                             <div className="update ml-auto mr-auto" >
                                                 {/* view booking history modal and tooltip */}
