@@ -182,7 +182,7 @@ function MerchantDetails() {
                                                     type="text"
                                                     id="inputCreditBalance"
                                                     placeholder="$"
-                                                    //value={creditBalance}
+                                                    value={data.creditBalance}
                                                     />
                                             </FormGroup>
                                             <FormGroup>
@@ -203,54 +203,75 @@ function MerchantDetails() {
                                                     //value={}
                                                     />
                                             </FormGroup>
-                                        </fieldset>
-                                        <span>
+                                        </fieldset>                                      
+                                        <fieldset>
                                             <div className="form-row">
-                                                <FormGroup className="col-md-6">
+                                                <FormGroup className="col-md-2">
                                                     <Label for="approvalStatus">Approval Status</Label>
-                                                     {/* probs can do a onChange */}
                                                         <Input type="select" name="select" id="approvalStatus">
                                                             <option>Approved</option>
                                                             <option>Not Approved</option>
                                                         </Input>
                                                 </FormGroup>
-                                                <Button class="mt-6" size="sm" id="viewTenancyAgreement" onClick={toggleTooltipTenancy}>
+                                                <FormGroup className="col-md-10" inline>
+                                                    <p/>
+                                                    <Button id="viewTenancyAgreement" onClick={toggleTooltipTenancy}>
+                                                            <i className="fas fa-file-pdf"/>
+                                                    </Button>
+                                                    <Tooltip placement="right" isOpen={tooltipOpenTenancy} target="viewTenancyAgreement" toggle={toggleTooltipTenancy}>
+                                                            View Tenancy Agreement
+                                                    </Tooltip>  
+                                                </FormGroup>                              
+                                            </div>                    
+                                        </fieldset>
+
+                                        {/* <span>
+                                            <div className="form-row">
+                                                <FormGroup className="col-md-6">
+                                                    <Label for="approvalStatus">Approval Status</Label>
+                                                        probs can do a onChange
+                                                        <Input type="select" name="select" id="approvalStatus">
+                                                            <option>Approved</option>
+                                                            <option>Not Approved</option>
+                                                        </Input>
+                                                </FormGroup>
+                                                <Button id="viewTenancyAgreement" onClick={toggleTooltipTenancy} height="6">
                                                     <i className="fas fa-file-pdf"/>
                                                 </Button>
                                                 <Tooltip placement="right" isOpen={tooltipOpenTenancy} target="viewTenancyAgreement" toggle={toggleTooltipTenancy}>
                                                     View Tenancy Agreement
                                                 </Tooltip>
                                             </div>
-                                        </span>
+                                        </span> */}
                                         <Row>
                                             <div className="update ml-auto mr-auto" >
                                                 {/* view booking history modal and tooltip */}
                                                 <Button className="btn-round" size="lg" color="primary" id="viewPromoHistory" onClick={toggleModalPromo}>
                                                     <i className="fas fa-percent"/>
-                                                </Button>
+                                                </Button>&nbsp;&nbsp;&nbsp;
                                                 <Tooltip placement="left" isOpen={tooltipOpen} target="viewPromoHistory" toggle={toggleTooltip}>
                                                     View Promotion History
-                                                </Tooltip>
-                                                {' '}
-                                                <Button className="btn-round" size="lg" color="primary" id="viewBookingHistory" onClick={toggleModalBooking}>
-                                                    <i className="fa fa-bookmark"/>
-                                                </Button>
-                                                <Tooltip placement="bottom" isOpen={tooltipOpen} target="viewBookingHistory" toggle={toggleTooltip}>
-                                                    View Booking History
                                                 </Tooltip>
                                                 {' '}
                                                 {/* view order history modal and tooltip */}
                                                 <Button className="btn-round"  size="lg" color="primary" id="viewOrderHistory" onClick={toggleModalOrder}>
                                                     <i className="fa fa-book"/>
-                                                </Button>
-                                                <Tooltip placement="top" isOpen={tooltipOpen} target="viewOrderHistory" toggle={toggleTooltip}>
+                                                </Button>&nbsp;&nbsp;&nbsp;
+                                                <Tooltip placement="bottom" isOpen={tooltipOpen} target="viewOrderHistory" toggle={toggleTooltip}>
                                                     View Order History
+                                                </Tooltip>
+                                                {' '}
+                                                <Button className="btn-round" size="lg" color="primary" id="viewBookingHistory" onClick={toggleModalBooking}>
+                                                    <i className="fa fa-bookmark"/>
+                                                </Button>&nbsp;&nbsp;&nbsp;
+                                                <Tooltip placement="top" isOpen={tooltipOpen} target="viewBookingHistory" toggle={toggleTooltip}>
+                                                    View Booking History
                                                 </Tooltip>
                                                 {' '}
                                                 {/* view topup history modal and tooltip */}
                                                 <Button className="btn-round"  size="lg" color="primary" id="viewTopupHistory" onClick={toggleModalTopup}>
                                                     <i className="fa fa-dollar-sign"/>
-                                                </Button>
+                                                </Button>&nbsp;&nbsp;&nbsp;
                                                 <Tooltip placement="bottom" isOpen={tooltipOpen} target="viewTopupHistory" toggle={toggleTooltip}>
                                                     View Top Up History
                                                 </Tooltip>
@@ -277,6 +298,15 @@ function MerchantDetails() {
                                                     </Grid>
                                                 </Typography>
                                             </div>
+                                        </Row>
+                                        <Row>
+                                            <Col md="12">
+                                            <div className="form-row">
+                                                    <Button onClick={() => {
+                                                        history.push('/admin/merchants')
+                                                    }}>back</Button>
+                                                </div>
+                                            </Col>                         
                                         </Row>
                                     </form>
                                 </CardBody>

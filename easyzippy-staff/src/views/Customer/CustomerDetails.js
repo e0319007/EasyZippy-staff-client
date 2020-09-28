@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import Cookies from 'js-cookie';
 import Switch from '@material-ui/core/Switch';
 import Grid from '@material-ui/core/Grid';
 import { withStyles } from '@material-ui/core/styles';
@@ -24,6 +26,14 @@ const theme = createMuiTheme({
 });
 
 function CustomerDetails() {
+
+    const authToken = (JSON.parse(Cookies.get('authToken'))).toString()
+    console.log(authToken)
+
+    const customerId = JSON.parse(localStorage.getItem('customerToView'))
+
+    const [data, setData] = useState([])
+
     //tooltip
     const [tooltipOpen, setTooltipOpen] = useState(false);
     const toggleTooltip = () => setTooltipOpen(!tooltipOpen);
@@ -40,6 +50,20 @@ function CustomerDetails() {
 
     const [modalCredit, setModalCredit] = useState(false)
     const toggleModalCredit = () => setModalCredit(!modalCredit);
+
+    useEffect(() => {
+        console.log("getting customer details axios")
+        axios.get(`/customer/${customerId}`, 
+        {
+            headers: {
+                AuthToken: authToken
+            }
+        }).then(res => {
+            setData(res.data)
+        }).catch(function(error) {
+            console.log(error.response.data)
+        })
+    }, [])
 
     const DisableSwitch = withStyles((theme) => ({
         root: {
@@ -104,7 +128,7 @@ function CustomerDetails() {
                                                     type="text"
                                                     id="inputId"
                                                     placeholder="id number here"
-                                                    //value={id}
+                                                    value={data.id}
                                                 />
                                             </FormGroup>
                                             <div className="form-row">
@@ -114,7 +138,7 @@ function CustomerDetails() {
                                                         type="text" 
                                                         id="inputEmail" 
                                                         placeholder="Email"
-                                                        //value={email}
+                                                        value={data.email}
                                                     />
                                                 </FormGroup>
                                                 <FormGroup className="col-md-6">
@@ -123,7 +147,7 @@ function CustomerDetails() {
                                                         type="text" 
                                                         id="inputMobileNumber" 
                                                         placeholder="Mobile Number"
-                                                        //value={mobileNumber}
+                                                        value={data.mobileNumber}
                                                         />
                                                 </FormGroup>  
                                             </div>
@@ -133,7 +157,7 @@ function CustomerDetails() {
                                                     type="text" 
                                                     id="inputCreditBalance" 
                                                     placeholder="$" 
-                                                    //value={creditBalance}
+                                                    value={data.creditBalance}
                                                     />
                                             </FormGroup>
                                             <FormGroup>
@@ -142,7 +166,7 @@ function CustomerDetails() {
                                                     type="text" 
                                                     id="inputCreatedAt" 
                                                     placeholder="Created At" 
-                                                    //value={createdAt}
+                                                    value={data.createdAt}
                                                     />
                                             </FormGroup>
                                             <FormGroup>
