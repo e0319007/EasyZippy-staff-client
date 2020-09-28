@@ -278,7 +278,7 @@ function MerchantDetails() {
                                                 {/* view credit history modal and tooltip */}
                                                 <Button className="btn-round"  size="lg" color="primary" id="viewCreditHistory" onClick={toggleModalCredit}>
                                                     <i className="fa fa-coins"/>
-                                                </Button>
+                                                </Button>&nbsp;&nbsp;&nbsp;
                                                 <Tooltip placement="right" isOpen={tooltipOpen} target="viewCreditHistory" toggle={toggleTooltip}>
                                                     View Credit History
                                                 </Tooltip>

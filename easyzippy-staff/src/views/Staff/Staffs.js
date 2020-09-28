@@ -24,9 +24,8 @@ const theme = createMuiTheme({
 
 function Staffs() {
 
-    const authToken = JSON.parse(Cookies.get('authToken'))
-
     const history = useHistory()
+    const authToken = JSON.parse(Cookies.get('authToken'))
 
     // DECLARING COLUMNS
     var columns = [
@@ -37,8 +36,7 @@ function Staffs() {
         {title: "Email", field:"email"},
         {title: "Password", field: "password"},
         {title: "Staff Role", field:"staffRoleEnum"},
-        // {title: "Created At", field:"createdAt"},
-        // {title: "Disabled", field:"disabled"},
+        //{title: "Disabled", field:"disabled"},
         
     ]
     const[data, setData] = useState([])
@@ -102,7 +100,7 @@ function Staffs() {
         }
         if(newData.staffRoleEnum === undefined || newData.staffRoleEnum === ""){
             isError(true)
-            setError("Unable to add new staff. Please fill in the staff role field.")
+            setError("Unable to add new staff. Please fill in the staff role field as Admin or Employee.")
             isSuccessful(false)
             resolve()
             return;
@@ -163,14 +161,12 @@ function Staffs() {
                                             {
                                             icon: 'info',
                                             tooltip: 'View Staff Details',
-                                            //onClick: (event, rowData) => alert("You viewed " + rowData.firstName)
                                             onClick:(event, rowData) => {
                                                 console.log("in onclick")
                                                 history.push('/admin/staffDetails')
-
+                                                localStorage.setItem('staffToView', JSON.stringify(rowData.id))
                                                 }
                                             },                                
-                                
                                         ]}
                                         editable={{
                                             // onRowUpdate: (newData, oldData) =>

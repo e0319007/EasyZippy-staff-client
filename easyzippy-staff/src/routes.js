@@ -39,7 +39,7 @@ var routes = [
   },
   {
     path: "/staffDetails",
-    name: "StaffDetails",
+    name: "Staff Details",
     icon: "nc-icon nc-single-02",
     component: StaffDetails,
     layout: "/admin",

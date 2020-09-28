@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Cookies from 'js-cookie';
+import { useHistory } from 'react-router-dom';
 import Switch from '@material-ui/core/Switch';
 import Grid from '@material-ui/core/Grid';
 import { withStyles } from '@material-ui/core/styles';
@@ -26,7 +27,7 @@ const theme = createMuiTheme({
 });
 
 function CustomerDetails() {
-
+    const history = useHistory()
     const authToken = (JSON.parse(Cookies.get('authToken'))).toString()
     console.log(authToken)
 
@@ -116,7 +117,7 @@ function CustomerDetails() {
                             <Card className="card-name">
                                 <CardHeader>
                                     <div className="form-row">
-                                    <CardTitle className="col-md-10" tag="h5">Customer Name here</CardTitle>
+                                    <CardTitle className="col-md-10" tag="h5">{data.firstName}{' '}{data.lastName}</CardTitle>
                                     </div>
                                 </CardHeader>
                                 <CardBody>
@@ -227,6 +228,16 @@ function CustomerDetails() {
                                                     </Grid>
                                                 </Typography>
                                             </div> 
+                                        </Row>
+                                        <Row>
+                                            <Col md="12">
+                                                <div className="form-row">
+                                                    <Button onClick={() => {
+                                                        history.push('/admin/customers')
+                                                    }}>back
+                                                    </Button>
+                                                </div>
+                                            </Col>
                                         </Row>
                                     </form>
                                 </CardBody>

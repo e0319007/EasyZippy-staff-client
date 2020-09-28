@@ -1,4 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import Cookies from 'js-cookie';
+import { useHistory } from 'react-router-dom';
 import Switch from '@material-ui/core/Switch';
 import Grid from '@material-ui/core/Grid';
 import { withStyles } from '@material-ui/core/styles';
@@ -12,7 +15,7 @@ import {
     Row,
     Col,
     Input,
-    CardHeader, FormGroup, Label
+    CardHeader, FormGroup, Label, Button
 } from "reactstrap";
 
 const theme = createMuiTheme({
@@ -24,6 +27,27 @@ const theme = createMuiTheme({
 });
 
 function StaffDetails() {
+
+    const history = useHistory()
+    const authToken = (JSON.parse(Cookies.get('authToken'))).toString()
+    console.log(authToken)
+
+    const staffId = JSON.parse(localStorage.getItem('staffToView'))
+    const [data, setData] = useState([])
+
+    useEffect(() => {
+        axios.get(`/staff/${staffId}`, 
+        {
+            headers: {
+                AuthToken: authToken
+            }
+        }).then(res => {
+            setData(res.data)
+        }).catch (function(error) {
+            console.log(error.response.data)
+        })
+    },[])
+
     const DisableSwitch = withStyles((theme) => ({
     root: {
         width: 28,
@@ -75,7 +99,7 @@ function StaffDetails() {
                             <Card className="card-name">
                                 <CardHeader>
                                     <div className="form-row">
-                                    <CardTitle className="col-md-10" tag="h5">Staff Name here</CardTitle>
+                                    <CardTitle className="col-md-10" tag="h5">{data.firstName}{' '}{data.lastName}</CardTitle>
                                     </div>
                                 </CardHeader>
                                 <CardBody>
@@ -87,7 +111,7 @@ function StaffDetails() {
                                                     type="text"
                                                     id="inputId"
                                                     placeholder="id number here"
-                                                    //value={id}
+                                                    value={data.id}
                                                 />
                                             </FormGroup>
                                             <FormGroup>
@@ -96,7 +120,7 @@ function StaffDetails() {
                                                     type="text"
                                                     id="inputRole"
                                                     placeholder="staff role here"
-                                                    //value={staffRoleEnum}
+                                                    value={data.staffRoleEnum}
                                                 />
                                             </FormGroup>
                                             <div className="form-row">
@@ -106,7 +130,7 @@ function StaffDetails() {
                                                         type="text" 
                                                         id="inputEmail" 
                                                         placeholder="Email"
-                                                        //value={email}
+                                                        value={data.email}
                                                     />
                                                 </FormGroup>
                                                 <FormGroup className="col-md-6">
@@ -115,7 +139,7 @@ function StaffDetails() {
                                                         type="text" 
                                                         id="inputMobileNumber" 
                                                         placeholder="Mobile Number"
-                                                        //value={mobileNumber}
+                                                        value={data.mobileNumber}
                                                         />
                                                 </FormGroup>  
                                             </div>
@@ -125,7 +149,7 @@ function StaffDetails() {
                                                     type="text" 
                                                     id="inputCreatedAt" 
                                                     placeholder="Created At" 
-                                                    //value={createdAt}
+                                                    value={data.createdAt}
                                                     />
                                             </FormGroup>                           
                                         </fieldset>
@@ -142,6 +166,16 @@ function StaffDetails() {
                                                     </Grid>
                                                 </Typography>
                                             </div> 
+                                        </Row>
+                                        <Row>
+                                            <Col md="12">
+                                                <div className="form-add">
+                                                    <Button onClick={() => {
+                                                        history.push('/admin/staffs')
+                                                    }}> back
+                                                    </Button>
+                                                </div>
+                                            </Col>
                                         </Row>
                                     </form>
                                 </CardBody>
