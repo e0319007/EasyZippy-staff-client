@@ -30,8 +30,8 @@ function Announcements() {
         {title: "Id", field: "id", editable: "never"},
         {title: "Title", field:"title"},
         {title: "Description", field:"description"}, 
-        {title: "Date Created", field:"sentTime", editable: "never", 
-            render: row => <span>{ formatDate(row["sentTime"]) }</span>
+        {title: "Date Created", field:"createdAt", editable: "never", 
+            render: row => <span>{ formatDate(row["createdAt"]) }</span>
         }
     ]
 
@@ -211,14 +211,14 @@ function Announcements() {
 function formatDate(d) {
     if (d === undefined){
         d = (new Date()).toISOString()
-        console.log(d)
+        console.log(undefined)
     }
     let currDate = new Date(d);
-    console.log(currDate)
+    console.log("currDate: " + currDate)
     let year = currDate.getFullYear();
     let month = currDate.getMonth() + 1;
     let dt = currDate.getDate();
-    let time = currDate.toISOString().replace(/^[^:]*([0-2]\d:[0-5]\d).*$/, "$1");
+    let time = currDate.toLocaleTimeString('en-SG')
 
     if (dt < 10) {
         dt = '0' + dt;
@@ -227,7 +227,7 @@ function formatDate(d) {
         month = '0' + month;
     }
 
-    return dt + "/" + month + "/" + year + " " + time + ":00";
+    return dt + "/" + month + "/" + year + " " + time ;
 }
 
 export default Announcements;
