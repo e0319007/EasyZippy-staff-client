@@ -27,6 +27,7 @@ const theme = createMuiTheme({
 });
 
 function CustomerDetails() {
+    
     const history = useHistory()
     const authToken = (JSON.parse(Cookies.get('authToken'))).toString()
     console.log(authToken)

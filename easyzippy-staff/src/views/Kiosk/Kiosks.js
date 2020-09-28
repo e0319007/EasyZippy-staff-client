@@ -32,10 +32,9 @@ function Kiosks() {
     // DECLARING COLUMNS
     var columns = [
         {title: "Id", field: "id", editable: "never"},
-        {title: "Lat", field:"lat"},
-        {title: "Long", field:"long"}, 
+        {title: "Address", field: "address"},
         {title: "Description", field:"description"},
-        {title: "Disabled", field:"disabled"}
+        //{title: "Disabled", field:"disabled", editable: "never"}
     ]
 
     const[data, setData] = useState([])
@@ -63,25 +62,17 @@ function Kiosks() {
 
     const handleRowAdd = (newData, resolve) => {
         //validation: if name is empty
-        if(newData.lat === undefined){
+        if(newData.address === undefined || newData.address === ""){
             isError(true)
-            setError("Unable to add new kiosk. Please fill in the lat field.")
-            isSuccessful(false)
-            resolve()
-            return;
-        }
-        if(newData.long === undefined){
-            isError(true)
-            setError("Unable to add new kiosk. Please fill in the long field.")
+            setError("Unable to add new kiosk. Please fill in the address field.")
             isSuccessful(false)
             resolve()
             return;
         }
         axios.post("/kiosk", {
-            lat: newData.lat,
-            long: newData.long,
+            address: newData.address,
             description: newData.description,
-            disabled: newData.disabled
+            //disabled: newData.disabled
         },
         {
             headers: {
@@ -110,25 +101,17 @@ function Kiosks() {
 
     const handleRowUpdate = (newData, oldData, resolve) => {
         //validation
-        if(newData.lat === undefined || newData.lat == ""){
+        if(newData.address === undefined || newData.address == ""){
             isError(true)
-            setError("Unable to update. Please fill in the lat field for kiosk entry")
-            isSuccessful(false)
-            resolve()
-            return;
-        }
-        if(newData.long === undefined || newData.long == ""){
-            isError(true)
-            setError("Unable to update. Please fill in the long field for kiosk entry")
+            setError("Unable to update. Please fill in the address field for kiosk entry")
             isSuccessful(false)
             resolve()
             return;
         }
         axios.put("/kiosk/"+oldData.id, {
-            lat: newData.lat,
-            long: newData.long,
+            address: newData.address,
             description: newData.description,
-            disabled: newData.disabled
+            //disabled: newData.disabled
         },
         {
             headers: {
@@ -219,22 +202,14 @@ function Kiosks() {
                                     {
                                     icon: 'info',
                                     tooltip: 'View Kiosk Details',
-                                    //onClick: (event, rowData) => alert("You viewed " + rowData.firstName)
                                     onClick:(event, rowData) => {
                                         console.log("in onclick")
                                         history.push('/admin/kioskDetails')
-
+                                        localStorage.setItem('kioskToView', JSON.stringify(rowData.id))
                                         }
                                     },                                
                                 
                                 ]}
-                                // actions={[
-                                //     {
-                                //     icon: 'save',
-                                //     tooltip: 'Save User',
-                                //     onClick: (event, rowData) => alert("You saved " + rowData.name)
-                                //     },
-                                // ]}
                             />
                             { err &&<Alert color="danger">{error}</Alert> }
                             { successful &&<Alert color="success">{successMsg}</Alert>}
