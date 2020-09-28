@@ -31,7 +31,7 @@ function Announcements() {
         {title: "Title", field:"title"},
         {title: "Description", field:"description"}, 
         {title: "Date Created", field:"sentTime", editable: "never", 
-            // render: row => <span>{ formatDate(row["sentTime"]) }</span>
+            render: row => <span>{ formatDate(row["sentTime"]) }</span>
         }
     ]
 
@@ -60,6 +60,7 @@ function Announcements() {
 
     // announcement creation
     const handleRowAdd = (newData, resolve) => {
+        
         //validation: if title is empty
         if(newData.title === undefined || newData.title === ""){
             isError(true)
@@ -68,15 +69,10 @@ function Announcements() {
             resolve()
             return;
         } 
-        let today = new Date().toISOString()
-        alert(today)
-        // today = "2020-09-25T08:05:04.709Z"
         axios.post("/announcement", {
             title: newData.title,
             staffId: staffid,
             description: newData.description,
-            // SEE WHAT HAPPENS WHEN I PASS THE STRING BACK (see if need to do the plus +08:00 styff)
-            sentTime: today
         },
         {
             headers: {
@@ -213,7 +209,12 @@ function Announcements() {
 
 // to use when viewing 
 function formatDate(d) {
+    if (d === undefined){
+        d = (new Date()).toISOString()
+        console.log(d)
+    }
     let currDate = new Date(d);
+    console.log(currDate)
     let year = currDate.getFullYear();
     let month = currDate.getMonth() + 1;
     let dt = currDate.getDate();
@@ -226,7 +227,7 @@ function formatDate(d) {
         month = '0' + month;
     }
 
-    return year + "/" + month + "/" + dt + " " + time + ":00";
+    return dt + "/" + month + "/" + year + " " + time + ":00";
 }
 
 export default Announcements;
