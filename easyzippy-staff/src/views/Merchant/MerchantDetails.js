@@ -102,7 +102,7 @@ function MerchantDetails() {
 
     const onApprovalChange = e => {
         console.log("in approval on change")
-        e.preventDefault()
+        // e.preventDefault()
 
         const status = e.target.value
         let statusBoolean = '';
@@ -117,14 +117,17 @@ function MerchantDetails() {
             approved: statusBoolean
         })
 
-        axios.put(`/merchant/${merchantId}/approve`, 
+        axios.put(`/merchant/${merchantId}/approve`, {
+            approved: statusBoolean
+        },
         {
             headers: {
                 AuthToken: authToken
             }
         }).then(res => {
             console.log("data: " + res.data.approved)
-            setData(res.data)
+            setData(res)
+            window.location.reload()
         })
         .catch (function(error) {
             console.log(error.response.data)
@@ -268,23 +271,6 @@ function MerchantDetails() {
                                             </div>                    
                                         </fieldset>
 
-                                        {/* <span>
-                                            <div className="form-row">
-                                                <FormGroup className="col-md-6">
-                                                    <Label for="approvalStatus">Approval Status</Label>
-                                                        <Input type="select" name="select" id="approvalStatus" value={approve} onChange={onApprovalChange}>
-                                                            <option>Approved</option>
-                                                            <option>Not Approved</option>
-                                                        </Input>
-                                                </FormGroup>
-                                                <Button id="viewTenancyAgreement" onClick={toggleTooltipTenancy} height="6">
-                                                    <i className="fas fa-file-pdf"/>
-                                                </Button>
-                                                <Tooltip placement="right" isOpen={tooltipOpenTenancy} target="viewTenancyAgreement" toggle={toggleTooltipTenancy}>
-                                                    View Tenancy Agreement
-                                                </Tooltip>
-                                            </div>
-                                        </span>  */}
                                         <Row>
                                             <div className="update ml-auto mr-auto" >
                                                 {/* view booking history modal and tooltip */}
@@ -394,6 +380,29 @@ function MerchantDetails() {
             </ThemeProvider>
         </>
     );
+}
+
+// to use when viewing 
+function formatDate(d) {
+    if (d === undefined){
+        d = (new Date()).toISOString()
+        console.log(undefined)
+    }
+    let currDate = new Date(d);
+    console.log("currDate: " + currDate)
+    let year = currDate.getFullYear();
+    let month = currDate.getMonth() + 1;
+    let dt = currDate.getDate();
+    let time = currDate.toLocaleTimeString('en-SG')
+
+    if (dt < 10) {
+        dt = '0' + dt;
+    }
+    if (month < 10) {
+        month = '0' + month;
+    }
+
+    return dt + "/" + month + "/" + year + " " + time ;
 }
 
 export default MerchantDetails;
