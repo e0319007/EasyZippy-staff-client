@@ -34,7 +34,7 @@ function Merchants() {
         {title: "Mobile Number", field:"mobileNumber"},
         {title: "Email", field:"email"},
         {title: "Approved", field:"approved"},
-        {title: "Created At", field:"createdAt"},
+        // {title: "Created At", field:"createdAt"},
         {title: "Disabled", field:"disabled"},
     ]
 

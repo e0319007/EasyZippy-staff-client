@@ -82,7 +82,6 @@ function MerchantDetails() {
                 AuthToken: authToken
             }
         }).then(res => {
-            console.log("data: " + res.data)
             setData(res.data)
         })
         .catch (function (error) {
