@@ -43,6 +43,7 @@ function MerchantDetails() {
     console.log("test " + merchantId)
 
     const[data, setData] = useState([])
+    const [approve, setApproved] = useState([])
 
     //tooltip
     const [tooltipOpen, setTooltipOpen] = useState(false);
@@ -83,11 +84,52 @@ function MerchantDetails() {
             }
         }).then(res => {
             setData(res.data)
+            if (res.data.approved === true) {
+                setApproved("Approved")
+            } else {
+                setApproved("Not Approved")
+            }
+            // let creditbalance = "$" + res.data.creditBalance
+            // setData({
+            //     ...data, 
+            //     creditBalance: creditbalance
+            // });
         })
         .catch (function (error) {
             console.log(error.response.data)
         })
     },[])
+
+    const onApprovalChange = e => {
+        console.log("in approval on change")
+        e.preventDefault()
+
+        const status = e.target.value
+        let statusBoolean = '';
+        if (status === "Approved") {
+            statusBoolean = true
+        } else {
+            statusBoolean = false
+        }
+        console.log("status: " + status + ", status boolean: " + statusBoolean)
+        setData({
+            ...data,
+            approved: statusBoolean
+        })
+
+        axios.put(`/merchant/${merchantId}/approve`, 
+        {
+            headers: {
+                AuthToken: authToken
+            }
+        }).then(res => {
+            console.log("data: " + res.data.approved)
+            setData(res.data)
+        })
+        .catch (function(error) {
+            console.log(error.response.data)
+        })
+    }
 
     const DisableSwitch = withStyles((theme) => ({
         root: {
@@ -130,6 +172,8 @@ function MerchantDetails() {
         const handleChange = (event) => {
             setState({ ...state, [event.target.name]: event.target.checked });
         };
+
+    // add back button and cleanup function
 
     return(
         <>
@@ -207,7 +251,7 @@ function MerchantDetails() {
                                             <div className="form-row">
                                                 <FormGroup className="col-md-2">
                                                     <Label for="approvalStatus">Approval Status</Label>
-                                                        <Input type="select" name="select" id="approvalStatus">
+                                                        <Input type="select" name="select" id="approvalStatus"  value={approve} onChange={onApprovalChange}>
                                                             <option>Approved</option>
                                                             <option>Not Approved</option>
                                                         </Input>
@@ -228,8 +272,7 @@ function MerchantDetails() {
                                             <div className="form-row">
                                                 <FormGroup className="col-md-6">
                                                     <Label for="approvalStatus">Approval Status</Label>
-                                                        probs can do a onChange
-                                                        <Input type="select" name="select" id="approvalStatus">
+                                                        <Input type="select" name="select" id="approvalStatus" value={approve} onChange={onApprovalChange}>
                                                             <option>Approved</option>
                                                             <option>Not Approved</option>
                                                         </Input>
@@ -241,7 +284,7 @@ function MerchantDetails() {
                                                     View Tenancy Agreement
                                                 </Tooltip>
                                             </div>
-                                        </span> */}
+                                        </span>  */}
                                         <Row>
                                             <div className="update ml-auto mr-auto" >
                                                 {/* view booking history modal and tooltip */}
