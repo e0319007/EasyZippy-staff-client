@@ -90,6 +90,29 @@ function StaffDetails() {
         setState({ ...state, [event.target.name]: event.target.checked });
     };
 
+    // to use when viewing 
+    function formatDate(d) {
+        if (d === undefined){
+            d = (new Date()).toISOString()
+            console.log(undefined)
+        }
+        let currDate = new Date(d);
+        console.log("currDate: " + currDate)
+        let year = currDate.getFullYear();
+        let month = currDate.getMonth() + 1;
+        let dt = currDate.getDate();
+        let time = currDate.toLocaleTimeString('en-SG')
+
+        if (dt < 10) {
+            dt = '0' + dt;
+        }
+        if (month < 10) {
+            month = '0' + month;
+        }
+
+        return dt + "/" + month + "/" + year + " " + time ;
+    }
+
     return(
         <>
             <ThemeProvider theme={theme}>
@@ -144,12 +167,12 @@ function StaffDetails() {
                                                 </FormGroup>  
                                             </div>
                                             <FormGroup>
-                                                <Label for="inputCreatedAt">Created At</Label>
+                                                <Label for="inputCreatedAt">Created On</Label>
                                                 <Input 
                                                     type="text" 
                                                     id="inputCreatedAt" 
                                                     placeholder="Created At" 
-                                                    value={data.createdAt}
+                                                    value={formatDate(data.createdAt)}                                                    
                                                     />
                                             </FormGroup>                           
                                         </fieldset>

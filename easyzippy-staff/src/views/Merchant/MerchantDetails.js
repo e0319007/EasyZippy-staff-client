@@ -229,7 +229,7 @@ function MerchantDetails() {
                                                     />
                                             </FormGroup>
                                             <FormGroup>
-                                                <Label for="inputCreatedAt">Created At</Label>
+                                                <Label for="inputCreatedAt">Created On</Label>
                                                 <Input
                                                     type="text"
                                                     id="inputCreatedAt"
