@@ -105,10 +105,16 @@ function MerchantDetails() {
         e.preventDefault()
 
         const status = e.target.value
-        console.log("status: " + status)
+        let statusBoolean = '';
+        if (status === "Approved") {
+            statusBoolean = true
+        } else {
+            statusBoolean = false
+        }
+        console.log("status: " + status + ", status boolean: " + statusBoolean)
         setData({
             ...data,
-            approved: status
+            approved: statusBoolean
         })
 
         axios.put(`/merchant/${merchantId}/approve`, 
@@ -117,6 +123,7 @@ function MerchantDetails() {
                 AuthToken: authToken
             }
         }).then(res => {
+            console.log("data: " + res.data.approved)
             setData(res.data)
         })
         .catch (function(error) {
