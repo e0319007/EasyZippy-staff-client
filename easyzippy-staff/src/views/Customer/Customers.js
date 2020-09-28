@@ -27,9 +27,6 @@ function Customers() {
 
     const history = useHistory()
 
-    // const customer = JSON.parse(localStorage.getItem('currentCustomer'))
-    // console.log("test " + customer.firstName)
-
     // DECLARING COLUMNS
     var columns = [
         {title: "Id", field: "id", editable: "never"},
@@ -38,7 +35,6 @@ function Customers() {
         {title: "Mobile Number", field:"mobileNumber"},
         {title: "Email", field:"email"},
         {title: "Credit Balance", field:"creditBalance"},
-        {title: "Created At", field:"createdAt"},
         {title: "Disabled", field:"disabled"},
         
     ]
@@ -58,19 +54,6 @@ function Customers() {
         })
         .catch (err => console.error(err))
     },[authToken])
-
-    // const viewDetails = e => {
-    //     e.preventDefault()
-    //     axios.get('/customer/id', 
-    //     {
-    //         headers: {
-    //             AuthToken: authToken
-    //         }
-    //     }).then(res => {
-    //         setData(res.data)
-    //         localStorage.setItem('currentCustomer', JSON.stringify(customer))
-    //     }).catch(err => console.error(err))        
-    // }
 
 
     return (
@@ -100,6 +83,7 @@ function Customers() {
                                             onClick:(event, rowData) => {
                                                 console.log("in onclick")
                                                 history.push('/admin/customerDetails')
+                                                localStorage.setItem('customerToView', JSON.stringify(rowData.id))
 
                                                 }
                                             },                                
