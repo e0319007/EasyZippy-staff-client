@@ -197,7 +197,7 @@ function MerchantDetails() {
 
         let enabled = !data.disabled
         console.log("Enabled: " + enabled)
-        
+
         const handleChange = (event) => {
             console.log("event.target.checked: " + event.target.checked)
             setData({
@@ -217,8 +217,6 @@ function MerchantDetails() {
                 console.log(error.response.data)
             })
         };
-
-    // add back button and cleanup function
 
     return(
         <>
@@ -376,6 +374,7 @@ function MerchantDetails() {
                                             <div className="form-row">
                                                     <Button onClick={() => {
                                                         history.push('/admin/merchants')
+                                                        localStorage.removeItem('merchantToView')
                                                     }}>back</Button>
                                                 </div>
                                             </Col>                         
