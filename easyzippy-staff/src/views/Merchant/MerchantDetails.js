@@ -41,12 +41,13 @@ function MerchantDetails() {
     console.log(authToken)
 
     const merchantId = JSON.parse(localStorage.getItem('merchantToView'))
-    console.log("test " + merchantId)
+    console.log("test merchant id: " + merchantId)
 
     const [data, setData] = useState([])
     const [approve, setApproved] = useState([])
 
     const [pdf, setPdf] = useState([])
+    // const [disabled, isDisabled] = useState([])
 
     //tooltip
     const [tooltipOpen, setTooltipOpen] = useState(false);
@@ -101,8 +102,11 @@ function MerchantDetails() {
             setData({
                 ...data, 
                 name: res.data.name,
-                createdAt: date
+                createdAt: date,
+                disabled: res.data.disabled
             });
+            // console.log("get merchant disabled: " + res.data.disabled)
+            // isDisabled(res.data.disabled)
 
             console.log(res.data.tenancyAgreement)
 
@@ -117,7 +121,6 @@ function MerchantDetails() {
             }).then(res => {
                 var blob = new Blob([res.data], {type: "application/pdf;charset=utf-8"});
                 setPdf(blob)
-                console.log("pdf set: " + blob)
             }).catch (function (error) {
                 console.log(error.response.data)
             })
@@ -192,28 +195,24 @@ function MerchantDetails() {
         checked: {},
         }))(Switch);
 
-        let checkedStatus = data.disabled; 
-
-        //for disable switch
-        const [state, setState] = useState(checkedStatus);
+        let enabled = !data.disabled
+        console.log("Enabled: " + enabled)
+        
         const handleChange = (event) => {
             console.log("event.target.checked: " + event.target.checked)
-            setState(event.target.checked)
             setData({
                 ...data,
-                disabled: event.target.checked
+                disabled: !event.target.checked
             })
             axios.put(`/merchant/${merchantId}/toggleDisable`, {
-                disabled: event.target.checked
+                disabled: !event.target.checked
             },
             {
                 headers: {
                     AuthToken: authToken
                 }
             }).then(res => {
-                console.log("data disabled: " + res.data.disabled)
-                setData(res)
-                window.location.reload()
+                console.log("axios call went through")
             }).catch (function(error) {
                 console.log(error.response.data)
             })
@@ -365,7 +364,7 @@ function MerchantDetails() {
                                                     <Grid component="label" container alignItems="center" spacing={1}>
                                                     <Grid item>Disabled</Grid>
                                                     <Grid item>
-                                                        <DisableSwitch checked={state} onChange={handleChange} name="checked" />
+                                                        <DisableSwitch checked={!data.disabled} onChange={handleChange} name="checked" />
                                                     </Grid>
                                                     <Grid item>Enabled</Grid>
                                                     </Grid>
