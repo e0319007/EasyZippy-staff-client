@@ -158,7 +158,6 @@ function Dashboard() {
             </Card>
           </Col>
         </Row>
-        <Button onClick={logout} color="secondary" style={{float: "right"}}>Logout</Button>
       </div>
     </>
   )

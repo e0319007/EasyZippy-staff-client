@@ -15,7 +15,8 @@ import {
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
-  Container
+  Container,
+  NavLink
 } from "reactstrap";
 
 import routes from "routes.js";
@@ -39,6 +40,7 @@ class Header extends React.Component {
     this.annDropdownToggle = this.annDropdownToggle.bind(this);
     this.formatDate = this.formatDate.bind(this);
     this.sidebarToggle = React.createRef();
+    this.logout = this.logout.bind(this);
     // this.handleNotifVisibility = this.handleNotifVisibility.bind(this);
 
   }
@@ -221,6 +223,12 @@ class Header extends React.Component {
 
   }
 
+  logout(e) {
+    Cookies.remove('authToken')
+    Cookies.remove('staffUser')
+    localStorage.removeItem('currentStaff')
+  }
+
   // to use when viewing 
   formatDate(d) {
     if (d === undefined){
@@ -316,7 +324,9 @@ class Header extends React.Component {
               {/* ANNOUNCEMENTS */}
               <Dropdown nav isOpen={this.state.annDropdownOpen} toggle={(e) => this.annDropdownToggle(e)}>
                 <DropdownToggle caret nav className="dropdown-toggle-split">
-                  <i className="nc-icon nc-chat-33" />
+                  <Badge color="secondary" variant="dot" invisible={true}>
+                    <i className="nc-icon nc-chat-33" />
+                  </Badge>
                 </DropdownToggle>
                 <DropdownMenu right className="pre-scrollable">
                   <DropdownItem header>Announcements</DropdownItem>
@@ -337,13 +347,12 @@ class Header extends React.Component {
                 </DropdownMenu>
               </Dropdown>
 
-              <NavItem>
-                <Link to="#pablo" className="nav-link btn-rotate">
-                  <i className="nc-icon nc-settings-gear-65" />
-                  <p>
-                    <span className="d-lg-none d-md-block">Account</span>
-                  </p>
-                </Link>
+              <NavItem style={{paddingTop:"4px"}}>
+                <Badge color="secondary" invisible={true}>
+                  <NavLink onClick={e => this.logout(e)} href='/login'>
+                      Logout
+                  </NavLink>
+                </Badge>
               </NavItem>
             </Nav>
           </Collapse>
