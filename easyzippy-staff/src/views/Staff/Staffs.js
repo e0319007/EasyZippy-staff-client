@@ -36,7 +36,7 @@ function Staffs() {
         {title: "Email", field:"email"},
         {title: "Password", field: "password"},
         {title: "Staff Role", field:"staffRoleEnum"},
-        //{title: "Disabled", field:"disabled"},
+        {title: "Disabled", field:"disabled", editable: "never"},
         
     ]
     const[data, setData] = useState([])

@@ -34,7 +34,7 @@ function Kiosks() {
         {title: "Id", field: "id", editable: "never"},
         {title: "Address", field: "address"},
         {title: "Description", field:"description"},
-        //{title: "Disabled", field:"disabled", editable: "never"}
+        {title: "Disabled", field:"disabled", editable: "never"}
     ]
 
     const[data, setData] = useState([])

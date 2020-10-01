@@ -62,6 +62,7 @@
     "typescript": "3.9.5"
   },
   "devDependencies": {
+    "@types/file-saver": "^2.0.1",
     "gulp": "4.0.2",
     "gulp-append-prepend": "1.0.8",
     "react-props-history": "^3.0.7"

@@ -90,12 +90,27 @@ function KioskDetails() {
     checked: {},
     }))(Switch);
 
-    //for disable switch
-    const [state, setState] = useState({
-        checked: true,
-    });
+    let enabled = !data.disabled
+    console.log("Enabled: " + enabled)
+
     const handleChange = (event) => {
-        setState({ ...state, [event.target.name]: event.target.checked });
+        console.log("event.target.checked: " + event.target.checked)
+        setData({
+            ...data,
+            disabled: !event.target.checked
+        })
+        axios.put(`/kiosk/${kioskId}/toggleDisable`, {
+            disabled: !event.target.checked
+        },
+        {
+            headers: {
+                AuthToken: authToken
+            }
+        }).then(res => {
+            console.log("axios call went through")
+        }).catch (function(error) {
+            console.log(error.response.data)
+        })
     };
 
     // to use when viewing 
@@ -191,7 +206,7 @@ function KioskDetails() {
                                                     <Grid component="label" container alignItems="center" spacing={1}>
                                                     <Grid item>Disabled</Grid>
                                                     <Grid item>
-                                                        <DisableSwitch checked={state.checked} onChange={handleChange} name="checked" />
+                                                        <DisableSwitch checked={!data.disabled} onChange={handleChange} name="checked" />
                                                     </Grid>
                                                     <Grid item>Enabled</Grid>
                                                     </Grid>
@@ -203,6 +218,7 @@ function KioskDetails() {
                                                 <div className="form-add">
                                                     <Button onClick={() => {
                                                         history.push('/admin/kiosks')
+                                                        localStorage.removeItem('kioskToView')
                                                     }}> back
                                                     </Button>
                                                 </div>

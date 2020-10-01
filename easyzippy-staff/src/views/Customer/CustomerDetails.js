@@ -101,12 +101,25 @@ function CustomerDetails() {
         checked: {},
         }))(Switch);
 
-        //for disable switch
-        const [state, setState] = useState({
-            checked: true,
-        });
+        let enabled =!data.disabled 
+
         const handleChange = (event) => {
-            setState({ ...state, [event.target.name]: event.target.checked });
+            setData({
+                ...data,
+                disabled: !event.target.checked
+            })
+            axios.put(`/customer/${customerId}/toggleDisable`, {
+                disabled: !event.target.checked
+            }, 
+            {
+                headers: {
+                    AuthToken: authToken
+                }
+            }).then(res => {
+                console.log("axios call went through")
+            }).catch(function(error) {
+                console.log(error.response.data)
+            })
         };
 
     // to use when viewing 
@@ -248,7 +261,7 @@ function CustomerDetails() {
                                                     <Grid component="label" container alignItems="center" spacing={1}>
                                                     <Grid item>Disabled</Grid>
                                                     <Grid item>
-                                                        <DisableSwitch checked={state.checked} onChange={handleChange} name="checked" />
+                                                        <DisableSwitch checked={!data.disabled} onChange={handleChange} name="checked" />
                                                     </Grid>
                                                     <Grid item>Enabled</Grid>
                                                     </Grid>
@@ -260,6 +273,7 @@ function CustomerDetails() {
                                                 <div className="form-row">
                                                     <Button onClick={() => {
                                                         history.push('/admin/customers')
+                                                        localStorage.removeItem('customerToView')
                                                     }}>back
                                                     </Button>
                                                 </div>
