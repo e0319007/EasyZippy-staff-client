@@ -1,8 +1,8 @@
-import React from "react";
-import { useHistory } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import Cookies from 'js-cookie';
 // react plugin used to create charts
 import { Line } from "react-chartjs-2";
-import Cookies from 'js-cookie';
 // reactstrap components
 import {
   Card,
@@ -21,16 +21,37 @@ import {
 
 function Dashboard() {
 
-  const history = useHistory()
+  const authToken = (JSON.parse(Cookies.get('authToken'))).toString()
 
-  const logout = () => {
-    Cookies.remove('authToken')
-    Cookies.remove('staffUser')
-    // remember to remove current staff from localstorage
-    localStorage.removeItem('currentStaff')
-    history.push('/login')
-    document.location.reload()
-  }
+  const [merchantLength, setMerchantLength] = useState('')
+  const [customerLength, setCustomerLength] = useState('')
+
+  useEffect(() => {
+
+    axios.get('/customers', {
+      headers: {
+          AuthToken: authToken
+      }
+    }).then(res => {
+      console.log("successfully retrieve customers")
+      setCustomerLength(res.data.length)
+
+    }).catch( function(error) {
+      console.log(error.response)
+    })
+
+    axios.get('/merchants', {
+      headers: {
+          AuthToken: authToken
+      }
+    }).then(res => {
+      console.log("successfully retrieve merchants")
+      setMerchantLength(res.data.length)
+    }).catch( function(error) {
+      console.log(error.response)
+    })
+  }, [])
+
 
   return (
     <>
@@ -48,17 +69,14 @@ function Dashboard() {
                   <Col md="8" xs="7">
                     <div className="numbers">
                       <p className="card-category">Customers</p>
-                      <CardTitle tag="p">836</CardTitle>
+                      <CardTitle tag="p">{customerLength}</CardTitle>
                       <p />
                     </div>
                   </Col>
                 </Row>
               </CardBody>
               <CardFooter>
-                <hr />
-                <div className="stats">
-                  <i className="far fa-calendar" />Since Last Month
-                </div>
+
               </CardFooter>
             </Card>
           </Col>
@@ -74,17 +92,13 @@ function Dashboard() {
                   <Col md="8" xs="7">
                     <div className="numbers">
                       <p className="card-category">Merchants</p>
-                      <CardTitle tag="p">52</CardTitle>
+                      <CardTitle tag="p">{merchantLength}</CardTitle>
                       <p />
                     </div>
                   </Col>
                 </Row>
               </CardBody>
               <CardFooter>
-                <hr />
-                <div className="stats">
-                  <i className="far fa-calendar" />Since Last Month
-                </div>
               </CardFooter>
             </Card>
           </Col>
@@ -100,17 +114,13 @@ function Dashboard() {
                   <Col md="8" xs="7">
                     <div className="numbers">
                       <p className="card-category">Bookings</p>
-                      <CardTitle tag="p">433</CardTitle>
+                      <CardTitle tag="p">-</CardTitle>
                       <p />
                     </div>
                   </Col>
                 </Row>
               </CardBody>
               <CardFooter>
-                <hr />
-                <div className="stats">
-                  <i className="far fa-calendar" />Since Last Month
-                </div>
               </CardFooter>
             </Card>
           </Col>
@@ -126,17 +136,13 @@ function Dashboard() {
                   <Col md="8" xs="7">
                     <div className="numbers">
                       <p className="card-category">Revenue</p>
-                      <CardTitle tag="p">$2,135</CardTitle>
+                      <CardTitle tag="p">-</CardTitle>
                       <p />
                     </div>
                   </Col>
                 </Row>
               </CardBody>
               <CardFooter>
-                <hr />
-                <div className="stats">
-                  <i className="far fa-calendar" />Since Last Month
-                </div>
               </CardFooter>
             </Card>
           </Col>

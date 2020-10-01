@@ -56,6 +56,7 @@ function ResetPassword() {
             setError("Passwords do not match")
             isError(true)
             isSuccessful(false)
+            return;
         }
 
         axios.post("/staff/resetPassword", {
