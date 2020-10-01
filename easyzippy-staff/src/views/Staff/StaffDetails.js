@@ -17,6 +17,7 @@ import {
     Input,
     CardHeader, FormGroup, Label, Button
 } from "reactstrap";
+import { setEmitFlags } from "typescript";
 
 const theme = createMuiTheme({
     typography: {
@@ -34,6 +35,50 @@ function StaffDetails() {
 
     const staffId = JSON.parse(localStorage.getItem('staffToView'))
     const [data, setData] = useState([])
+
+    const staff = JSON.parse(localStorage.getItem('currentStaff'))
+    const staffid = parseInt(Cookies.get('staffUser'))
+
+    const [error, setError] = useState('')
+    const [err, isError] = useState(false)
+
+    const [successful, isSuccessful] = useState(false)
+    const [successMsg, setMsg] = useState('')
+
+    const [staffRoleEnum, setStaffRoleEnum] = useState(staff.staffRoleEnum)
+
+    const staff_toupdate = {
+        staffRoleEnum: ''
+    }
+
+    const onChangeStaffRoleEnum = e => {
+        const staffRoleEnum = e.target.value;
+        //setStaffRoleEnum(staffRoleEnum.trim())
+        setData(staffRoleEnum.trim())
+    }
+
+    const updateStaffDetails = e => {
+        e.preventDefault()
+        axios.put(`staff/${staffid}`, {
+            staffRoleEnum: staffRoleEnum
+        }, 
+        {
+            headers: {
+                AuthToken: authToken
+            }
+        }).then((response) => {
+            setStaffRoleEnum(response.data.staffRoleEnum)
+            staff_toupdate.staffRoleEnum = response.data.staffRoleEnum
+            localStorage['currentStaff'] = JSON.stringify(staff_toupdate)
+
+            isSuccessful(true)
+            setMsg("Staff updated successfully!")
+        }).catch(function (error) {
+            isError(true)
+            setError(error.response.data)
+            isSuccessful(false)
+        })
+    }
 
     useEffect(() => {
         axios.get(`/staff/${staffId}`, 
@@ -142,7 +187,7 @@ function StaffDetails() {
                                 </CardHeader>
                                 <CardBody>
                                     <form>
-                                        <fieldset disabled>  
+                                        <fieldset disabled> 
                                             <FormGroup>
                                                 <Label for="inputId">Id</Label>
                                                 <Input
@@ -152,15 +197,17 @@ function StaffDetails() {
                                                     value={data.id}
                                                 />
                                             </FormGroup>
+                                        </fieldset>
+                                        <fieldset>
                                             <FormGroup>
-                                                <Label for="inputRole">Role</Label>
-                                                <Input
-                                                    type="text"
-                                                    id="inputRole"
-                                                    placeholder="staff role here"
-                                                    value={data.staffRoleEnum}
-                                                />
+                                                <Label for="staffRoleEnum">Role</Label>
+                                                    <Input type="select" name="select" id="staffRoleEnum" value={data.staffRoleEnum} onChange={onChangeStaffRoleEnum}>
+                                                        <option>Admin</option>
+                                                        <option>Employee</option>
+                                                    </Input>
                                             </FormGroup>
+                                        </fieldset>
+                                        <fieldset disabled>
                                             <div className="form-row">
                                                 <FormGroup className="col-md-6">
                                                     <Label for="inputEmail">Email</Label>
@@ -204,6 +251,11 @@ function StaffDetails() {
                                                     </Grid>
                                                 </Typography>
                                             </div> 
+                                        </Row>
+                                        <Row>
+                                            <div className="update ml-auto mr-auto" >
+                                                <Button color="success" size="sm" type="submit" onClick={updateStaffDetails}>Update</Button>
+                                            </div>
                                         </Row>
                                         <Row>
                                             <Col md="12">
