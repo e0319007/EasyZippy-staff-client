@@ -37,8 +37,17 @@ function CustomerDetails() {
     const [data, setData] = useState([])
 
     //tooltip
-    const [tooltipOpen, setTooltipOpen] = useState(false);
-    const toggleTooltip = () => setTooltipOpen(!tooltipOpen);
+    const [tooltipOpenBooking, setTooltipOpenBooking] = useState(false);
+    const toggleTooltipBooking = () => setTooltipOpenBooking(!tooltipOpenBooking);
+
+    const [tooltipOpenOrder, setTooltipOpenOrder] = useState(false);
+    const toggleTooltipOrder = () => setTooltipOpenOrder(!tooltipOpenOrder);
+
+    const [tooltipOpenTopup, setTooltipOpenTopup] = useState(false);
+    const toggleTooltipTopup = () => setTooltipOpenTopup(!tooltipOpenTopup);
+
+    const [tooltipOpenCredit, setTooltipOpenCredit] = useState(false);
+    const toggleTooltipCredit = () => setTooltipOpenCredit(!tooltipOpenCredit);
 
     // 4 modals
     const [modalBooking, setModalBooking] = useState(false)
@@ -225,7 +234,7 @@ function CustomerDetails() {
                                                 <Button className="btn-round" size="lg" color="primary" id="viewBookingHistory" onClick={toggleModalBooking}>
                                                     <i className="fa fa-bookmark"/>
                                                 </Button>
-                                                <Tooltip placement="left" isOpen={tooltipOpen} target="viewBookingHistory" toggle={toggleTooltip}>
+                                                <Tooltip placement="left" isOpen={tooltipOpenBooking} target="viewBookingHistory" toggle={toggleTooltipBooking}>
                                                     View Booking History
                                                 </Tooltip>
                                                 {' '}
@@ -233,7 +242,7 @@ function CustomerDetails() {
                                                 <Button className="btn-round"  size="lg" color="primary" id="viewOrderHistory" onClick={toggleModalOrder}>
                                                     <i className="fa fa-book"/>
                                                 </Button>
-                                                <Tooltip placement="top" isOpen={tooltipOpen} target="viewOrderHistory" toggle={toggleTooltip}>
+                                                <Tooltip placement="top" isOpen={tooltipOpenOrder} target="viewOrderHistory" toggle={toggleTooltipOrder}>
                                                     View Order History
                                                 </Tooltip>
                                                 {' '}
@@ -241,7 +250,7 @@ function CustomerDetails() {
                                                 <Button className="btn-round"  size="lg" color="primary" id="viewTopupHistory" onClick={toggleModalTopup}>
                                                     <i className="fa fa-dollar-sign"/>
                                                 </Button>
-                                                <Tooltip placement="bottom" isOpen={tooltipOpen} target="viewTopupHistory" toggle={toggleTooltip}>
+                                                <Tooltip placement="bottom" isOpen={tooltipOpenTopup} target="viewTopupHistory" toggle={toggleTooltipTopup}>
                                                     View Top Up History
                                                 </Tooltip>
                                                 {' '}
@@ -249,7 +258,7 @@ function CustomerDetails() {
                                                 <Button className="btn-round"  size="lg" color="primary" id="viewCreditHistory" onClick={toggleModalCredit}>
                                                     <i className="fa fa-coins"/>
                                                 </Button>
-                                                <Tooltip placement="right" isOpen={tooltipOpen} target="viewCreditHistory" toggle={toggleTooltip}>
+                                                <Tooltip placement="right" isOpen={tooltipOpenCredit} target="viewCreditHistory" toggle={toggleTooltipCredit}>
                                                     View Credit History
                                                 </Tooltip>
                                             </div>

@@ -50,8 +50,20 @@ function MerchantDetails() {
     // const [disabled, isDisabled] = useState([])
 
     //tooltip
-    const [tooltipOpen, setTooltipOpen] = useState(false);
-    const toggleTooltip = () => setTooltipOpen(!tooltipOpen);
+    const [tooltipOpenPromo, setTooltipOpenPromo] = useState(false);
+    const toggleTooltipPromo = () => setTooltipOpenPromo(!tooltipOpenPromo);
+
+    const [tooltipOpenBooking, setTooltipOpenBooking] = useState(false);
+    const toggleTooltipBooking = () => setTooltipOpenBooking(!tooltipOpenBooking);
+
+    const [tooltipOpenOrder, setTooltipOpenOrder] = useState(false);
+    const toggleTooltipOrder = () => setTooltipOpenOrder(!tooltipOpenOrder);
+
+    const [tooltipOpenTopup, setTooltipOpenTopup] = useState(false);
+    const toggleTooltipTopup = () => setTooltipOpenTopup(!tooltipOpenTopup);
+
+    const [tooltipOpenCredit, setTooltipOpenCredit] = useState(false);
+    const toggleTooltipCredit = () => setTooltipOpenCredit(!tooltipOpenCredit);
 
     // 5 modals
     const [modalPromo, setModalPromo] = useState(false)
@@ -315,39 +327,39 @@ function MerchantDetails() {
                                                 {/* view booking history modal and tooltip */}
                                                 <Button className="btn-round" size="lg" color="primary" id="viewPromoHistory" onClick={toggleModalPromo}>
                                                     <i className="fas fa-percent"/>
-                                                </Button>&nbsp;&nbsp;&nbsp;
-                                                <Tooltip placement="left" isOpen={tooltipOpen} target="viewPromoHistory" toggle={toggleTooltip}>
+                                                </Button>&nbsp;
+                                                <Tooltip placement="left" isOpen={tooltipOpenPromo} target="viewPromoHistory" toggle={toggleTooltipPromo}>
                                                     View Promotion History
                                                 </Tooltip>
-                                                {' '}
+                                                
                                                 {/* view order history modal and tooltip */}
                                                 <Button className="btn-round"  size="lg" color="primary" id="viewOrderHistory" onClick={toggleModalOrder}>
                                                     <i className="fa fa-book"/>
-                                                </Button>&nbsp;&nbsp;&nbsp;
-                                                <Tooltip placement="bottom" isOpen={tooltipOpen} target="viewOrderHistory" toggle={toggleTooltip}>
+                                                </Button>&nbsp;
+                                                <Tooltip placement="bottom" isOpen={tooltipOpenOrder} target="viewOrderHistory" toggle={toggleTooltipOrder}>
                                                     View Order History
                                                 </Tooltip>
-                                                {' '}
+                                            
                                                 <Button className="btn-round" size="lg" color="primary" id="viewBookingHistory" onClick={toggleModalBooking}>
                                                     <i className="fa fa-bookmark"/>
-                                                </Button>&nbsp;&nbsp;&nbsp;
-                                                <Tooltip placement="top" isOpen={tooltipOpen} target="viewBookingHistory" toggle={toggleTooltip}>
+                                                </Button>&nbsp;
+                                                <Tooltip placement="top" isOpen={tooltipOpenBooking} target="viewBookingHistory" toggle={toggleTooltipBooking}>
                                                     View Booking History
                                                 </Tooltip>
-                                                {' '}
+                                                
                                                 {/* view topup history modal and tooltip */}
                                                 <Button className="btn-round"  size="lg" color="primary" id="viewTopupHistory" onClick={toggleModalTopup}>
                                                     <i className="fa fa-dollar-sign"/>
-                                                </Button>&nbsp;&nbsp;&nbsp;
-                                                <Tooltip placement="bottom" isOpen={tooltipOpen} target="viewTopupHistory" toggle={toggleTooltip}>
+                                                </Button>&nbsp;
+                                                <Tooltip placement="bottom" isOpen={tooltipOpenTopup} target="viewTopupHistory" toggle={toggleTooltipTopup}>
                                                     View Top Up History
                                                 </Tooltip>
-                                                {' '}
+                                                
                                                 {/* view credit history modal and tooltip */}
                                                 <Button className="btn-round"  size="lg" color="primary" id="viewCreditHistory" onClick={toggleModalCredit}>
                                                     <i className="fa fa-coins"/>
-                                                </Button>&nbsp;&nbsp;&nbsp;
-                                                <Tooltip placement="right" isOpen={tooltipOpen} target="viewCreditHistory" toggle={toggleTooltip}>
+                                                </Button>&nbsp;
+                                                <Tooltip placement="right" isOpen={tooltipOpenCredit} target="viewCreditHistory" toggle={toggleTooltipCredit}>
                                                     View Credit History
                                                 </Tooltip>
                                             </div>
