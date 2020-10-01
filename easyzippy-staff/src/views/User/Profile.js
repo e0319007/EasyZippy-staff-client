@@ -38,6 +38,7 @@ function Profile() {
 
     const [currentPw, setCurrentPw] = useState('')
     const [newPw, setNewPw] = useState('')
+    const [newCfmPw, setNewCfmPw] = useState('')
 
     const [error, setError] = useState('')
     const [err, isError] = useState(false)
@@ -87,6 +88,11 @@ function Profile() {
         setNewPw(newPw.trim())
     }
 
+    const onChangeNewCfmPassword = e => {
+        const newCfmPw = e.target.value;
+        setNewCfmPw(newCfmPw.trim())
+    }
+
     const updateProfile = e => {
         e.preventDefault()
         console.log("in update profile")
@@ -132,6 +138,13 @@ function Profile() {
     const updatePassword = e => {
         e.preventDefault()
         console.log("inside update password")
+
+        if (newPw !== newCfmPw) {
+            isInModal(true)
+            setError("New passwords need to match!")
+            isError(true)
+            return;
+        }
 
         axios.put(`/staff/${staffid}/changePassword`, {
             currentPassword: currentPw,
@@ -251,6 +264,16 @@ function Profile() {
                                                 placeholder="Enter new password" 
                                                 value={newPw}
                                                 onChange={onChangeNewPassword}
+                                                />
+                                        </FormGroup>
+                                        <FormGroup>
+                                            <Label for="inputNewConfirmPassword">Re-enter new password</Label>
+                                            <Input 
+                                                type="password" 
+                                                id="inputNewConfirmPassword" 
+                                                placeholder="Re-enter new password" 
+                                                value={newCfmPw}
+                                                onChange={onChangeNewCfmPassword}
                                                 />
                                         </FormGroup>
                                         { inModal && err &&<Alert color="danger">{error}</Alert> }
