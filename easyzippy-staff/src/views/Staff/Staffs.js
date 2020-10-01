@@ -35,7 +35,7 @@ function Staffs() {
         {title: "Mobile Number", field:"mobileNumber"},
         {title: "Email", field:"email"},
         {title: "Password", field: "password"},
-        {title: "Staff Role", field:"staffRoleEnum"},
+        {title: "Staff Role", field:"staffRoleEnum", editable:"never"},
         {title: "Disabled", field:"disabled", editable: "never"},
         
     ]
@@ -98,20 +98,22 @@ function Staffs() {
             resolve()
             return;
         }
-        if(newData.staffRoleEnum === undefined || newData.staffRoleEnum === ""){
-            isError(true)
-            setError("Unable to add new staff. Please fill in the staff role field as Admin or Employee.")
-            isSuccessful(false)
-            resolve()
-            return;
-        }
+        // if(newData.staffRoleEnum === undefined || newData.staffRoleEnum === "" ){
+        //     isError(true)
+        //     setError("Unable to add new staff. Please fill in the staff role field as Admin or Employee.")
+        //     isSuccessful(false)
+        //     resolve()
+        //     return;
+        // }
         axios.post("/staff", {
             firstName: newData.firstName,
             lastName: newData.lastName,
             mobileNumber: newData.mobileNumber,
             email: newData.email,
             password: newData.password,
-            staffRoleEnum: newData.staffRoleEnum      
+            //staffRoleEnum: newData.staffRoleEnum,
+            staffRoleEnum: "Employee"      
+
         },
         {
             headers: {
