@@ -105,9 +105,6 @@ function MerchantDetails() {
                 createdAt: date,
                 disabled: res.data.disabled
             });
-            // console.log("get merchant disabled: " + res.data.disabled)
-            // isDisabled(res.data.disabled)
-
             console.log(res.data.tenancyAgreement)
 
             axios.get(`/assets/${res.data.tenancyAgreement}`, 
