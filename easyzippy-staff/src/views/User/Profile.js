@@ -179,6 +179,9 @@ function Profile() {
             isError(false)
             isSuccessful(true)
             setMsg("Password successfully updated!")
+            setCurrentPw('')
+            setNewCfmPw('')
+            setNewPw('')
         }).catch(function (error) {
             console.log(error.response.data)
             isInModal(true)
@@ -193,6 +196,7 @@ function Profile() {
         console.log("inside reset form")
         setCurrentPw('')
         setNewPw('')
+        setNewCfmPw('')
     }
 
     return(

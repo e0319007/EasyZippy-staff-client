@@ -9,6 +9,7 @@ import { withStyles } from '@material-ui/core/styles';
 import { Typography } from "@material-ui/core";
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
+import SweetAlert from 'react-bootstrap-sweetalert';
 import {
     Card,
     CardBody,
@@ -50,6 +51,9 @@ function MerchantDetails() {
     // const [disabled, isDisabled] = useState([])
 
     //tooltip
+    const [tooltipOpenApproval, setTooltipApproval] = useState(false);
+    const toggleTooltipApproval = () => setTooltipApproval(!tooltipOpenApproval);
+
     const [tooltipOpenPromo, setTooltipOpenPromo] = useState(false);
     const toggleTooltipPromo = () => setTooltipOpenPromo(!tooltipOpenPromo);
 
@@ -139,6 +143,14 @@ function MerchantDetails() {
         })
     },[])
 
+    const onCancel = e => {
+        console.log(null)
+    }
+
+    const onContinue = e => {
+        console.log(null)
+    }
+
     const onApprovalChange = e => {
         console.log("in approval on change")
 
@@ -226,7 +238,7 @@ function MerchantDetails() {
                 console.log(error.response.data)
             })
         };
-
+    
     return(
         <>
             <ThemeProvider theme={theme}>
@@ -252,6 +264,26 @@ function MerchantDetails() {
                                                 />
                                             </FormGroup>
                                             <div className="form-row">
+                                                <FormGroup className="col-md-6">                                            
+                                                    <Label for="inputName">Name</Label>
+                                                    <Input
+                                                        type="text"
+                                                        id="inputName"
+                                                        placeholder="name here"
+                                                        value={data.name}
+                                                    />
+                                                </FormGroup>
+                                                <FormGroup className="col-md-6">                                            
+                                                    <Label for="inputPointOfContact">Point of Contact</Label>
+                                                    <Input
+                                                        type="text"
+                                                        id="inputPointOfContact"
+                                                        placeholder="point of contact here"
+                                                        value={data.pointOfContact}
+                                                    />
+                                                </FormGroup>
+                                            </div>
+                                            <div className="form-row">
                                                 <FormGroup className="col-md-6">
                                                     <Label for="inputEmail">Email</Label>
                                                     <Input
@@ -268,6 +300,55 @@ function MerchantDetails() {
                                                         id="inputMobileNumber"
                                                         placeholder="Mobile Number"
                                                         value={data.mobileNumber}
+                                                        />
+                                                </FormGroup>
+                                            </div>
+                                            <div className="form-row">
+                                                <FormGroup className="col-md-6">
+                                                    <Label for="inputBlock">Block</Label>
+                                                        <Input
+                                                            type="text"
+                                                            id="inputBlock"
+                                                            placeholder="Block"
+                                                            value={data.blk}
+                                                        />
+                                                </FormGroup>
+                                                <FormGroup className="col-md-6">
+                                                    <Label for="inputStreet">Street</Label>
+                                                        <Input
+                                                            type="text"
+                                                            id="inputStreet"
+                                                            placeholder="Street"
+                                                            value={data.street}
+                                                        />
+                                                </FormGroup>
+                                            </div>
+                                            <div className="form-row">
+                                                <FormGroup className="col-md-4">
+                                                    <Label for="inputFloor">Floor</Label>
+                                                        <Input
+                                                            type="text"
+                                                            id="inputFloor"
+                                                            placeholder="Floor"
+                                                            value={data.floor}
+                                                        />
+                                                </FormGroup>
+                                                <FormGroup className="col-md-4">
+                                                    <Label for="inputUnitNumber">Unit Number</Label>
+                                                        <Input
+                                                            type="text"
+                                                            id="inputUnitNumber"
+                                                            placeholder="unit number"
+                                                            value={data.unitNumber}
+                                                        />
+                                                </FormGroup>    
+                                                <FormGroup className="col-md-4">
+                                                    <Label for="inputPostalCode">Postal Code</Label>
+                                                        <Input
+                                                            type="text"
+                                                            id="inputPostalCode"
+                                                            placeholder="postalCode"
+                                                            value={data.postalCode}
                                                         />
                                                 </FormGroup>
                                             </div>
@@ -303,10 +384,13 @@ function MerchantDetails() {
                                             <div className="form-row">
                                                 <FormGroup className="col-md-2">
                                                     <Label for="approvalStatus">Approval Status</Label>
-                                                        <Input type="select" name="select" id="approvalStatus"  value={approve} onChange={onApprovalChange}>
+                                                        <Input type="select" name="select" id="approvalStatus" value={approve} onChange={onApprovalChange}>
                                                             <option>Approved</option>
                                                             <option>Not Approved</option>
                                                         </Input>
+                                                    <Tooltip placement="bottom" isOpen={tooltipOpenApproval} target="approvalStatus" toggle={toggleTooltipApproval}>
+                                                        A confirmation email will be sent once approved/not approved 
+                                                    </Tooltip>  
                                                 </FormGroup>
                                                 <FormGroup className="col-md-10" inline>
                                                     <p/>
@@ -433,6 +517,7 @@ function MerchantDetails() {
         </>
     );
 }
+
 
 // to use when viewing 
 function formatDate(d) {
