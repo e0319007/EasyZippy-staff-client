@@ -131,7 +131,7 @@ class Header extends React.Component {
     console.log(JSON.parse(Cookies.get('authToken')))
 
     // GET NOTIFICATIONS
-    axios.get(`/notification/staff/${parseInt(Cookies.get('staffUser'))}`, 
+    axios.get('/notification/staff/', 
     {
       headers: {
         AuthToken: this.state.authToken
@@ -185,7 +185,7 @@ class Header extends React.Component {
     console.log("component will receive props")
     //if this isn't the first render, then keep updating when re-render
     if (this.state.notifications.length != 0) {
-      axios.get(`/notification/staff/${parseInt(Cookies.get('staffUser'))}`, 
+      axios.get('/notification/staff', 
       {
         headers: {
           AuthToken: this.state.authToken
@@ -226,7 +226,11 @@ class Header extends React.Component {
   logout(e) {
     Cookies.remove('authToken')
     Cookies.remove('staffUser')
-    localStorage.removeItem('currentStaff')
+    localStorage.clear()
+  }
+
+  redirectApprove(senderId) {
+    localStorage.setItem('merchantToView', JSON.stringify(senderId))
   }
 
   // to use when viewing 
@@ -236,7 +240,6 @@ class Header extends React.Component {
         console.log(undefined)
     }
     let currDate = new Date(d);
-    console.log("currDate: " + currDate)
     let year = currDate.getFullYear();
     let month = currDate.getMonth() + 1;
     let dt = currDate.getDate();
@@ -308,7 +311,7 @@ class Header extends React.Component {
                   <DropdownItem header>Notifications</DropdownItem>
                   {this.state.notifications.map(notification => 
                     <div key={notification.id}>
-                      <DropdownItem  style={{backgroundColor: 'transparent'}}>                          
+                      <DropdownItem  style={{backgroundColor: 'transparent'}} onClick={() => this.redirectApprove(notification.senderId)} href='/admin/merchantDetails'>                          
                           <p style={{fontWeight:'bold', color:'grey'}}>{notification.title}</p> 
                           <br></br>
                           <small style={{color:'grey'}}>{this.formatDate(notification.sentTime)}</small>
