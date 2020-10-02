@@ -44,11 +44,13 @@ function StaffDetails() {
     const [successful, isSuccessful] = useState(false)
     const [successMsg, setMsg] = useState('')
 
-    const [staffRoleEnum, setStaffRoleEnum] = useState(staff.staffRoleEnum)
+
+    //const [staffRoleEnum, setStaffRoleEnum] = useState(staff.staffRoleEnum)
 
     const staff_toupdate = {
-        staffRoleEnum: ''
+        //staffRoleEnum: '',
     }
+
 
     const onChangeStaffRoleEnum = e => {
         const staffRoleEnum = e.target.value;
@@ -56,18 +58,34 @@ function StaffDetails() {
         setData(staffRoleEnum.trim())
     }
 
+    const [staffRoles, setStaffRoles] = useState([])
+
+    useEffect(() => {
+        console.log("axios getting staffroles")
+        axios.get('/staff/staffRoles', 
+        {    
+            headers: {
+                AuthToken: authToken
+            }
+        }).then(res => {
+            setStaffRoles(res.data)
+            console.log("staff roles " + res.data)
+        }).catch(err => console.error(err))
+    },[])
+
     const updateStaffDetails = e => {
         e.preventDefault()
+        console.log("*** in update staff")
         axios.put(`staff/${staffid}`, {
-            staffRoleEnum: staffRoleEnum
+            //staffRoleEnum: staffRoleEnum,
         }, 
         {
             headers: {
                 AuthToken: authToken
             }
         }).then((response) => {
-            setStaffRoleEnum(response.data.staffRoleEnum)
-            staff_toupdate.staffRoleEnum = response.data.staffRoleEnum
+            //setStaffRoleEnum(response.data.staffRoleEnum)
+            //staff_toupdate.staffRoleEnum = response.data.staffRoleEnum
             localStorage['currentStaff'] = JSON.stringify(staff_toupdate)
 
             isSuccessful(true)
