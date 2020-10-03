@@ -30,13 +30,18 @@ function StaffDetails() {
 
     const history = useHistory()
     const authToken = (JSON.parse(Cookies.get('authToken'))).toString()
-    console.log(authToken)
+    //console.log(authToken)
 
     const staffId = JSON.parse(localStorage.getItem('staffToView'))
+    console.log("staff id: " + staffId)
+    //console.log("staff name: " + staffId.firstName)
+    //console.log("staff role: " + staffId.staffRoleEnum)
+
     const [data, setData] = useState([])
 
-    const staff = JSON.parse(localStorage.getItem('currentStaff'))
-    const staffid = parseInt(Cookies.get('staffUser'))
+    //const staff = JSON.parse(localStorage.getItem('currentStaff'))
+    //console.log("staff: " + staff.firstName)
+    // const staffid = parseInt(Cookies.get('staffUser'))
 
     const [error, setError] = useState('')
     const [err, isError] = useState(false)
@@ -44,57 +49,14 @@ function StaffDetails() {
     const [successful, isSuccessful] = useState(false)
     const [successMsg, setMsg] = useState('')
 
-
-    //const [staffRoleEnum, setStaffRoleEnum] = useState(staff.staffRoleEnum)
+    //const [staffRoleEnum, setStaffRoleEnum] = useState('')
+   // const [staffRoleEnum, setStaffRoleEnum] = useState(staff.staffRoleEnum)
+    const [staffRoleEnum, setStaffRoleEnum] = useState('')
+    const [staffRolesEnum, setStaffRolesEnum] = useState([])
 
     const staff_toupdate = {
-        //staffRoleEnum: '',
-    }
-
-
-    const onChangeStaffRoleEnum = e => {
-        const staffRoleEnum = e.target.value;
-        //setStaffRoleEnum(staffRoleEnum.trim())
-        setData(staffRoleEnum.trim())
-    }
-
-    const [staffRoles, setStaffRoles] = useState([])
-
-    useEffect(() => {
-        console.log("axios getting staffroles")
-        axios.get('/staff/staffRoles', 
-        {    
-            headers: {
-                AuthToken: authToken
-            }
-        }).then(res => {
-            setStaffRoles(res.data)
-            console.log("staff roles " + res.data)
-        }).catch(err => console.error(err))
-    },[])
-
-    const updateStaffDetails = e => {
-        e.preventDefault()
-        console.log("*** in update staff")
-        axios.put(`staff/${staffid}`, {
-            //staffRoleEnum: staffRoleEnum,
-        }, 
-        {
-            headers: {
-                AuthToken: authToken
-            }
-        }).then((response) => {
-            //setStaffRoleEnum(response.data.staffRoleEnum)
-            //staff_toupdate.staffRoleEnum = response.data.staffRoleEnum
-            localStorage['currentStaff'] = JSON.stringify(staff_toupdate)
-
-            isSuccessful(true)
-            setMsg("Staff updated successfully!")
-        }).catch(function (error) {
-            isError(true)
-            setError(error.response.data)
-            isSuccessful(false)
-        })
+        staffRoleEnum: '',
+       // staffRole:''
     }
 
     useEffect(() => {
@@ -104,11 +66,89 @@ function StaffDetails() {
                 AuthToken: authToken
             }
         }).then(res => {
+            console.log("axios get staff to view")
             setData(res.data)
+            console.log(res.data)
         }).catch (function(error) {
             console.log(error.response.data)
         })
+
+        axios.get('/staff/staffRoles', {
+            headers: {
+                AuthToken: authToken
+            }
+        }).then (res => {
+            console.log("get all staff roles axios")
+            setStaffRolesEnum(res.data)
+            console.log("retrieving staff roles: " + res.data[0])
+            console.log("retrieving staff roles: " + res.data[1])
+        }).catch(err => console.error(err))
     },[])
+
+    const onChangeStaffRoleEnum = e => {
+        console.log("in onChangeStaffRoleEnum")
+        const staffRoleEnum = e.target.value;
+        setStaffRoleEnum(staffRoleEnum)
+        console.log("staff role enum: " + staffRoleEnum)
+    }
+
+    const updateStaffDetails = e => {
+        e.preventDefault()
+        axios.put(`/staff/staffRole/${staffId}`, {
+            staffRole: staffRoleEnum
+        }, 
+        {
+            headers: {
+                AuthToken: authToken
+            }
+        }).then((response) => {
+            console.log("update staff role axios went through")
+            setStaffRoleEnum(response.data.staffRole)
+            staff_toupdate.staffRoleEnum = response.data.staffRole
+            localStorage['staffToView'] = JSON.stringify(staff_toupdate)
+            isError(false)
+            isSuccessful(true)
+            setMsg("Staff Role updated successfully!")
+            document.location.reload()
+        }).catch(function(error) {
+            console.log(error.response.data)
+            isError(true)
+            setError(error.response.data)
+            isSuccessful(false)
+        })
+    }
+
+    // const updateStaffDetails = e => {
+    //     e.preventDefault()
+    //     console.log("current staff role: " + data.staffRoleEnum)
+    //     console.log("*** in update staff")
+    //     axios.put(`/staff/staffRole/${staffId}`, {
+    //         staffRole: staffRoleEnum,
+    //     }, 
+    //     {
+    //         headers: {
+    //             AuthToken: authToken
+    //         }
+        
+    //     }).then((response) => {
+    //         console.log("update staff role axios went through")
+    //         //set response data to view 
+    //         //setStaffRoleEnum(response.data.staffRoleEnum)
+    //         setStaffRoleEnum(response.data.staffRole)
+            
+    //         //save new values to staff local storage
+    //         staff_toupdate.staffRoleEnum = response.data.staffRole
+    //         localStorage['staffToView'] = JSON.stringify(staff_toupdate)
+
+    //         isSuccessful(true)
+    //         setMsg("Staff Role updated successfully!")
+    //     }).catch(function (error) {
+    //         isError(true)
+    //         setError(error.response.data)
+    //         isSuccessful(false)
+    //     })
+    // }
+
 
     const DisableSwitch = withStyles((theme) => ({
     root: {
@@ -171,10 +211,10 @@ function StaffDetails() {
     function formatDate(d) {
         if (d === undefined){
             d = (new Date()).toISOString()
-            console.log(undefined)
+            //console.log(undefined)
         }
         let currDate = new Date(d);
-        console.log("currDate: " + currDate)
+        //console.log("currDate: " + currDate)
         let year = currDate.getFullYear();
         let month = currDate.getMonth() + 1;
         let dt = currDate.getDate();
@@ -217,10 +257,19 @@ function StaffDetails() {
                                         </fieldset>
                                         <fieldset>
                                             <FormGroup>
-                                                <Label for="staffRoleEnum">Role</Label>
-                                                    <Input type="select" name="select" id="staffRoleEnum" value={data.staffRoleEnum} onChange={onChangeStaffRoleEnum}>
-                                                        <option>Admin</option>
-                                                        <option>Employee</option>
+                                                <Label for="inputStaffRoleEnun">Role</Label>
+                                                    <Input 
+                                                    type="select" 
+                                                    name="select" 
+                                                    id="inputStaffRoleEnun" 
+                                                    value={data.staffRoleEnum} 
+                                                    onChange={onChangeStaffRoleEnum}
+                                                    >
+                                                        {
+                                                            staffRolesEnum.map(staffRoleEnum => (
+                                                                <option key={staffRoleEnum.id}>{staffRoleEnum}</option>
+                                                            ))
+                                                        }
                                                     </Input>
                                             </FormGroup>
                                         </fieldset>

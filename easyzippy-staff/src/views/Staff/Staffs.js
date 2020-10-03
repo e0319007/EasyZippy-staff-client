@@ -34,7 +34,7 @@ function Staffs() {
         {title: "Last Name", field:"lastName"},
         {title: "Mobile Number", field:"mobileNumber"},
         {title: "Email", field:"email"},
-        {title: "Password", field: "password"},
+        //{title: "Password", field: "password"},
         {title: "Staff Role", field:"staffRoleEnum", editable:"never"},
         {title: "Disabled", field:"disabled", editable: "never"},
         
@@ -84,13 +84,13 @@ function Staffs() {
             resolve()
             return;
         }
-        if(newData.password === undefined || newData.password === ""){
-            isError(true)
-            setError("Unable to add new staff. Please fill in the password field.")
-            isSuccessful(false)
-            resolve()
-            return;
-        }
+        // if(newData.password === undefined || newData.password === ""){
+        //     isError(true)
+        //     setError("Unable to add new staff. Please fill in the password field.")
+        //     isSuccessful(false)
+        //     resolve()
+        //     return;
+        // }
         if(newData.email === undefined || newData.email === ""){
             isError(true)
             setError("Unable to add new staff. Please fill in the email field.")
@@ -110,7 +110,8 @@ function Staffs() {
             lastName: newData.lastName,
             mobileNumber: newData.mobileNumber,
             email: newData.email,
-            password: newData.password,
+            //password: newData.password,
+            password: "Password123!",
             //staffRoleEnum: newData.staffRoleEnum,
             staffRoleEnum: "Employee"      
 
@@ -167,6 +168,7 @@ function Staffs() {
                                                 console.log("in onclick")
                                                 history.push('/admin/staffDetails')
                                                 localStorage.setItem('staffToView', JSON.stringify(rowData.id))
+                                                //localStorage.setItem('staffToView', JSON.stringify(rowData))
                                                 }
                                             },                                
                                         ]}

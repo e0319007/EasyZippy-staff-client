@@ -114,7 +114,7 @@ function Profile() {
             lastName: lastName,
             email: email,
             mobileNumber: mobileNumber
-        },w
+        },
         {
             headers: {
                 AuthToken: authToken
