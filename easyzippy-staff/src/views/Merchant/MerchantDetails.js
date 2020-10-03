@@ -143,14 +143,6 @@ function MerchantDetails() {
         })
     },[])
 
-    const onCancel = e => {
-        console.log(null)
-    }
-
-    const onContinue = e => {
-        console.log(null)
-    }
-
     const onApprovalChange = e => {
         console.log("in approval on change")
 
@@ -389,7 +381,7 @@ function MerchantDetails() {
                                                             <option>Not Approved</option>
                                                         </Input>
                                                     <Tooltip placement="bottom" isOpen={tooltipOpenApproval} target="approvalStatus" toggle={toggleTooltipApproval}>
-                                                        A confirmation email will be sent once approved/not approved 
+                                                        A confirmation email will be sent to the merchant once approved/not approved 
                                                     </Tooltip>  
                                                 </FormGroup>
                                                 <FormGroup className="col-md-10" inline>
