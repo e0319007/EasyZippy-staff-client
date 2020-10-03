@@ -311,7 +311,7 @@ class Header extends React.Component {
                   <DropdownItem header>Notifications</DropdownItem>
                   {this.state.notifications.map(notification => 
                     <div key={notification.id}>
-                      <DropdownItem  style={{backgroundColor: 'transparent'}} onClick={() => this.redirectApprove(notification.senderId)} href='/admin/merchantDetails'>                          
+                      <DropdownItem  style={{backgroundColor: 'transparent', flexGrow:'inherit', whiteSpace:'pre-wrap', width:'20rem'}} onClick={() => this.redirectApprove(notification.senderId)} href='/admin/merchantDetails'>                          
                           <p style={{fontWeight:'bold', color:'grey'}}>{notification.title}</p> 
                           <br></br>
                           <small style={{color:'grey'}}>{this.formatDate(notification.sentTime)}</small>
@@ -335,7 +335,7 @@ class Header extends React.Component {
                   <DropdownItem header>Announcements</DropdownItem>
                   {this.state.announcements.map(announcement => 
                     <div key={announcement.id}>
-                      <DropdownItem  style={{backgroundColor: 'transparent'}}>
+                      <DropdownItem  style={{backgroundColor: 'transparent', flexGrow:'inherit', whiteSpace:'pre-wrap', width:'20rem'}}>
                         <div>
                           <p style={{fontWeight:'bold', color:'grey'}}>{announcement.title}</p>
                           <br></br>
