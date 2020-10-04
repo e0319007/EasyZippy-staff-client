@@ -132,7 +132,9 @@ function Category() {
     }
 
     const handleRowDelete = (oldData, resolve) => {
-        axios.put("/deleteCategory/"+oldData.id,
+        axios.put("/deleteCategory/"+oldData.id, {
+            id: oldData.id
+        },
         {
             headers: {
                 AuthToken: authToken
