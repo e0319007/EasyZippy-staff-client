@@ -139,7 +139,7 @@ function Kiosks() {
     }
 
     const handleRowDelete = (oldData, resolve) => {
-        axios.delete("/kiosk/"+oldData.id,
+        axios.put("/deleteKiosk/"+oldData.id,
         {
             headers: {
                 AuthToken: authToken
