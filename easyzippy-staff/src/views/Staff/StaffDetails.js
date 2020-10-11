@@ -307,6 +307,11 @@ function StaffDetails() {
                                         <p></p>
                                         <Row>
                                             <div className="update ml-auto mr-auto" >
+                                                <Button color="success" size="sm" type="submit" onClick={updateStaffDetails}>Update</Button>
+                                            </div>
+                                        </Row>
+                                        <Row>
+                                            <div className="update ml-auto mr-auto" >
                                                 <Typography component="div">
                                                     <Grid component="label" container alignItems="center" spacing={1}>
                                                     <Grid item>Disabled</Grid>
@@ -317,11 +322,6 @@ function StaffDetails() {
                                                     </Grid>
                                                 </Typography>
                                             </div> 
-                                        </Row>
-                                        <Row>
-                                            <div className="update ml-auto mr-auto" >
-                                                <Button color="success" size="sm" type="submit" onClick={updateStaffDetails}>Update</Button>
-                                            </div>
                                         </Row>
                                         <Row>
                                             <Col md="12">
