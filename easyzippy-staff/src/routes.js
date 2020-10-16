@@ -14,6 +14,8 @@ import CustomerDetails from "views/Customer/CustomerDetails";
 import KioskDetails from "views/Kiosk/KioskDetails";
 import MerchantDetails from "views/Merchant/MerchantDetails";
 import StaffDetails from "views/Staff/StaffDetails";
+import BookingPackages from "views/BookingPackages/BookingPackages";
+import BookingPackageDetails from "views/BookingPackages/BookingPackageDetails";
 
 var routes = [
   {
@@ -95,6 +97,21 @@ var routes = [
     icon: "nc-icon nc-bookmark-2",
     component: Bookings,
     layout: "/admin"
+  },
+  {
+    path: "/bookingPackages",
+    name: "Booking Packages",
+    icon: "nc-icon nc-box",
+    component: BookingPackages,
+    layout: "/admin"
+  },
+  {
+    path: "/bookingPackageDetails",
+    name: "Booking Package Details",
+    icon: "nc-icon nc-box",
+    component: BookingPackageDetails,
+    layout: "/admin",
+    invisible: true
   },
   {
     path: "/kiosks",
