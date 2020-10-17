@@ -17,6 +17,7 @@ import CustomerDetails from "views/Customer/CustomerDetails.js";
 import KioskDetails from "views/Kiosk/KioskDetails.js";
 import MerchantDetails from "views/Merchant/MerchantDetails.js"
 import StaffDetails from "views/Staff/StaffDetails.js";
+import LockerTypeDetails from "views/Locker/LockerTypeDetails.js"
 
 
 const hist = createBrowserHistory();
@@ -45,6 +46,7 @@ function App(props) {
                 <Route exact path="/admin/customerDetails" component={CustomerDetails}/>
                 <Route exact path="/admin/kioskDetails" component={KioskDetails}/>
                 <Route exact path="/admin/merchantDetails" component={MerchantDetails}/>
+                <Route exact path="/admin/lockerTypeDetails" component={LockerTypeDetails}/>
                 {/* <Redirect to="/error" component={Error} /> */}
             </Switch>
         </Router>

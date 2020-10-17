@@ -158,9 +158,15 @@ function Kiosks() {
                 resolve()
             })
             .catch(function (error) {
+                let errormsg = error.response.data;
+
+                if ((error.response.data).startsWith("<!DOCTYPE html>")) {
+                    errormsg = "An unexpected error has occurred. The Locker Type cannot be deleted."
+                }
+
                 isSuccessful(false)
                 isError(true)
-                setError(error.response.data)
+                setError(errormsg)
                 console.log(error.response.data)
                 resolve()
             })
