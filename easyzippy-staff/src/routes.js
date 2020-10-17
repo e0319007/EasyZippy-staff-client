@@ -17,6 +17,10 @@ import MerchantDetails from "views/Merchant/MerchantDetails";
 import StaffDetails from "views/Staff/StaffDetails";
 import LockerTypeDetails from "views/Locker/LockerTypeDetails";
 import LockerDetails from "views/Locker/LockerDetails";
+import BookingPackages from "views/BookingPackages/BookingPackages";
+import BookingPackageDetails from "views/BookingPackages/BookingPackageDetails";
+import MaintenanceActions from "views/MaintenanceAction/MaintenanceActions";
+import MaintenanceActionDetails from "views/MaintenanceAction/MaintenanceActionDetails";
 
 var routes = [
   {
@@ -100,6 +104,21 @@ var routes = [
     layout: "/admin"
   },
   {
+    path: "/bookingPackages",
+    name: "Booking Packages",
+    icon: "nc-icon nc-box",
+    component: BookingPackages,
+    layout: "/admin"
+  },
+  {
+    path: "/bookingPackageDetails",
+    name: "Booking Package Details",
+    icon: "nc-icon nc-box",
+    component: BookingPackageDetails,
+    layout: "/admin",
+    invisible: true
+  },
+  {
     path: "/kiosks",
     name: "Kiosks",
     icon: "nc-icon nc-mobile",
@@ -108,7 +127,7 @@ var routes = [
   },
   {
     path: "/kioskDetails",
-    name: "KioskDetails",
+    name: "Kiosk Details",
     icon: "nc-icon nc-mobile",
     component: KioskDetails,
     layout: "/admin",
@@ -141,6 +160,20 @@ var routes = [
     name: "Locker Type Details",
     icon: "nc-icon nc-app",
     component: LockerTypeDetails,
+    layout: "/admin"
+  },
+  {
+    path: "/maintenanceActions",
+    name: "Maintenance Actions",
+    icon: "nc-icon nc-settings-gear-65",
+    component: MaintenanceActions,
+    layout: "/admin"
+  },
+  {
+    path: "/maintenanceActionDetails",
+    name: "Maintenance Action Details",
+    icon: "nc-icon nc-settings-gear-65",
+    component: MaintenanceActionDetails,
     layout: "/admin",
     invisible: true
   },
