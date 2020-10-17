@@ -16,6 +16,8 @@ import MerchantDetails from "views/Merchant/MerchantDetails";
 import StaffDetails from "views/Staff/StaffDetails";
 import BookingPackages from "views/BookingPackages/BookingPackages";
 import BookingPackageDetails from "views/BookingPackages/BookingPackageDetails";
+import MaintenanceActions from "views/MaintenanceAction/MaintenanceActions";
+import MaintenanceActionDetails from "views/MaintenanceAction/MaintenanceActionDetails";
 
 var routes = [
   {
@@ -122,7 +124,7 @@ var routes = [
   },
   {
     path: "/kioskDetails",
-    name: "KioskDetails",
+    name: "Kiosk Details",
     icon: "nc-icon nc-mobile",
     component: KioskDetails,
     layout: "/admin",
@@ -134,6 +136,21 @@ var routes = [
     icon: "nc-icon nc-button-pause",
     component: Lockers,
     layout: "/admin"
+  },
+  {
+    path: "/maintenanceActions",
+    name: "Maintenance Actions",
+    icon: "nc-icon nc-settings-gear-65",
+    component: MaintenanceActions,
+    layout: "/admin"
+  },
+  {
+    path: "/maintenanceActionDetails",
+    name: "Maintenance Action Details",
+    icon: "nc-icon nc-settings-gear-65",
+    component: MaintenanceActionDetails,
+    layout: "/admin",
+    invisible: true
   },
   {
     path: "/category",

@@ -91,7 +91,7 @@ function BookingPackageDetails() {
             ...data,
             disabled: !event.target.checked
         })
-        axios.put(`/kiosk/toggleDisable/${bookingPackageId}`, {
+        axios.put(`/bookingPackageModel/toggleDisable/${bookingPackageId}`, {
             disabled: !event.target.checked
         },
         {
