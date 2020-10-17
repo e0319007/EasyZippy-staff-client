@@ -7,6 +7,7 @@ import Grid from '@material-ui/core/Grid';
 import { withStyles } from '@material-ui/core/styles';
 import { Typography } from "@material-ui/core";
 import { createMuiTheme } from '@material-ui/core/styles';
+import MaterialTable from "material-table"
 import { ThemeProvider } from '@material-ui/styles';
 import {
     Card,
@@ -43,6 +44,18 @@ function KioskDetails() {
     const [modalLockers, setModalLockers] = useState(false)
     const toggleModalLockers = () => setModalLockers(!modalLockers);
 
+    const [lockerTypes, setLockerTypes] = useState([]);
+    const [lockers, setLockers] = useState([]);
+
+    //to view lockers
+    var columns = [
+        {title: "Id", field: "id", editable: "never"},
+        // {title: "Locker Status", field:"lockerStatusEnum", editable: "never"},
+        {title: "Locker Type", field:"lockerTypeId", editable: "never", 
+            render: row => <span>{ getLockerType(row["lockerTypeId"]) }</span>},
+        {title: "Disabled", field:"disabled", editable: "never"}
+    ]
+
     useEffect(() => {
         axios.get(`/kiosk/${kioskId}`, 
         {
@@ -51,10 +64,39 @@ function KioskDetails() {
             }
         }).then(res => {
             setData(res.data)
+
+            axios.get(`/lockers`, 
+            {
+                headers: {
+                    AuthToken: authToken
+                }
+            }).then(response => {
+                setLockers(response.data)
+                console.log(response.data)
+            }).catch (err => console.error(err))
+
+            axios.get("/lockerTypes", {
+                headers: {
+                    AuthToken: authToken
+                }
+            }).then(response => {
+                setLockerTypes(response.data)
+                console.log(response.data)
+            }).catch (err => console.error(err))
+
         }).catch (function(error) {
             console.log(error.response.data)
         })
     },[])
+
+    //match locker type id to locker type name
+    function getLockerType(id) {
+        for (var i in lockerTypes) {
+            if (lockerTypes[i].id === id) {
+                return lockerTypes[i].name
+            }
+        }
+    }
 
     const DisableSwitch = withStyles((theme) => ({
     root: {
@@ -145,7 +187,7 @@ function KioskDetails() {
                             <Card className="card-name">
                                 <CardHeader>
                                     <div className="form-row">
-                                    <CardTitle className="col-md-10" tag="h5">Kiosk {data.id} Details</CardTitle>
+                                    <CardTitle className="col-md-10" tag="h5">Kiosk Details: {data.address}</CardTitle>
                                     </div>
                                 </CardHeader>
                                 <CardBody>
@@ -195,7 +237,7 @@ function KioskDetails() {
                                                     <i className="fa fa-pause"/>
                                                 </Button>
                                                 <Tooltip placement="left" isOpen={tooltipOpen} target="viewListingList" toggle={toggleTooltip}>
-                                                    View Listing List
+                                                    View Locker List
                                                 </Tooltip>
                                             </div>
                                         </Row>
@@ -230,7 +272,31 @@ function KioskDetails() {
                                 <Modal isOpen={modalLockers} toggle={toggleModalLockers}>
                                     <ModalHeader toggle={toggleModalLockers}>Lockers</ModalHeader>
                                     <ModalBody>
-                                        List of lockers here
+                                    <ThemeProvider theme={theme}>
+                                        <div className="content">
+                                            <Row>
+                                                <Col md = "12">
+                                                    <Card>
+                                                        <MaterialTable 
+                                                            title=""
+                                                            columns={columns}
+                                                            data={lockers}
+                                                            options={{   
+                                                                search:false,
+                                                                toolbar:false,
+                                                                headerStyle: {
+                                                                    backgroundColor: '#98D0E1',
+                                                                    color: '#FFF',
+                                                                    fontWeight: 1000,                                      
+                                                                },
+                                                                actionsColumnIndex: -1
+                                                                }}
+                                                        />
+                                                    </Card>
+                                                </Col>
+                                            </Row>
+                                        </div>   
+                                    </ThemeProvider>
                                     </ModalBody>
                                 </Modal>
                             </Card>

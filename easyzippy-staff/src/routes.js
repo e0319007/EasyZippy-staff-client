@@ -16,7 +16,7 @@ import KioskDetails from "views/Kiosk/KioskDetails";
 import MerchantDetails from "views/Merchant/MerchantDetails";
 import StaffDetails from "views/Staff/StaffDetails";
 import LockerTypeDetails from "views/Locker/LockerTypeDetails";
-// import Icons from "views/Icons"
+import LockerDetails from "views/Locker/LockerDetails";
 
 var routes = [
   {
@@ -122,6 +122,14 @@ var routes = [
     layout: "/admin"
   },
   {
+    path: "/lockerDetails",
+    name: "Locker Details",
+    icon: "nc-icon nc-app",
+    component: LockerDetails,
+    layout: "/admin",
+    invisible: true
+  },
+  {
     path: "/lockerType",
     name: "Locker Type",
     icon: "nc-icon nc-app",
@@ -149,14 +157,7 @@ var routes = [
     icon: "nc-icon nc-chat-33",
     component: Announcements,
     layout: "/admin",
-  },
-  // {
-  //   path: "/icons",
-  //   name: "Icons",
-  //   icon: "nc-icon nc-chat-33",
-  //   component: Icons,
-  //   layout: "/admin",
-  // }
+  }
 ];
 
 export default routes
