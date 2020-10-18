@@ -160,7 +160,8 @@ var routes = [
     name: "Locker Type Details",
     icon: "nc-icon nc-app",
     component: LockerTypeDetails,
-    layout: "/admin"
+    layout: "/admin",
+    invisible: true
   },
   {
     path: "/maintenanceActions",

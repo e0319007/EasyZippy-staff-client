@@ -265,9 +265,9 @@ function BookingPackages() {
                                         <tr>
                                             <td>{lockerType.id}</td>
                                             <td>{lockerType.name}</td>
-                                            <td>{lockerType.height}</td>
-                                            <td>{lockerType.width}</td>
-                                            <td>{lockerType.length}</td>
+                                            <td>{lockerType.lockerHeight}</td>
+                                            <td>{lockerType.lockerWidth}</td>
+                                            <td>{lockerType.lockerLength}</td>
                                         </tr>
                                     ))}
                                 </tbody>
