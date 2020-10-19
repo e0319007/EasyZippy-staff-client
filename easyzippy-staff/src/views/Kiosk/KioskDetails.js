@@ -65,7 +65,7 @@ function KioskDetails() {
         }).then(res => {
             setData(res.data)
 
-            axios.get(`/lockers`, 
+            axios.get(`/locker/kiosk/${kioskId}`, 
             {
                 headers: {
                     AuthToken: authToken
