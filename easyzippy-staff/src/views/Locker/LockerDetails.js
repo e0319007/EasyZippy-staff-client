@@ -207,7 +207,7 @@ function LockerDetails() {
                                                     />
                                                 </FormGroup>
                                                 <FormGroup className="col-md-6">
-                                                    <Label for="lockerStatusEnum">Locker Action Status</Label>
+                                                    <Label for="lockerStatusEnum">Locker Status</Label>
                                                     <Input 
                                                         type="text"
                                                         id="lockerStatusEnum"

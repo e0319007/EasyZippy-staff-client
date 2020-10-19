@@ -11,7 +11,9 @@ import {
     Col,
     Card, 
     Alert,
-    Button
+    FormGroup, 
+    Label,
+    Input
 } from "reactstrap";
 
 const theme = createMuiTheme({
@@ -32,6 +34,9 @@ function Lockers() {
     const [kiosks, setKiosks] = useState([])
     const [lockerTypes, setLockerTypes] = useState([])
 
+    // const [filterLockerType, setFilterLockerType] = useState()
+    // const [filterKiosk, setFilterKiosk] = useState()
+
     //for error handling
     const [error, setError] = useState('')
     const [err, isError] = useState(false)
@@ -41,13 +46,15 @@ function Lockers() {
 
     // DECLARING COLUMNS (created at can put inside details)
     var columns = [
-        {title: "Id", field: "id", editable: "never"},
+        {title: "Id", field: "id", editable: "never", filtering: false },
         {title: "Locker Status", field:"lockerStatusEnum", editable: "never"},
         {title: "Locker Type", field:"lockerTypeId", editable: "never", 
+            customFilterAndSearch: (term, rowData) => getLockerType(rowData.lockerTypeId).toLowerCase().includes(term.toLowerCase()),
             render: row => <span>{ getLockerType(row["lockerTypeId"]) }</span>},
         {title: "Kiosk", field:"kioskId", editable: "never", 
+            customFilterAndSearch: (term, rowData) => getKioskName(rowData.kioskId).toLowerCase().includes(term.toLowerCase()),
             render: row => <span>{ getKioskName(row["kioskId"]) }</span>},
-        {title: "Disabled", field:"disabled", editable: "never"},
+        {title: "Disabled", field:"disabled", editable: "never", filtering: false },
     ]
 
     useEffect(() => {
@@ -134,6 +141,20 @@ function Lockers() {
         }
     }
 
+    // const onChangeLockerType = e => {
+    //     console.log("in onChangeLockerType")
+    //     const lockertype = e.target.value;
+    //     setFilterLockerType(lockertype)
+    //     console.log("filter locker type: " + lockertype)
+    // }
+
+    // const onChangeKiosk = e => {
+    //     console.log("in onChangeKiosk")
+    //     const kiosk = e.target.value;
+    //     setFilterKiosk(kiosk)
+    //     console.log("filter kiosk: " + kiosk)
+    // }
+
     return(
         <ThemeProvider theme={theme}>
             <div className="content">
@@ -151,6 +172,7 @@ function Lockers() {
                                 }}
                                 options={{   
                                     //sorting: true, 
+                                    filtering: true,
                                     headerStyle: {
                                         backgroundColor: '#98D0E1',
                                         color: '#FFF',
@@ -175,17 +197,48 @@ function Lockers() {
                                             handleRowDelete(oldData, resolve)
                                         }),
                                     }}
-                                    components={{
-                                        Toolbar: props => (
-                                            <div>
-                                                <MTableToolbar {...props}>
-                                                    <div style={{padding: '0px 10px'}}>
-                                                        <p>Yes</p>
-                                                    </div>
-                                                </MTableToolbar>
-                                            </div>
-                                        )
-                                    }}
+                                    //select 
+                                    // components={{
+                                    //     Toolbar: props => (
+                                    //         <div>
+                                    //             <MTableToolbar {...props}/>
+                                    //                 <div style={{padding: '0px 10px'}} className="form-row">
+                                    //                     <FormGroup className="col-md-3">
+                                    //                         <Label for="inputLockerTypes">Filter Locker Type</Label>
+                                    //                             <Input 
+                                    //                             type="select" 
+                                    //                             name="select" 
+                                    //                             id="inputLockerTypes" 
+                                    //                             value={lockerTypes} 
+                                    //                             onChange={onChangeLockerType}
+                                    //                             >
+                                    //                                 {
+                                    //                                     lockerTypes.map(lockerTypes => (
+                                    //                                         <option key={lockerTypes.id}>{lockerTypes.name}</option>
+                                    //                                     ))
+                                    //                                 }
+                                    //                             </Input>
+                                    //                     </FormGroup>
+                                    //                     <FormGroup className="col-md-3">
+                                    //                         <Label for="inputKiosk">Filter Kiosk</Label>
+                                    //                             <Input 
+                                    //                             type="select" 
+                                    //                             name="select" 
+                                    //                             id="inputKiosk" 
+                                    //                             value={kiosks} 
+                                    //                             onChange={onChangeKiosk}
+                                    //                             >
+                                    //                                 {
+                                    //                                     kiosks.map(kiosks => (
+                                    //                                         <option key={kiosks.id}>{kiosks.address}</option>
+                                    //                                     ))
+                                    //                                 }
+                                    //                             </Input>
+                                    //                     </FormGroup>
+                                    //                 </div>
+                                    //         </div>
+                                    //     ),
+                                    // }}
                             />
                             { err &&<Alert color="danger">{error}</Alert> }
                             { successful &&<Alert color="success">{successMsg}</Alert>}
