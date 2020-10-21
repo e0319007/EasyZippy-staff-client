@@ -33,7 +33,7 @@ function LockerTypes() {
         {title: "Width", field:"lockerWidth"},
         {title: "Length", field:"lockerLength"},
         {title: "Height", field:"lockerHeight"},
-        {title: "Price", field:"price"},    
+        {title: "Price", field:"pricePerHalfHour"},    
         {title: "Disabled", field:"disabled", editable: "never"}, 
     ]
 
@@ -100,7 +100,7 @@ function LockerTypes() {
             lockerWidth: newData.lockerWidth,
             lockerLength: newData.lockerLength,
             lockerHeight: newData.lockerHeight,
-            price: newData.price
+            price: newData.pricePerHalfHour
         },
         {
             headers: {
@@ -134,7 +134,7 @@ function LockerTypes() {
             lockerWidth: newData.lockerWidth,
             lockerLength: newData.lockerLength,
             lockerHeight: newData.lockerHeight,
-            price: newData.price
+            price: newData.pricePerHalfHour
         },
         {
             headers: {
