@@ -21,6 +21,7 @@ import BookingPackages from "views/BookingPackages/BookingPackages";
 import BookingPackageDetails from "views/BookingPackages/BookingPackageDetails";
 import MaintenanceActions from "views/MaintenanceAction/MaintenanceActions";
 import MaintenanceActionDetails from "views/MaintenanceAction/MaintenanceActionDetails";
+import BookingDetails from "views/Booking/BookingDetails";
 
 var routes = [
   {
@@ -102,6 +103,14 @@ var routes = [
     icon: "nc-icon nc-bookmark-2",
     component: Bookings,
     layout: "/admin"
+  },
+  {
+    path: "/bookingDetails",
+    name: "Booking Details",
+    icon: "nc-icon nc-bookmark-2",
+    component: BookingDetails,
+    layout: "/admin",
+    invisible: true
   },
   {
     path: "/bookingPackages",

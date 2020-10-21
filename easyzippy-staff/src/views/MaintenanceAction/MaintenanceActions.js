@@ -32,7 +32,8 @@ function MaintenanceActions() {
     // DECLARING COLUMNS
     var columns = [
         {title: "Id", field: "id", editable: "never"},
-        {title: "Maintenance Date (YYYY/MM/DD)", field: "maintenanceDate"},
+        {title: "Maintenance Date (YYYY/MM/DD)", field: "maintenanceDate",
+        render: row => <span>{ formatDate(row["maintenanceDate"]) }</span>},
         {title: "Description", field:"description"},
         {title: "Locker Id", field:"lockerId"}
     ]
@@ -64,7 +65,7 @@ function MaintenanceActions() {
         // validation: if name is empty
         if(newData.maintenanceDate === undefined || newData.maintenanceDate === ""){
             isError(true)
-            setError("Unable to add new maintenance action. Please fill in the maintenance date field.")
+            setError("Unable to add new maintenance action. Please fill in the maintenance date field in YYYY/MM/DD format.")
             isSuccessful(false)
             resolve()
             return;
@@ -186,8 +187,7 @@ function MaintenanceActions() {
             month = '0' + month;
         }
 
-        //return dt + "/" + month + "/" + year + " " + time ;
-        return dt + "/" + month + "/" + year;
+        return year + "/" + month + "/" + dt;
     }
 
     return (

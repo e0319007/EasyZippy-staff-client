@@ -71,6 +71,7 @@ function CustomerDetails() {
             }
         }).then(res => {
             setData(res.data)
+
         }).catch(function(error) {
             console.log(error.response.data)
         })
