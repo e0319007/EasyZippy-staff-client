@@ -25,6 +25,8 @@ function Dashboard() {
 
   const [merchantLength, setMerchantLength] = useState('')
   const [customerLength, setCustomerLength] = useState('')
+  const [customerBookingLength, setCustomerBookingLength] = useState('')
+  const [merchantBookingLength, setMerchantBookingLength] = useState('')
 
   useEffect(() => {
 
@@ -50,8 +52,31 @@ function Dashboard() {
     }).catch( function(error) {
       console.log(error.response)
     })
+
+    axios.get('/customerBookings', {
+      headers: {
+        AuthToken: authToken
+      }
+    }).then(res => {
+      setCustomerBookingLength(res.data.length)
+    }).catch(function (error) {
+      console.log(error.response)
+    })
+
+    axios.get('/merchantBookings', {
+      headers: {
+        AuthToken: authToken
+      }
+    }).then(res => {
+      setMerchantBookingLength(res.data.length)
+    }).catch(function (error) {
+      console.log(error.response)
+    })
   }, [])
 
+  function getTotalBookings() {
+    return customerBookingLength + merchantBookingLength
+  }
 
   return (
     <>
@@ -114,7 +139,7 @@ function Dashboard() {
                   <Col md="8" xs="7">
                     <div className="numbers">
                       <p className="card-category">Bookings</p>
-                      <CardTitle tag="p">-</CardTitle>
+                      <CardTitle tag="p">{getTotalBookings()}</CardTitle>
                       <p />
                     </div>
                   </Col>
