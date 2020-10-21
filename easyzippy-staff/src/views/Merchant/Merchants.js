@@ -32,6 +32,7 @@ function Merchants() {
         {title: "Name", field:"name"},
         {title: "Mobile Number", field:"mobileNumber"},
         {title: "Email", field:"email"},
+        {title: "Credit Balance", field:"creditBalance"},
         {title: "Approved", field:"approved"},
         // {title: "Created At", field:"createdAt"},
         {title: "Disabled", field:"disabled"},

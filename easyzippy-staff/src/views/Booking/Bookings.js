@@ -38,14 +38,13 @@ function Bookings() {
             render: row => <span>{getLockerType(row["lockerTypeId"])}</span>},    
         {title: "Price", field: "bookingPrice"},
         {title: "Booking Source", field: "bookingSourceEnum", lookup:{Mobile: "Mobile", Kiosk: "Kiosk"}},
-        {title: "Status", field: "bookingStatusEnum", lookup:{Unfufilled: "Unfulfilled", Fulfilled: "Fulfilled", Active: "Active"}},
+        {title: "Status", field: "bookingStatusEnum", lookup:{Unfufilled: "Unfulfilled", Fulfilled: "Fulfilled", Active: "Active", Cancelled: "Cancelled"}},
         {title: "Start Date", field: "startDate", 
             customFilterAndSearch: (term, rowData) => formatDate(rowData.startDate).toLowerCase().includes(term.toLowerCase()),
             render: row => <span>{ formatDate(row["startDate"]) }</span>},
         {title: "End Date", field: "endDate",
             customFilterAndSearch: (term, rowData) => formatDate(rowData.endDate).toLowerCase().includes(term.toLowerCase()),
             render: row => <span>{ formatDate(row["endDate"]) }</span>},
-        {title: "Cancelled", field: "cancelled", editable: "never"}
     ]
 
     const [data, setData] = useState([])

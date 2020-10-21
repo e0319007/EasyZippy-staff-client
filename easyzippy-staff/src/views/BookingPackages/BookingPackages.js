@@ -37,7 +37,7 @@ function BookingPackages() {
         {title: "Description", field:"description"},
         {title: "Quota", field:"quota"},
         {title: "Price", field:"price"},
-        {title: "Duration", field:"duration"},
+        {title: "Duration (in days)", field:"duration"},
         {title: "Locker Type", field:"lockerTypeId"},
         {title: "Disabled", field:"disabled", editable: "never"}
     ]
