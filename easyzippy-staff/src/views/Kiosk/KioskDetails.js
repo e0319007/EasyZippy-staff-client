@@ -16,7 +16,7 @@ import {
     Row,
     Col,
     Input,
-    CardHeader, FormGroup, Label, Button, Modal, ModalHeader, ModalBody, Tooltip
+    CardHeader, FormGroup, Label, Button, Modal, ModalHeader, ModalBody, Tooltip, Alert, ModalFooter
 } from "reactstrap";
 
 const theme = createMuiTheme({
@@ -40,12 +40,27 @@ function KioskDetails() {
     const [tooltipOpen, setTooltipOpen] = useState(false);
     const toggleTooltip = () => setTooltipOpen(!tooltipOpen);
 
+    const [tooltipOpenAddLocker, setTooltipOpenAddLocker] = useState(false);
+    const toggleTooltipAddLocker = () => setTooltipOpenAddLocker(!tooltipOpenAddLocker);
+
     //modal 
     const [modalLockers, setModalLockers] = useState(false)
     const toggleModalLockers = () => setModalLockers(!modalLockers);
 
+    const [modalAddLocker, setModalAddLocker] = useState(false)
+    const toggleModalAddLocker = () => setModalAddLocker(!modalAddLocker);
+
     const [lockerTypes, setLockerTypes] = useState([]);
     const [lockers, setLockers] = useState([]);
+
+    const [newLockerType, setNewLockerType] = useState('');
+    const [newLockerTypeId, setNewLockerTypeId] = useState('');
+
+    const [error, setError] = useState('')
+    const [err, isError] = useState(false)
+
+    const [successful, isSuccessful] = useState(false)
+    const [successMsg, setMsg] = useState('')
 
     //to view lockers
     var columns = [
@@ -94,6 +109,14 @@ function KioskDetails() {
         for (var i in lockerTypes) {
             if (lockerTypes[i].id === id) {
                 return lockerTypes[i].name
+            }
+        }
+    }
+
+    function getLockerId(name) {
+        for (var i in lockerTypes) {
+            if ((lockerTypes[i].name).toLowerCase() === name.trim().toLowerCase()) {
+                return lockerTypes[i].id
             }
         }
     }
@@ -178,6 +201,37 @@ function KioskDetails() {
         return dt + "/" + month + "/" + year + " " + time ;
     }
 
+    const onChangeNewLockerType = e => {
+        //dk if this works tho
+        console.log(e.target.value)
+        setNewLockerType(e.target.value)
+        const lockerType = getLockerId(e.target.value);
+        console.log("new lt key: " + lockerType)
+        setNewLockerTypeId(lockerType)
+    }
+
+    const addLocker = e => {
+        axios.post("/locker", {
+            lockerTypeId: newLockerTypeId,
+            kioskId: kioskId
+        },
+        {
+        headers: {
+            AuthToken: authToken
+        }
+    }).then((response) => {
+        console.log("add locker axios went through")
+        isError(false)
+        isSuccessful(true)
+        setMsg("locker added successfully!")
+    }).catch(function (error) {
+        console.log(error.response.data)
+        isError(true)
+        setError(error.response.data)
+        isSuccessful(false)
+    })
+    }
+
     return(
         <>
             <ThemeProvider theme={theme}>
@@ -233,9 +287,16 @@ function KioskDetails() {
                                         <Row>
                                             <div className="update ml-auto mr-auto" >
                                                 {/* view lockers list modal and tooltip */}
+                                                <Button className="btn-round" size="lg" color="primary" id="viewLockerList" onClick={toggleModalAddLocker}>
+                                                    <i className="nc-icon nc-simple-add"/>
+                                                </Button>&nbsp;
+                                                <Tooltip placement="left" isOpen={tooltipOpenAddLocker} target="viewLockerList" toggle={toggleTooltipAddLocker}>
+                                                    Add Locker To Kiosk
+                                                </Tooltip>
+                                                
                                                 <Button className="btn-round" size="lg" color="primary" id="viewListingList" onClick={toggleModalLockers}>
                                                     <i className="fa fa-pause"/>
-                                                </Button>
+                                                </Button>&nbsp;
                                                 <Tooltip placement="left" isOpen={tooltipOpen} target="viewListingList" toggle={toggleTooltip}>
                                                     View Locker List
                                                 </Tooltip>
@@ -268,6 +329,35 @@ function KioskDetails() {
                                         </Row>
                                     </form>
                                 </CardBody>
+
+                                <Modal isOpen={modalAddLocker} toggle={toggleModalAddLocker}>
+                                    <ModalHeader toggle={toggleModalAddLocker}>Add Locker To Kiosk</ModalHeader>
+                                    <ModalBody>
+                                        <form>
+                                            <FormGroup>
+                                                <Label for="inputNewLockerType">Locker Type</Label>
+                                                <Input
+                                                    type="select"
+                                                    id="inputNewLockerType"
+                                                    value={newLockerType}
+                                                    onChange={onChangeNewLockerType}
+                                                >
+                                                    <option>[select]</option>
+                                                    {
+                                                        lockerTypes.map(newLockerType => (
+                                                            <option key={newLockerType.id}>{newLockerType.name}</option>
+                                                        ))
+                                                    }
+                                                </Input>
+                                            </FormGroup>
+                                            {err &&<Alert color="danger">{error}</Alert> }
+                                            {successful &&<Alert color="success">{successMsg}</Alert>} 
+                                        </form>
+                                    </ModalBody>
+                                    <ModalFooter>
+                                    <Button color="primary" onClick={addLocker}>Add Locker</Button>{' '}
+                                    </ModalFooter>
+                                </Modal>
 
                                 <Modal isOpen={modalLockers} toggle={toggleModalLockers}>
                                     <ModalHeader toggle={toggleModalLockers}>Lockers</ModalHeader>

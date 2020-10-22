@@ -37,6 +37,9 @@ function Lockers() {
     // const [filterLockerType, setFilterLockerType] = useState()
     // const [filterKiosk, setFilterKiosk] = useState()
 
+    const [kioskId, setKioskId] = useState()
+    const [lockerTypeId, setLockerTypeId] = useState()
+
     //for error handling
     const [error, setError] = useState('')
     const [err, isError] = useState(false)
@@ -47,14 +50,14 @@ function Lockers() {
     // DECLARING COLUMNS (created at can put inside details)
     var columns = [
         {title: "Id", field: "id", editable: "never", filtering: false },
-        {title: "Locker Status", field:"lockerStatusEnum", editable: "never"},
-        {title: "Locker Type", field:"lockerTypeId", editable: "never", 
+        {title: "Locker Status", field:"lockerStatusEnum", editable: "never", searchable: false},
+        {title: "Locker Type", field:"lockerTypeId", editable: "never", searchable: false,
             customFilterAndSearch: (term, rowData) => getLockerType(rowData.lockerTypeId).toLowerCase().includes(term.toLowerCase()),
             render: row => <span>{ getLockerType(row["lockerTypeId"]) }</span>},
-        {title: "Kiosk", field:"kioskId", editable: "never", 
+        {title: "Kiosk", field:"kioskId", editable: "never", searchable: false,
             customFilterAndSearch: (term, rowData) => getKioskName(rowData.kioskId).toLowerCase().includes(term.toLowerCase()),
             render: row => <span>{ getKioskName(row["kioskId"]) }</span>},
-        {title: "Disabled", field:"disabled", editable: "never", filtering: false },
+        {title: "Disabled", field:"disabled", editable: "never", filtering: false, searchable: false},
     ]
 
     useEffect(() => {
@@ -195,7 +198,7 @@ function Lockers() {
                                         onRowDelete: (oldData) =>
                                             new Promise((resolve) => {
                                             handleRowDelete(oldData, resolve)
-                                        }),
+                                        })
                                     }}
                                     //select 
                                     // components={{
