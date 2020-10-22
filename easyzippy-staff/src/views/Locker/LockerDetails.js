@@ -40,6 +40,12 @@ function LockerDetails() {
     const [kiosks, setKiosks] = useState([])
     const [lockerTypes, setLockerTypes] = useState([])
 
+    const [tooltipOpen, setTooltipOpen] = useState(false);
+    const toggleTooltip = () => setTooltipOpen(!tooltipOpen);
+
+    const [modalLockerActionRecord, setModalLockerActionRecord] = useState(false)
+    const toggleModalLockerActionRecord = () => setModalLockerActionRecord(!modalLockerActionRecord);
+
     useEffect(() => {
         console.log("getting locker type details axios")
         axios.get(`/locker/${lockerId}`, 
@@ -235,6 +241,17 @@ function LockerDetails() {
                                                     />
                                             </FormGroup>                           
                                         </fieldset>
+                                        <Row>
+                                            <div className="update ml-auto mr-auto" >
+                                                {/* view lockers list modal and tooltip */}
+                                                <Button className="btn-round" size="lg" color="primary" id="viewLockerActionRecord" onClick={toggleModalLockerActionRecord}>
+                                                    <i className="fas fa-archive"/>
+                                                </Button>&nbsp;
+                                                <Tooltip placement="left" isOpen={tooltipOpen} target="viewLockerActionRecord" toggle={toggleTooltip}>
+                                                    View Locker Action Records
+                                                </Tooltip>
+                                            </div>
+                                        </Row>
                                         <p></p>
                                         <Row>
                                             <div className="update ml-auto mr-auto" >
@@ -262,6 +279,14 @@ function LockerDetails() {
                                         </Row>
                                     </form>
                                 </CardBody>
+
+                                <Modal isOpen={modalLockerActionRecord} toggle={toggleModalLockerActionRecord}>
+                                    <ModalHeader toggle={toggleModalLockerActionRecord}>Locker Action Records</ModalHeader>
+                                    <ModalBody>
+                                        locker action records
+                                    </ModalBody>
+                                </Modal>
+
                             </Card>
                         </Col>
                     </Row>
