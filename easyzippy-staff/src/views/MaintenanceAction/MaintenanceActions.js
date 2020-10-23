@@ -85,9 +85,6 @@ function MaintenanceActions() {
             //yyyy/mm/dd
             var date = /^(19|20)\d\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$/
 
-            //var date = /^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/
-            //var date = /^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\\d\\d$/
-            //var date = /^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$/i
             if (!newData.maintenanceDate.match(date)) {
                 setError("Please enter a valid date in YYYY/MM/DD format")
                 isError(true)
@@ -104,8 +101,19 @@ function MaintenanceActions() {
             setError("Unable to add new maintenance action. Please fill in the locker Id field.")
             isSuccessful(false)
             resolve()
-            return;
+            //return;
+        } else {
+            var nums = /^[0-9]+$/
+            if (!newData.lockerId.match(nums)) {
+                setError("Locker Id must be a number")
+                isError(true)
+                isSuccessful(false)
+                resolve()
+                return;
+            } else {
+                isError(false)
         }
+    }
 
         axios.post("/maintenanceAction", {
             maintenanceDate: newData.maintenanceDate,
@@ -138,6 +146,7 @@ function MaintenanceActions() {
     }
 
     const handleRowUpdate = (newData, oldData, resolve) => {
+        //need to add validation for update date
 
         // if(newData.maintenanceDate === undefined || newData.maintenanceDate === ""){
         //     isError(true)
@@ -146,9 +155,34 @@ function MaintenanceActions() {
         //     resolve()
         //     return;
         // } else {
-        //     var date = "^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\\d\\d$"
+        //     //yyyy/mm/dd
+        //     var date = /^(19|20)\d\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$/
+
         //     if (!newData.maintenanceDate.match(date)) {
-        //         setError("Please enter a valid date in DD/MM/YYYY format")
+        //         setError("Please enter a valid date in YYYY/MM/DD format")
+        //         isError(true)
+        //         isSuccessful(false)
+        //         resolve()
+        //         //return;
+        //     } else {
+        //         isError(false)
+        //         resolve()
+        //         //return;
+        //     }
+        // }
+        
+
+
+        // if (newData.lockerId === undefined || newData.lockerId === "") {
+        //     isError(true)
+        //     setError("Unable to update maintenance action. Please fill in the locker Id field.")
+        //     isSuccessful(false)
+        //     resolve()
+        //     return;
+        // } else {
+        //     var nums = /^[0-9]+$/
+        //     if (!newData.lockerId.match(nums)) {
+        //         setError("Locker Id must be a number")
         //         isError(true)
         //         isSuccessful(false)
         //         resolve()
@@ -157,14 +191,6 @@ function MaintenanceActions() {
         //         isError(false)
         //     }
         // }
-
-        if (newData.lockerId === undefined || newData.lockerId === "") {
-            isError(true)
-            setError("Unable to update maintenance action. Please fill in the locker Id field.")
-            isSuccessful(false)
-            resolve()
-            return;
-        }
 
         axios.put("/maintenanceAction/"+oldData.id, {
             maintenanceDate: newData.maintenanceDate,
