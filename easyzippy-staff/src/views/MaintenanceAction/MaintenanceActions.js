@@ -11,8 +11,11 @@ import {
     Row,
     Col,
     Card,
-    Alert
+    Alert,
+    Input
 } from "reactstrap";
+import { TextField } from "@material-ui/core";
+import { createPropertySignature } from "typescript";
 
 const theme = createMuiTheme({
     typography: {
@@ -34,7 +37,14 @@ function MaintenanceActions() {
         {title: "Id", field: "id", editable: "never"},
         {title: "Maintenance Date (YYYY/MM/DD)", field: "maintenanceDate",
             customFilterAndSearch: (term, rowData) => formatDate(rowData.maintenanceDate).toLowerCase().includes(term.toLowerCase()),
-            render: row => <span>{ formatDate(row["maintenanceDate"]) }</span>},
+            render: row => <span>{ formatDate(row["maintenanceDate"]) }</span>,
+            editComponent: props => (
+                <input
+                    type='text'
+                    placeholder={formatDate(props.value)}
+                    onChange={e => props.onChange(e.target.value)}
+                />
+            )},
         {title: "Description", field:"description"},
         {title: "Locker Id", field:"lockerId"}
     ]
