@@ -22,7 +22,7 @@ const theme = createMuiTheme({
     },
 });
 
-function BookingDetails() {
+function MerchantBookingDetails() {
 
     const history = useHistory()
     const authToken = (JSON.parse(Cookies.get('authToken'))).toString()
@@ -34,6 +34,7 @@ function BookingDetails() {
     const [merchants, setMerchants] = useState([])
     const [bookingPackages, setBookingPackages] = useState([])
     const [lockerTypes, setLockerTypes] = useState([])
+    const [kiosks, setKiosks] = useState([])
 
 
     useEffect(() => {
@@ -49,9 +50,9 @@ function BookingDetails() {
                 headers: {
                     AuthToken: authToken
                 }
-            }).then (res => {
+            }).then(res => {
                 setCustomers(res.data)
-            }).catch (err => console.error(err))
+            }).catch(err => console.error(err))
 
             axios.get("/merchants", {
                 headers: {
@@ -78,6 +79,16 @@ function BookingDetails() {
             }).then(res => {
                 setLockerTypes(res.data)
             }).catch(err => console.error(err))
+
+            axios.get("/kiosks", 
+            {
+                headers: {
+                    AuthToken: authToken
+                }
+            }).then(res => {
+                setKiosks(res.data)
+            }).catch(err => console.error(err))
+
         }).catch (function(error) {
             console.log(error.response.data)
         })
@@ -92,7 +103,7 @@ function BookingDetails() {
         }
     }
 
-    //match merchant id to merchant name
+    //match merchant id to merchant name 
     function getMerchantName(id) {
         for (var i in merchants) {
             if (merchants[i].id === id) {
@@ -116,6 +127,15 @@ function BookingDetails() {
         for (var i in lockerTypes) {
             if (lockerTypes[i].id === id) {
                 return lockerTypes[i].name
+            }
+        }
+    }
+
+    //match kiosk id to kiosk address 
+    function getKiosk(id) {
+        for (var i in kiosks) {
+            if (kiosks[i].id === id) {
+                return kiosks[i].address
             }
         }
     }
@@ -153,41 +173,32 @@ function BookingDetails() {
                             <Card className="card-name">
                                 <CardHeader>
                                     <div className="form-row">
-                                    <CardTitle className="col-md-10" tag="h5">Booking Details: {getCustomerName(data.customerId)} </CardTitle>
+                                    <CardTitle className="col-md-10" tag="h5">Booking Details: {getMerchantName(data.merchantId)} </CardTitle>
                                     </div>
                                 </CardHeader>
                                 <CardBody>
                                     <form>
-                                        <fieldset disabled>  
-                                            <div className="form-row">
-                                                <FormGroup className="col-md-4">
-                                                    <Label for="inputName">Customer Name</Label>
-                                                    <Input
-                                                        type="text"
-                                                        id="inputName"
-                                                        placeholder="Name here"
-                                                        value={getCustomerName(data.customerId)}
-                                                    />
-                                                </FormGroup>
-                                                <FormGroup className="col-md-4">
-                                                    <Label for="inputName">Collector Name (if any)</Label>
-                                                    <Input
-                                                        type="text"
-                                                        id="inputName"
-                                                        placeholder="-"
-                                                        value={getCustomerName(data.collecterId)}
-                                                    />
-                                                </FormGroup>
-                                                <FormGroup className="col-md-4">
-                                                    <Label for="inputName">Merchant Name (if any)</Label>
-                                                    <Input
-                                                        type="text"
-                                                        id="inputName"
-                                                        placeholder="-"
-                                                        value={getMerchantName(data.merchantId)}
-                                                    />
-                                                </FormGroup>
-                                            </div>
+                                        <fieldset disabled> 
+                                        <div className="form-row">
+                                            <FormGroup className="col-md-6">
+                                                <Label for="inputName">Merchant Name</Label>
+                                                <Input
+                                                    type="text"
+                                                    id="inputName"
+                                                    placeholder="Name here"
+                                                    value={getMerchantName(data.merchantId)}
+                                                />
+                                            </FormGroup>
+                                            <FormGroup className="col-md-6">
+                                                <Label for="inputName">Collector Name</Label>
+                                                <Input
+                                                    type="text"
+                                                    id="inputName"
+                                                    placeholder="-"
+                                                    value={getCustomerName(data.collecterId)}
+                                                />
+                                            </FormGroup>                                  
+                                        </div> 
                                             <div className="form-row">
                                             <FormGroup className="col-md-6">
                                                 <Label for="inputId">Booking Id</Label>
@@ -240,11 +251,11 @@ function BookingDetails() {
                                             </div>
                                             <div className="form-row">
                                             <FormGroup className="col-md-6">
-                                                <Label for="inputPrice">Price</Label>
+                                                <Label for="inputPrice">Price (if any)</Label>
                                                 <Input 
                                                     type="text"
                                                     id="inputPrice"
-                                                    placeholder="price here"
+                                                    placeholder="-"
                                                     value={data.bookingPrice}
                                                 />
                                             </FormGroup>
@@ -278,24 +289,26 @@ function BookingDetails() {
                                                     />
                                                 </FormGroup>
                                             </div> 
-                                            <FormGroup>
-                                                <Label for="inputLockerType">Locker Type</Label>
-                                                <Input 
-                                                    type="text"
-                                                    id="inputLockerType"
-                                                    placeholder="Locker Type"
-                                                    value={getLockerType(data.lockerTypeId)}
-                                                />
-                                            </FormGroup>
-                                            <FormGroup>
-                                                <Label for="inputCancelled">Cancelled</Label>
-                                                <Input 
-                                                    type="text"
-                                                    id="inputCancelled"
-                                                    placeholder="Cancelled"
-                                                    value={data.cancelled}
-                                                />
-                                            </FormGroup> 
+                                            <div className="form-row">
+                                                <FormGroup className="col-md-6">
+                                                    <Label for="inputLockerType">Locker Type</Label>
+                                                    <Input 
+                                                        type="text"
+                                                        id="inputLockerType"
+                                                        placeholder="Locker Type"
+                                                        value={getLockerType(data.lockerTypeId)}
+                                                    />
+                                                </FormGroup>
+                                                <FormGroup className="col-md-6">
+                                                    <Label for="inputKiosk">Kiosk</Label>
+                                                    <Input 
+                                                        type="text"
+                                                        id="inputKiosk"
+                                                        placeholder="Kiosk"
+                                                        value={getKiosk(data.kioskId)}
+                                                    />
+                                                </FormGroup>
+                                            </div>
                                             <FormGroup>
                                                 <Label for="inputCreatedAt">Created On</Label>
                                                 <Input 
@@ -310,7 +323,7 @@ function BookingDetails() {
                                             <Col md="12">
                                                 <div className="form-add">
                                                     <Button onClick={() => {
-                                                        history.push('/admin/bookings')
+                                                        history.push('/admin/merchantBookings')
                                                         localStorage.removeItem('bookingToView')
                                                     }}> back
                                                     </Button>
@@ -328,4 +341,4 @@ function BookingDetails() {
     );
 }
 
-export default BookingDetails;
+export default MerchantBookingDetails;

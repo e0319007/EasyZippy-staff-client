@@ -22,7 +22,7 @@ const theme = createMuiTheme({
     },
 });
 
-function Bookings() {
+function MerchantBookings() {
     const authToken = JSON.parse(Cookies.get('authToken'))
 
     const history = useHistory()
@@ -31,14 +31,14 @@ function Bookings() {
     var columns = [
         {title: "Id", field: "id", editable: "never"},
         {title: "Name", field:"customerId", editable: "never", 
-            customFilterAndSearch: (term, rowData) => getCustomerName(rowData.customerId).toLowerCase().includes(term.toLowerCase()),
-            render: row => <span>{getCustomerName(row["customerId"])}</span>},
+            customFilterAndSearch: (term, rowData) => getMerchantName(rowData.merchantId).toLowerCase().includes(term.toLowerCase()),
+            render: row => <span>{getMerchantName(row["merchantId"])}</span>},
         {title: "Locker Type", field: "lockerTypeId", editable: "never", 
             customFilterAndSearch: (term, rowData) => getLockerType(rowData.lockerTypeId).toLowerCase().includes(term.toLowerCase()),
             render: row => <span>{getLockerType(row["lockerTypeId"])}</span>},    
         {title: "Price", field: "bookingPrice"},
         {title: "Booking Source", field: "bookingSourceEnum", lookup:{Mobile: "Mobile", Kiosk: "Kiosk"}},
-        {title: "Status", field: "bookingStatusEnum", lookup:{Unfufilled: "Unfulfilled", Fulfilled: "Fulfilled", Active: "Active", Cancelled: "Cancelled"}},
+        {title: "Status", field: "bookingStatusEnum", lookup:{Unfulfilled: "Unfulfilled", Fulfilled: "Fulfilled", Active: "Active", Cancelled: "Cancelled"}},
         {title: "Start Date", field: "startDate", 
             customFilterAndSearch: (term, rowData) => formatDate(rowData.startDate).toLowerCase().includes(term.toLowerCase()),
             render: row => <span>{ formatDate(row["startDate"]) }</span>},
@@ -48,12 +48,12 @@ function Bookings() {
     ]
 
     const [data, setData] = useState([])
-    const [customers, setCustomers] = useState([])
+    const [merchants, setMerchants] = useState([])
     const [lockerTypes, setLockerTypes] = useState([])
 
     useEffect(() => {
-        console.log("retrieving customer bookings;; axios")
-        axios.get("/customerBookings", 
+        console.log("retrieving merchant bookings;; axios")
+        axios.get("/merchantBookings", 
         {
             headers: {
                 AuthToken: authToken
@@ -61,13 +61,13 @@ function Bookings() {
         }).then (res => {
             setData(res.data)
 
-            axios.get("/customers", 
+            axios.get("/merchants", 
             {
                 headers: {
                     AuthToken: authToken
                 }
             }).then(res => {
-                setCustomers(res.data)
+                setMerchants(res.data)
             }).catch (err => console.error(err))
 
             axios.get("/lockerTypes", 
@@ -81,11 +81,11 @@ function Bookings() {
         }).catch (err => console.error(err))
     },[authToken])
 
-    //match customer id to customer name 
-    function getCustomerName(id) {
-        for (var i in customers) {
-            if (customers[i].id === id) {
-                return customers[i].firstName + " " + customers[i].lastName
+    //match merchant id to merchant name 
+    function getMerchantName(id) {
+        for (var i in merchants) {
+            if (merchants[i].id === id) {
+                return merchants[i].name 
             }
         }
     }
@@ -129,7 +129,7 @@ function Bookings() {
                     <Col md = "12">
                         <Card>
                             <MaterialTable
-                                title="Booking List"
+                                title="Merchant Booking List"
                                 columns={columns}
                                 data={data}
                                 options={{
@@ -147,7 +147,7 @@ function Bookings() {
                                     icon: 'info',
                                     tooltip: "View Booking Details",
                                     onClick: (event, rowData) => {
-                                        history.push('/admin/bookingDetails')
+                                        history.push('/admin/merchantBookingDetails')
                                         localStorage.setItem('bookingToView', JSON.stringify(rowData.id))
                                     }
                                 },
@@ -161,4 +161,4 @@ function Bookings() {
     );
 }
 
-export default Bookings;
+export default MerchantBookings;

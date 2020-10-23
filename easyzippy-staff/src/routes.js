@@ -7,7 +7,6 @@ import Customers from "views/Customer/Customers";
 import Merchants from "views/Merchant/Merchants";
 import Advertisements from "views/Advertisement/Advertisements";
 import Promotions from "views/Promotion/Promotions";
-import Bookings from "views/Booking/Bookings";
 import Kiosks from "views/Kiosk/Kiosks";
 import Category from "views/Category/Category";
 import Announcements from "views/Announcement/Announcements";
@@ -21,7 +20,10 @@ import BookingPackages from "views/BookingPackages/BookingPackages";
 import BookingPackageDetails from "views/BookingPackages/BookingPackageDetails";
 import MaintenanceActions from "views/MaintenanceAction/MaintenanceActions";
 import MaintenanceActionDetails from "views/MaintenanceAction/MaintenanceActionDetails";
-import BookingDetails from "views/Booking/BookingDetails";
+import CustomerBookingDetails from "views/Booking/CustomerBookingDetails";
+import CustomerBookings from "views/Booking/CustomerBookings";
+import MerchantBookings from "views/Booking/MerchantBookings";
+import MerchantBookingDetails from "views/Booking/MerchantBookingDetails";
 
 var routes = [
   {
@@ -97,18 +99,41 @@ var routes = [
     component: Promotions,
     layout: "/admin"
   },
+  // {
+  //   collapse: true, 
+  //   name: "Bookings", 
+  //   icon: "nc-icon nc-bookmark-2",
+  //   state: "string",
+  //   views: ["/customerBookings", "/merchantBookings"]
+  // },
   {
-    path: "/bookings",
-    name: "Bookings",
+    path: "/customerBookings",
+    name: "Customer Bookings",
     icon: "nc-icon nc-bookmark-2",
-    component: Bookings,
+    component: CustomerBookings,
+    layout: "/admin",
+    collapse:true
+  },
+  {
+    path: "/customerBookingDetails",
+    name: "Customer Booking Details",
+    icon: "nc-icon nc-bookmark-2",
+    component: CustomerBookingDetails,
+    layout: "/admin",
+    invisible: true
+  },
+  {
+    path: "/merchantBookings",
+    name: "Merchant Bookings",
+    icon: "nc-icon nc-bookmark-2",
+    component: MerchantBookings,
     layout: "/admin"
   },
   {
-    path: "/bookingDetails",
-    name: "Booking Details",
+    path: "/merchantBookingDetails",
+    name: "Merchant Booking Details",
     icon: "nc-icon nc-bookmark-2",
-    component: BookingDetails,
+    component: MerchantBookingDetails,
     layout: "/admin",
     invisible: true
   },
@@ -202,5 +227,6 @@ var routes = [
     layout: "/admin",
   }
 ];
+
 
 export default routes

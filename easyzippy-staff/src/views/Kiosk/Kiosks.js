@@ -161,7 +161,7 @@ function Kiosks() {
                 let errormsg = error.response.data;
 
                 if ((error.response.data).startsWith("<!DOCTYPE html>")) {
-                    errormsg = "An unexpected error has occurred. The Locker Type cannot be deleted."
+                    errormsg = "An unexpected error has occurred. The kiosk cannot be deleted."
                 }
 
                 isSuccessful(false)

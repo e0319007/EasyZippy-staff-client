@@ -21,7 +21,8 @@ import LockerTypeDetails from "views/Locker/LockerTypeDetails.js"
 import LockerDetails from "views/Locker/LockerDetails.js"
 import BookingPackageDetails from "views/BookingPackages/BookingPackageDetails.js";
 import MaintenanceActionDetails from "views/MaintenanceAction/MaintenanceActionDetails.js";
-import BookingDetails from "views/Booking/BookingDetails.js";
+import CustomerBookingDetails from "views/Booking/CustomerBookingDetails.js";
+import MerchantBookingDetails from "views/Booking/MerchantBookingDetails.js";
 
 
 const hist = createBrowserHistory();
@@ -54,7 +55,9 @@ function App(props) {
                 <Route exact path="/admin/lockerDetails" component={LockerDetails}/>
                 <Route exact path="/admin/bookingPackageDetails" component={BookingPackageDetails}/>
                 <Route exact path="/admin/maintenanceActionDetails" component={MaintenanceActionDetails}/>
-                <Route exact path="/admin/bookingDetails" component={BookingDetails}/>
+                <Route exact path="/admin/customerBookingDetails" component={CustomerBookingDetails}/>
+                <Route exact path="/admin/merchantBookingDetails" component={MerchantBookingDetails}/>
+        
 
                 {/* <Redirect to="/error" component={Error} /> */}
             </Switch>
