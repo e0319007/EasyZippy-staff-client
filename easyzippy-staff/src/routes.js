@@ -24,6 +24,7 @@ import CustomerBookingDetails from "views/Booking/CustomerBookingDetails";
 import CustomerBookings from "views/Booking/CustomerBookings";
 import MerchantBookings from "views/Booking/MerchantBookings";
 import MerchantBookingDetails from "views/Booking/MerchantBookingDetails";
+import AdvertisementDetails from "views/Advertisement/AdvertisementDetails"
 
 var routes = [
   {
@@ -91,6 +92,14 @@ var routes = [
     icon: "nc-icon nc-image",
     component: Advertisements,
     layout: "/admin"
+  },
+  {
+    path: "/advertisementDetails",
+    name: "Advertisement Details",
+    icon: "nc-icon nc-image",
+    component: AdvertisementDetails,
+    layout: "/admin",
+    invisible:true
   },
   {
     path: "/promotions",

@@ -23,6 +23,7 @@ import BookingPackageDetails from "views/BookingPackages/BookingPackageDetails.j
 import MaintenanceActionDetails from "views/MaintenanceAction/MaintenanceActionDetails.js";
 import CustomerBookingDetails from "views/Booking/CustomerBookingDetails.js";
 import MerchantBookingDetails from "views/Booking/MerchantBookingDetails.js";
+import AdvertisementDetails from "views/Advertisement/AdvertisementDetails"
 
 
 const hist = createBrowserHistory();
@@ -57,8 +58,7 @@ function App(props) {
                 <Route exact path="/admin/maintenanceActionDetails" component={MaintenanceActionDetails}/>
                 <Route exact path="/admin/customerBookingDetails" component={CustomerBookingDetails}/>
                 <Route exact path="/admin/merchantBookingDetails" component={MerchantBookingDetails}/>
-        
-
+                <Route exact path="/admin/advertisementDetails" component={AdvertisementDetails}/>
                 {/* <Redirect to="/error" component={Error} /> */}
             </Switch>
         </Router>
