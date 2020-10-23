@@ -13,7 +13,13 @@ import {
     Row,
     Col,
     CardText,
-    Alert
+    Alert,
+    Modal, 
+    ModalHeader, 
+    ModalBody, 
+    ModalFooter,
+    FormGroup,
+    Button
 } from "reactstrap";
 
 const theme = createMuiTheme({
@@ -38,6 +44,11 @@ function Advertisements() {
 
     const [successful, isSuccessful] = useState(false)
     const [successMsg, setMsg] = useState('')
+
+    const [modal, setModal] = useState(false)
+    const [inModal, isInModal] = useState(false)
+
+    const toggle = () => setModal(!modal);
 
     var columns = [
         {title: "Id", field: "id", editable: "never"},
@@ -100,9 +111,9 @@ function Advertisements() {
         })
     }   
 
-    // const createStaffAdvertisement = () => {
-
-    // }
+    const createStaffAdvertisement = () => {
+        //
+    }
 
     // to use when viewing 
     function formatDate(d) {
@@ -166,7 +177,7 @@ function Advertisements() {
                                             {
                                                 icon: 'add',
                                                 onClick: (event, rowData) => {
-                                                    console.log("open modal")
+                                                    toggle()
                                                 },
                                                 isFreeAction: true,
                                                 tooltip: 'Add Button',
@@ -179,12 +190,27 @@ function Advertisements() {
                                         })
                                     }}
                             />
-                            { err &&<Alert color="danger">{error}</Alert> }
-                            { successful &&<Alert color="success">{successMsg}</Alert>}
+                            { !inModal && err &&<Alert color="danger">{error}</Alert> }
+                            { !inModal && successful &&<Alert color="success">{successMsg}</Alert>}
                         </Card>
                     </Col>
                 </Row>
-            </div>   
+            </div>  
+            <Modal isOpen={modal} toggle={toggle}>
+                <ModalHeader toggle={toggle}>Add Advertisement</ModalHeader>
+                <ModalBody>
+                    <form>
+                        <FormGroup>
+
+                        </FormGroup>
+                        { inModal && err &&<Alert color="danger">{error}</Alert> }
+                        { inModal && successful &&<Alert color="success">{successMsg}</Alert>}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
+                    </form>
+                </ModalBody>
+                <ModalFooter>
+                <Button color="primary" onClick={createStaffAdvertisement}>Create</Button>{' '}
+                </ModalFooter>
+            </Modal> 
         </ThemeProvider>     
     );
 }

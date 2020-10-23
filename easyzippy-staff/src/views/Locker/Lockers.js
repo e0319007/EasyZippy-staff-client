@@ -13,7 +13,9 @@ import {
     Alert,
     FormGroup, 
     Label,
-    Input
+    Input,
+    Button, Modal, ModalHeader, ModalBody, Tooltip, ModalFooter,
+    UncontrolledAlert
 } from "reactstrap";
 
 const theme = createMuiTheme({
@@ -38,6 +40,7 @@ function Lockers() {
     // const [filterKiosk, setFilterKiosk] = useState()
 
     const [kioskId, setKioskId] = useState()
+    const [kiosk, setKiosk] = useState()
     const [lockerTypeId, setLockerTypeId] = useState()
 
     //for error handling
@@ -46,6 +49,14 @@ function Lockers() {
 
     const [successful, isSuccessful] = useState(false)
     const [successMsg, setMsg] = useState('')
+
+    const [modal, setModal] = useState(false)
+    const [inModal, isInModal] = useState(false)
+
+    const toggle = () => setModal(!modal, setError(false), isSuccessful(false));
+
+    const [newLockerType, setNewLockerType] = useState('');
+    const [newLockerTypeId, setNewLockerTypeId] = useState('');
 
     // DECLARING COLUMNS (created at can put inside details)
     var columns = [
@@ -105,6 +116,7 @@ function Lockers() {
             const index = oldData.tableData.id;
             dataDelete.splice(index, 1);
             setData([...dataDelete]);
+            isInModal(false)
             isError(false)
             isSuccessful(true)
             setMsg("Locker successfully deleted!")
@@ -117,7 +129,7 @@ function Lockers() {
             if ((error.response.data).startsWith("<!DOCTYPE html>")) {
                 errormsg = "An unexpected error has occurred. The Locker Type cannot be deleted."
             }
-
+            isInModal(false)
             isSuccessful(false)
             isError(true)
             setError(errormsg)
@@ -140,6 +152,62 @@ function Lockers() {
         for (var i in lockerTypes) {
             if (lockerTypes[i].id === id) {
                 return lockerTypes[i].name
+            }
+        }
+    }
+
+    const addLocker = e => {
+        axios.post("/locker", {
+            lockerTypeId: newLockerTypeId,
+            kioskId: kioskId
+        },
+        {
+        headers: {
+            AuthToken: authToken
+        }
+    }).then((response) => {
+        console.log("add locker axios went through")
+        isInModal(true)
+        isError(false)
+        isSuccessful(true)
+        setMsg("locker added successfully!")
+    }).catch(function (error) {
+        console.log(error.response.data)
+        isInModal(true)
+        isError(true)
+        setError(error.response.data)
+        isSuccessful(false)
+    })
+    }
+
+    const onChangeNewLockerType = e => {
+        console.log(e.target.value)
+        setNewLockerType(e.target.value)
+        const lockerType = getLockerId(e.target.value);
+        console.log("new lt key: " + lockerType)
+        setNewLockerTypeId(lockerType)
+    }
+
+    const onChangeKiosk = e => {
+        console.log(e.target.value)
+        setKiosk(e.target.value)
+        const kioskid = getKioskId(e.target.value)
+        console.log("kiosk id: " + kioskid)
+        setKioskId(kioskid)
+    }
+
+    function getKioskId(address) {
+        for (var i in kiosks) {
+            if ((kiosks[i].address).toLowerCase() === address.trim().toLowerCase()) {
+                return kiosks[i].id
+            }
+        }
+    }
+
+    function getLockerId(name) {
+        for (var i in lockerTypes) {
+            if ((lockerTypes[i].name).toLowerCase() === name.trim().toLowerCase()) {
+                return lockerTypes[i].id
             }
         }
     }
@@ -193,7 +261,15 @@ function Lockers() {
                                                 history.push('/admin/lockerDetails')
                                                 localStorage.setItem('lockerToView', JSON.stringify(rowData.id))
                                                 }
-                                            },                                
+                                            },          
+                                            {
+                                                icon: 'add',
+                                                onClick: (event, rowData) => {
+                                                    toggle()
+                                                },
+                                                isFreeAction: true,
+                                                tooltip: 'Add Button',
+                                            }                                 
                                     ]}
                                     editable={{
                                         onRowDelete: (oldData) =>
@@ -201,55 +277,57 @@ function Lockers() {
                                             handleRowDelete(oldData, resolve)
                                         })
                                     }}
-                                    //select 
-                                    // components={{
-                                    //     Toolbar: props => (
-                                    //         <div>
-                                    //             <MTableToolbar {...props}/>
-                                    //                 <div style={{padding: '0px 10px'}} className="form-row">
-                                    //                     <FormGroup className="col-md-3">
-                                    //                         <Label for="inputLockerTypes">Filter Locker Type</Label>
-                                    //                             <Input 
-                                    //                             type="select" 
-                                    //                             name="select" 
-                                    //                             id="inputLockerTypes" 
-                                    //                             value={lockerTypes} 
-                                    //                             onChange={onChangeLockerType}
-                                    //                             >
-                                    //                                 {
-                                    //                                     lockerTypes.map(lockerTypes => (
-                                    //                                         <option key={lockerTypes.id}>{lockerTypes.name}</option>
-                                    //                                     ))
-                                    //                                 }
-                                    //                             </Input>
-                                    //                     </FormGroup>
-                                    //                     <FormGroup className="col-md-3">
-                                    //                         <Label for="inputKiosk">Filter Kiosk</Label>
-                                    //                             <Input 
-                                    //                             type="select" 
-                                    //                             name="select" 
-                                    //                             id="inputKiosk" 
-                                    //                             value={kiosks} 
-                                    //                             onChange={onChangeKiosk}
-                                    //                             >
-                                    //                                 {
-                                    //                                     kiosks.map(kiosks => (
-                                    //                                         <option key={kiosks.id}>{kiosks.address}</option>
-                                    //                                     ))
-                                    //                                 }
-                                    //                             </Input>
-                                    //                     </FormGroup>
-                                    //                 </div>
-                                    //         </div>
-                                    //     ),
-                                    // }}
                             />
-                            { err &&<Alert color="danger">{error}</Alert> }
-                            { successful &&<Alert color="success">{successMsg}</Alert>}
+                            { !inModal && err &&<Alert color="danger">{error}</Alert> }
+                            { !inModal && successful &&<Alert color="success">{successMsg}</Alert>}
                         </Card>
                     </Col>
                 </Row>
             </div>   
+            <Modal isOpen={modal} toggle={toggle}>
+                <ModalHeader toggle={toggle}>Add Locker</ModalHeader>
+                <ModalBody>
+                    <form>
+                        <FormGroup>
+                            <Label for="inputKiosk">Kiosk</Label>
+                            <Input
+                                type="select"
+                                id="inputKiosk"
+                                value={kiosk}
+                                onChange={onChangeKiosk}
+                            >
+                                <option>[select]</option>
+                                {
+                                    kiosks.map(k => (
+                                        <option key={k.id}>{k.address}</option>
+                                    ))
+                                }
+                            </Input>
+                        </FormGroup>
+                        <FormGroup>
+                        <Label for="inputNewLockerType">Locker Type</Label>
+                            <Input
+                                type="select"
+                                id="inputNewLockerType"
+                                value={newLockerType}
+                                onChange={onChangeNewLockerType}
+                            >
+                                <option>[select]</option>
+                                {
+                                    lockerTypes.map(newLockerType => (
+                                        <option key={newLockerType.id}>{newLockerType.name}</option>
+                                    ))
+                                }
+                            </Input>
+                        </FormGroup>
+                        { inModal && err &&<UncontrolledAlert color="danger">{error}</UncontrolledAlert> }
+                        { inModal && successful &&<UncontrolledAlert color="success">{successMsg}</UncontrolledAlert>}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       
+                    </form>
+                </ModalBody>
+                <ModalFooter>
+                <Button color="primary" onClick={addLocker}>Create</Button>{' '}
+                </ModalFooter>
+            </Modal> 
         </ThemeProvider>     
     );
 }
