@@ -23,6 +23,8 @@ import BookingPackageDetails from "views/BookingPackages/BookingPackageDetails.j
 import MaintenanceActionDetails from "views/MaintenanceAction/MaintenanceActionDetails.js";
 import CustomerBookingDetails from "views/Booking/CustomerBookingDetails.js";
 import MerchantBookingDetails from "views/Booking/MerchantBookingDetails.js";
+import ErrorPage from "views/ErrorPage.js";
+import Dashboard from "./layouts/Admin.js";
 
 
 const hist = createBrowserHistory();
@@ -34,16 +36,19 @@ function App(props) {
     return (
         <Router history={hist}>
             <Switch>
+                
                 <Route exact path="/" component={Login} />
+
                 {/* if user and token do not exist in the cookies */}
                 {document.cookie.indexOf('staffUser') === -1 && document.cookie.indexOf('authToken') === -1 &&
                     <Route path="/login" component={Login} />
                 }
                 {/* if user and token exists in the cookies */}
                 { document.cookie.indexOf('staffUser') > -1 && document.cookie.indexOf('authToken') > -1 && 
-                    <Route path="/admin" render={(props) => <AdminLayout {...props} />} />
+                    <Route path="/admin" render={(props) => <AdminLayout {...props} />} /> 
                 }
-                <Route exact path="/error" component={Error} />
+                {/* <Route exact path="/" component={Login} /> */}
+                {/* <Route exact path="/error" component={Error} /> */}
                 <Route exact path="/forgotPassword" component={ForgotPassword}/>
                 <Route exact path="/checkValidToken" component={CheckValidToken}/>
                 <Route exact path="/resetPassword" component={ResetPassword}/>
@@ -57,8 +62,8 @@ function App(props) {
                 <Route exact path="/admin/maintenanceActionDetails" component={MaintenanceActionDetails}/>
                 <Route exact path="/admin/customerBookingDetails" component={CustomerBookingDetails}/>
                 <Route exact path="/admin/merchantBookingDetails" component={MerchantBookingDetails}/>
+                {/* <Route component={ErrorPage}/> */}
         
-
                 {/* <Redirect to="/error" component={Error} /> */}
             </Switch>
         </Router>
