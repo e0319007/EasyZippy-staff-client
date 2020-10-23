@@ -31,6 +31,7 @@ function Announcements() {
         {title: "Title", field:"title"},
         {title: "Description", field:"description"}, 
         {title: "Date Created", field:"createdAt", editable: "never", 
+            customFilterAndSearch: (term, rowData) => formatDate(rowData.createdAt).toLowerCase().includes(term.toLowerCase()),
             render: row => <span>{ formatDate(row["createdAt"]) }</span>
         }
     ]
@@ -181,6 +182,7 @@ function Announcements() {
                                 data={data}
                                 options={{   
                                     //sorting: true, 
+                                    filtering:true,
                                     headerStyle: {
                                         backgroundColor: '#98D0E1',
                                         color: '#FFF',

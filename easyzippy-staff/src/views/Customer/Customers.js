@@ -35,7 +35,7 @@ function Customers() {
         {title: "Mobile Number", field:"mobileNumber"},
         {title: "Email", field:"email"},
         {title: "Credit Balance", field:"creditBalance"},
-        {title: "Disabled", field:"disabled"},
+        {title: "Disabled", field:"disabled", lookup:{false: "Enabled", true: "Disabled"}},
         
     ]
 
@@ -67,7 +67,8 @@ function Customers() {
                                 columns={columns}
                                 data={data}
                                 options={{   
-                                    //sorting: true, 
+                                    sorting: true, 
+                                    filtering:true,
                                     headerStyle: {
                                         backgroundColor: '#98D0E1',
                                         color: '#FFF',

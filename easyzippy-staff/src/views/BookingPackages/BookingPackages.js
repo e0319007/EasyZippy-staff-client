@@ -39,7 +39,7 @@ function BookingPackages() {
         {title: "Price", field:"price"},
         {title: "Duration (in days)", field:"duration"},
         {title: "Locker Type", field:"lockerTypeId"},
-        {title: "Disabled", field:"disabled", editable: "never"}
+        {title: "Disabled", field:"disabled", editable: "never", lookup:{false: "Enabled", true: "Disabled"}}
     ]
 
     const[data, setData] = useState([])
@@ -79,7 +79,7 @@ function BookingPackages() {
 
     const handleRowAdd = (newData, resolve) => {
         //validation: if name is empty
-        if(newData.name === undefined || newData.address === ""){
+        if(newData.name === undefined || newData.name === ""){
             isError(true)
             setError("Unable to add new booking package. Please fill in the name field.")
             isSuccessful(false)
@@ -112,7 +112,19 @@ function BookingPackages() {
             setError("Unable to add new booking package. Please fill in the locker type field.")
             isSuccessful(false)
             resolve()
-            return;
+            //return;
+        } else {
+            var nums = /^[0-9]+$/
+            if (!newData.lockerTypeId.match(nums)) {
+                setError("Locker type Id must be a number")
+                isError(true)
+                isSuccessful(false)
+                resolve()
+                return;
+            } else {
+                isError(false)
+            }
+
         }
         axios.post("/bookingPackageModel", {
             name: newData.name,
@@ -149,41 +161,52 @@ function BookingPackages() {
 
     const handleRowUpdate = (newData, oldData, resolve) => {
         //validation
-        if(newData.name === undefined || newData.address === ""){
-            isError(true)
-            setError("Unable to update. Please fill in the name field.")
-            isSuccessful(false)
-            resolve()
-            return;
-        }
-        if(newData.quota === undefined || newData.quota === ""){
-            isError(true)
-            setError("Unable to update. Please fill in the quota field.")
-            isSuccessful(false)
-            resolve()
-            return;
-        }
-        if(newData.price === undefined || newData.price === ""){
-            isError(true)
-            setError("Unable to update. Please fill in the price field.")
-            isSuccessful(false)
-            resolve()
-            return;
-        }
-        if(newData.duration === undefined || newData.duration === ""){
-            isError(true)
-            setError("Unable to update. Please fill in the duration field.")
-            isSuccessful(false)
-            resolve()
-            return;
-        }
-        if(newData.lockerTypeId === undefined || newData.lockerTypeId === ""){
-            isError(true)
-            setError("Unable to update. Please fill in the locker type field.")
-            isSuccessful(false)
-            resolve()
-            return;
-        }
+        // if(newData.name === undefined || newData.name === ""){
+        //     isError(true)
+        //     setError("Unable to update. Please fill in the name field.")
+        //     isSuccessful(false)
+        //     resolve()
+        //     return;
+        // }
+        // if(newData.quota === undefined || newData.quota === ""){
+        //     isError(true)
+        //     setError("Unable to update. Please fill in the quota field.")
+        //     isSuccessful(false)
+        //     resolve()
+        //     return;
+        // }
+        // if(newData.price === undefined || newData.price === ""){
+        //     isError(true)
+        //     setError("Unable to update. Please fill in the price field.")
+        //     isSuccessful(false)
+        //     resolve()
+        //     return;
+        // }
+        // if(newData.duration === undefined || newData.duration === ""){
+        //     isError(true)
+        //     setError("Unable to update. Please fill in the duration field.")
+        //     isSuccessful(false)
+        //     resolve()
+        //     return;
+        // }
+        // if(newData.lockerTypeId === undefined || newData.lockerTypeId === ""){
+        //     isError(true)
+        //     setError("Unable to update. Please fill in the locker type field.")
+        //     isSuccessful(false)
+        //     resolve()
+        //     return;
+        // }   else {
+        //     var nums = /^[0-9]+$/
+        //     if (!newData.lockerTypeId.match(nums)) {
+        //         setError("Locker type Id must be a number")
+        //         isError(true)
+        //         isSuccessful(false)
+        //         resolve()
+        //         return;
+        //     } else {
+        //         isError(false)
+        //     }
+        // }
         axios.put("/bookingPackageModel/"+oldData.id, {
             name: newData.name,
             description: newData.description,
@@ -279,6 +302,7 @@ function BookingPackages() {
                                 data={data}
                                 options={{   
                                     //sorting: true, 
+                                    filtering: true,
                                     headerStyle: {
                                         backgroundColor: '#98D0E1',
                                         color: '#FFF',

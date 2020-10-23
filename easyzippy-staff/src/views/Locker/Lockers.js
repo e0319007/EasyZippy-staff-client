@@ -49,15 +49,15 @@ function Lockers() {
 
     // DECLARING COLUMNS (created at can put inside details)
     var columns = [
-        {title: "Id", field: "id", editable: "never", filtering: false },
-        {title: "Locker Status", field:"lockerStatusEnum", editable: "never", searchable: false},
+        {title: "Id", field: "id", editable: "never"},
+        {title: "Locker Status", field:"lockerStatusEnum", editable: "never", searchable: false, lookup:{Empty: "Empty", InUse: "In Use"}},
         {title: "Locker Type", field:"lockerTypeId", editable: "never", searchable: false,
             customFilterAndSearch: (term, rowData) => getLockerType(rowData.lockerTypeId).toLowerCase().includes(term.toLowerCase()),
             render: row => <span>{ getLockerType(row["lockerTypeId"]) }</span>},
         {title: "Kiosk", field:"kioskId", editable: "never", searchable: false,
             customFilterAndSearch: (term, rowData) => getKioskName(rowData.kioskId).toLowerCase().includes(term.toLowerCase()),
             render: row => <span>{ getKioskName(row["kioskId"]) }</span>},
-        {title: "Disabled", field:"disabled", editable: "never", filtering: false, searchable: false},
+        {title: "Disabled", field:"disabled", editable: "never", lookup:{false: "Enabled", true: "Disabled" }},
     ]
 
     useEffect(() => {
@@ -175,6 +175,7 @@ function Lockers() {
                                 }}
                                 options={{   
                                     //sorting: true, 
+                                    search: false,
                                     filtering: true,
                                     headerStyle: {
                                         backgroundColor: '#98D0E1',

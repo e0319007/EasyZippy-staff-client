@@ -34,7 +34,7 @@ function Kiosks() {
         {title: "Id", field: "id", editable: "never"},
         {title: "Address", field: "address"},
         {title: "Description", field:"description"},
-        {title: "Disabled", field:"disabled", editable: "never"}
+        {title: "Disabled", field:"disabled", editable: "never", lookup:{false: "Enabled", true: "Disabled"}}
     ]
 
     const[data, setData] = useState([])
@@ -184,6 +184,7 @@ function Kiosks() {
                                 data={data}
                                 options={{   
                                     //sorting: true, 
+                                    filtering:true,
                                     headerStyle: {
                                         backgroundColor: '#98D0E1',
                                         color: '#FFF',

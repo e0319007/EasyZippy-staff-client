@@ -34,9 +34,8 @@ function Staffs() {
         {title: "Last Name", field:"lastName"},
         {title: "Mobile Number", field:"mobileNumber"},
         {title: "Email", field:"email"},
-        //{title: "Password", field: "password"},
-        {title: "Staff Role", field:"staffRoleEnum", editable:"never"},
-        {title: "Disabled", field:"disabled", editable: "never"},
+        {title: "Staff Role", field:"staffRoleEnum", editable:"never", lookup:{Admin: "Admin", Employee: "Employee"}},
+        {title: "Disabled", field:"disabled", editable: "never", lookup:{false: "Enabled", true: "Disabled"}},
         
     ]
     const[data, setData] = useState([])
@@ -83,14 +82,18 @@ function Staffs() {
             isSuccessful(false)
             resolve()
             return;
+        } else {
+            var nums = "(?<!\\d)\\d{8}(?!\\d)"
+            if (!newData.mobileNumber.match(nums)) {
+                setError("Please enter a valid 8-digits Mobile Number")
+                isError(true)
+                isSuccessful(false)
+                resolve()
+                return;
+            } else {
+                isError(false)
+            }
         }
-        // if(newData.password === undefined || newData.password === ""){
-        //     isError(true)
-        //     setError("Unable to add new staff. Please fill in the password field.")
-        //     isSuccessful(false)
-        //     resolve()
-        //     return;
-        // }
         if(newData.email === undefined || newData.email === ""){
             isError(true)
             setError("Unable to add new staff. Please fill in the email field.")
@@ -98,21 +101,12 @@ function Staffs() {
             resolve()
             return;
         }
-        // if(newData.staffRoleEnum === undefined || newData.staffRoleEnum === "" ){
-        //     isError(true)
-        //     setError("Unable to add new staff. Please fill in the staff role field as Admin or Employee.")
-        //     isSuccessful(false)
-        //     resolve()
-        //     return;
-        // }
+
         axios.post("/staff", {
             firstName: newData.firstName,
             lastName: newData.lastName,
             mobileNumber: newData.mobileNumber,
             email: newData.email,
-            //password: newData.password,
-            password: "Password123!",
-            //staffRoleEnum: newData.staffRoleEnum,
             staffRoleEnum: "Employee"      
 
         },
@@ -153,6 +147,7 @@ function Staffs() {
                                 data={data}
                                 options={{   
                                     //sorting: true, 
+                                    filtering:true,
                                     headerStyle: {
                                         backgroundColor: '#98D0E1',
                                         color: '#FFF',

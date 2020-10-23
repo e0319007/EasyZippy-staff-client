@@ -198,7 +198,7 @@ function LockerTypeDetails() {
                                                 type="text"
                                                 id="inputPrice"
                                                 placeholder="price here"
-                                                value={data.price}
+                                                value={data.pricePerHalfHour}
                                             />
                                         </FormGroup>
                                         <FormGroup>

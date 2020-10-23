@@ -176,7 +176,8 @@ function Category() {
                                 columns={columns}
                                 data={data}
                                 options={{   
-                                    //sorting: true, 
+                                    sorting: true, 
+                                    filtering:true,
                                     headerStyle: {
                                         backgroundColor: '#98D0E1',
                                         color: '#FFF',

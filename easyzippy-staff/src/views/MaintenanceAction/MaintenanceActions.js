@@ -33,7 +33,8 @@ function MaintenanceActions() {
     var columns = [
         {title: "Id", field: "id", editable: "never"},
         {title: "Maintenance Date (YYYY/MM/DD)", field: "maintenanceDate",
-        render: row => <span>{ formatDate(row["maintenanceDate"]) }</span>},
+            customFilterAndSearch: (term, rowData) => formatDate(rowData.maintenanceDate).toLowerCase().includes(term.toLowerCase()),
+            render: row => <span>{ formatDate(row["maintenanceDate"]) }</span>},
         {title: "Description", field:"description"},
         {title: "Locker Id", field:"lockerId"}
     ]
@@ -55,7 +56,7 @@ function MaintenanceActions() {
                 AuthToken: authToken
             }
         }).then(res => {
-            // console.log(res.data)
+            console.log(res.data)
             setData(res.data)
         })
         .catch (err => console.error(err))
@@ -64,11 +65,28 @@ function MaintenanceActions() {
     const handleRowAdd = (newData, resolve) => {
         // validation: if name is empty
         if(newData.maintenanceDate === undefined || newData.maintenanceDate === ""){
+            //console.log("main date: " + newData.maintenanceDate)
             isError(true)
             setError("Unable to add new maintenance action. Please fill in the maintenance date field in YYYY/MM/DD format.")
             isSuccessful(false)
             resolve()
             return;
+        } else {
+            //yyyy/mm/dd
+            var date = /^(19|20)\d\d[- /.](0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])$/
+
+            //var date = /^(0?[1-9]|[12][0-9]|3[01])[\/\-](0?[1-9]|1[012])[\/\-]\d{4}$/
+            //var date = /^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\\d\\d$/
+            //var date = /^([0-2][0-9]|(3)[0-1])(\/)(((0)[0-9])|((1)[0-2]))(\/)\d{4}$/i
+            if (!newData.maintenanceDate.match(date)) {
+                setError("Please enter a valid date in YYYY/MM/DD format")
+                isError(true)
+                isSuccessful(false)
+                resolve()
+                return;
+            } else {
+                isError(false)
+            }
         }
 
         if (newData.lockerId === undefined || newData.lockerId === "") {
@@ -110,6 +128,34 @@ function MaintenanceActions() {
     }
 
     const handleRowUpdate = (newData, oldData, resolve) => {
+
+        // if(newData.maintenanceDate === undefined || newData.maintenanceDate === ""){
+        //     isError(true)
+        //     setError("Unable to update new maintenance action. Please fill in the maintenance date field in YYYY/MM/DD format.")
+        //     isSuccessful(false)
+        //     resolve()
+        //     return;
+        // } else {
+        //     var date = "^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\\d\\d$"
+        //     if (!newData.maintenanceDate.match(date)) {
+        //         setError("Please enter a valid date in DD/MM/YYYY format")
+        //         isError(true)
+        //         isSuccessful(false)
+        //         resolve()
+        //         return;
+        //     } else {
+        //         isError(false)
+        //     }
+        // }
+
+        if (newData.lockerId === undefined || newData.lockerId === "") {
+            isError(true)
+            setError("Unable to update maintenance action. Please fill in the locker Id field.")
+            isSuccessful(false)
+            resolve()
+            return;
+        }
+
         axios.put("/maintenanceAction/"+oldData.id, {
             maintenanceDate: newData.maintenanceDate,
             description: newData.description,
@@ -179,7 +225,7 @@ function MaintenanceActions() {
             console.log(undefined)
         }
         let currDate = new Date(d);
-        console.log("currDate: " + currDate)
+        //console.log("currDate: " + currDate)
         let year = currDate.getFullYear();
         let month = currDate.getMonth() + 1;
         let dt = currDate.getDate();
@@ -191,7 +237,10 @@ function MaintenanceActions() {
         if (month < 10) {
             month = '0' + month;
         }
+        // console.log("getDate: " + dt)
 
+        // console.log("checking format date: " + dt + "/" + month + "/" + year)
+        //return dt + "/" + month + "/" + year;
         return year + "/" + month + "/" + dt;
     }
 
@@ -207,6 +256,7 @@ function MaintenanceActions() {
                                 data={data}
                                 options={{   
                                     //sorting: true, 
+                                    filtering: true,
                                     headerStyle: {
                                         backgroundColor: '#98D0E1',
                                         color: '#FFF',

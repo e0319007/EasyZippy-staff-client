@@ -34,7 +34,7 @@ function LockerTypes() {
         {title: "Length", field:"lockerLength"},
         {title: "Height", field:"lockerHeight"},
         {title: "Price", field:"pricePerHalfHour"},    
-        {title: "Disabled", field:"disabled", editable: "never"}, 
+        {title: "Disabled", field:"disabled", editable: "never", lookup:{false: "Enabled", true: "Disabled"}}, 
     ]
 
     const[data, setData] = useState([])
@@ -88,7 +88,7 @@ function LockerTypes() {
             isSuccessful(false)
             resolve()
             return;
-        } else if (newData.price === undefined || newData.price === "") {
+        } else if (newData.pricePerHalfHour === undefined || newData.pricePerHalfHour === "") {
             isError(true)
             setError("Unable to add new locker type. Please fill in the price.")
             isSuccessful(false)
@@ -100,7 +100,7 @@ function LockerTypes() {
             lockerWidth: newData.lockerWidth,
             lockerLength: newData.lockerLength,
             lockerHeight: newData.lockerHeight,
-            price: newData.pricePerHalfHour
+            pricePerHalfHour: newData.pricePerHalfHour
         },
         {
             headers: {
@@ -134,7 +134,7 @@ function LockerTypes() {
             lockerWidth: newData.lockerWidth,
             lockerLength: newData.lockerLength,
             lockerHeight: newData.lockerHeight,
-            price: newData.pricePerHalfHour
+            pricePerHalfHour: newData.pricePerHalfHour
         },
         {
             headers: {
@@ -208,6 +208,8 @@ function LockerTypes() {
                                 data={data}
                                 options={{   
                                     //sorting: true, 
+                                    filtering:true,
+
                                     headerStyle: {
                                         backgroundColor: '#98D0E1',
                                         color: '#FFF',

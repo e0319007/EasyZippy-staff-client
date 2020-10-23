@@ -33,9 +33,9 @@ function Merchants() {
         {title: "Mobile Number", field:"mobileNumber"},
         {title: "Email", field:"email"},
         {title: "Credit Balance", field:"creditBalance"},
-        {title: "Approved", field:"approved"},
+        {title: "Approved", field:"approved", lookup:{false: "Not Approved", true: "Approved"}},
         // {title: "Created At", field:"createdAt"},
-        {title: "Disabled", field:"disabled"},
+        {title: "Disabled", field:"disabled", lookup:{false: "Enabled", true: "Disabled"}},
     ]
 
     const[data, setData] = useState([])
@@ -66,6 +66,7 @@ function Merchants() {
                                 data={data}
                                 options={{   
                                     //sorting: true, 
+                                    filtering:true,
                                     headerStyle: {
                                         backgroundColor: '#98D0E1',
                                         color: '#FFF',
