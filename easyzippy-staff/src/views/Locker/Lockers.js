@@ -171,6 +171,7 @@ function Lockers() {
         isError(false)
         isSuccessful(true)
         setMsg("locker added successfully!")
+        document.location.reload()
     }).catch(function (error) {
         console.log(error.response.data)
         isInModal(true)
