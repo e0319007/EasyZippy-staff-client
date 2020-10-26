@@ -15,7 +15,7 @@ import {
     Row,
     Col,
     Input,
-    CardHeader, FormGroup, Label, Button, Tooltip, Modal, ModalBody, ModalHeader
+    CardHeader, FormGroup, Label, Button, CardImg, Tooltip, Alert
 } from "reactstrap";
 
 const theme = createMuiTheme({
@@ -37,6 +37,35 @@ function AdvertisementDetails() {
     const [data, setData] = useState([])
     const [image, setImage] = useState()
 
+    //for error handling
+    const [error, setError] = useState('')
+    const [err, isError] = useState(false)
+
+    const [successful, isSuccessful] = useState(false)
+    const [successMsg, setMsg] = useState('')
+
+    //tooltip
+    const [tooltipOpenApproval, setTooltipApproval] = useState(false);
+    const toggleTooltipApproval = () => setTooltipApproval(!tooltipOpenApproval);
+
+    const [approval, setApproval] = useState(true) //this is for on/off
+
+    const [title, setTitle] = useState()
+    const [description, setDescription] = useState()
+    const [advertiserUrl, setAdvertiserUrl] = useState()
+    const [startDate, setStartDate] = useState()
+    const [endDate, setEndDate] = useState()
+    const [amountPaid, setAmountPaid] = useState()
+    const [expired, setExpired] = useState()
+    const [advertiserMobile, setAdvertiserMobile] = useState()
+    const [advertiserEmail, setAdvertiserEmail] = useState()
+    const [approved, setApproved] = useState() //for true/false
+    const [staffId, setStaffId] = useState()
+    const [merchantId, setMerchantId] = useState()
+
+    const [canApprove, setCanApprove] = useState(true) 
+    const [expireMsg, setExpireMsg] = useState()
+
     useEffect(() => {
         console.log("getting advertisements axios")
         axios.get(`/advertisement/${advertisementId}`, {
@@ -45,6 +74,35 @@ function AdvertisementDetails() {
             }
         }).then (res => {
             setData(res.data)
+
+            setTitle(res.data.title)
+            setDescription(res.data.description)
+            setAdvertiserUrl(res.data.advertiserUrl)
+            setStartDate((res.data.startDate).substr(0,10))
+            setEndDate((res.data.endDate).substr(0,10))
+            setAmountPaid(res.data.amountPaid)
+            setExpired(res.data.expired)
+
+            if (res.data.expired) { //if expired
+                setExpireMsg(" : Expired")
+            }
+
+            setAdvertiserMobile(res.data.advertiserMobile)
+            setAdvertiserEmail(res.data.advertiserEmail)
+
+            //have to check the start date, compare to today's date and if start date is over
+            //should not allow them to approve
+            let startArray = res.data.startDate.substr(0,10).split("-") 
+            var pastdate = new Date(startArray[0], startArray[1], startArray[2])
+            var today = new Date()
+
+            if (today > pastdate) {
+                setCanApprove(false)
+            }
+
+            setApproved(res.data.approved)
+            setStaffId(res.data.staffId)
+            setMerchantId(res.data.merchantId)
 
             axios.get(`/assets/${res.data.image}`, {
                 responseType: 'blob'
@@ -67,15 +125,389 @@ function AdvertisementDetails() {
         })
     }, [])
 
-    //show certain fields interchangeably depending on who created the ad
-        // > if staff_id != null, show that
-        // > if merchant_id != null, show that
-        // > if advertiser mobile || advertiser email != null, show those
+    const onChangeTitle = e => {
+        const title = e.target.value;
+        setTitle(title)
+    }
+
+    const onChangeDescription = e => {
+        const description = e.target.value;
+        setDescription(description)
+    }
+    
+    const onChangeStartDate = e => {
+        const startDate = e.target.value;
+        setStartDate(startDate)
+    }
+
+    const onChangeEndDate = e => {
+        const endDate = e.target.value;
+        setEndDate(endDate)
+    }
+    
+    const onChangeAdvertiserMobile = e => {
+        const mobile = e.target.value;
+        setAdvertiserMobile(mobile)
+    }
+    
+    const onChangeAdvertiserEmail = e => {
+        const email = e.target.value;
+        setAdvertiserEmail(email)
+    }
+
+    const onChangeAdvertiserUrl = e => {
+        const url = e.target.value;
+        setAdvertiserUrl(url)
+    }
+
+    const onChangeAmountPaid = e => {
+        const amountPaid = e.target.value;
+        setAmountPaid(amountPaid)
+    }
+
+    const updateAdvertisement = e => {
+        e.preventDefault()
+        //add validation
+
+        axios.put(`/advertisement/${advertisementId}`, {
+            title: title, 
+            description: description,
+            advertiserUrl: advertiserUrl,
+            startDate: startDate,
+            endDate: endDate,
+            amountPaid: amountPaid,
+            advertiserMobile: advertiserMobile,
+            advertiserEmail: advertiserEmail
+        },
+        {
+            headers: {
+                AuthToken: authToken,
+                'Content-Type': 'application/json'
+            }
+        }).then(res => {
+            
+            setTitle(res.data.title)
+            setDescription(res.data.description)
+            setAdvertiserUrl(res.data.advertiserUrl)
+            setStartDate((res.data.startDate).substr(0,10))
+            setEndDate((res.data.endDate).substr(0,10))
+            setAmountPaid(res.data.amountPaid)
+            setExpired(res.data.expired)
+            setAdvertiserMobile(res.data.advertiserMobile)
+            setAdvertiserEmail(res.data.advertiserEmail)
+            setStaffId(res.data.staffId)
+            setMerchantId(res.data.merchantId)
+
+            console.log("update product axios went through")
+
+            //set to approved
+            if (approval) {
+                axios.put(`/approveAdvertisement/${advertisementId}`, {
+                    headers: {
+                        AuthToken: authToken
+                    }
+                }).then(res => {
+                    console.log("approval axios went through")
+                    console.log("data: " + res.data.approved)
+                    setData(res)
+                    setApproval(res.data.approved)
+                    setApproved(res.data.approved)
+                    // window.location.reload()
+
+                }).catch (function(error) {
+                    let errormsg = error.response.data;
+    
+                    if ((error.response.data).startsWith("<!DOCTYPE html>")) {
+                        errormsg = "An unexpected error has occurred. The Advertisement cannot be approved."
+                    }
+
+                    isSuccessful(false)
+                    console.log(error.response.data)
+                    isError(true)
+                    setError(errormsg)
+                })
+            }
+        }).catch (function (error) {
+            let errormsg = error.response.data;
+    
+            if ((error.response.data).startsWith("<!DOCTYPE html>")) {
+                errormsg = "An unexpected error has occurred. The Advertisement cannot be updated."
+            }
+
+            isSuccessful(false)
+            console.log(error.response.data)
+            isError(true)
+            setError(errormsg)
+        })
+    }
+
+    const onApprovalChange = e => {
+        console.log(e.target.checked)
+        setApproval(e.target.checked) //"on" == true i.e. yes approved
+    }
+
+    const DisableSwitch = withStyles((theme) => ({
+        root: {
+            width: 28,
+            height: 16,
+            padding: 0,
+            display: 'flex',
+        },
+        switchBase: {
+            padding: 2,
+            color: theme.palette.grey[500],
+            '&$checked': {
+            transform: 'translateX(12px)',
+            color: theme.palette.common.white,
+            '& + $track': {
+                opacity: 1,
+                backgroundColor: theme.palette.success.main,
+                borderColor: theme.palette.success.main,
+            },
+            },
+        },
+        thumb: {
+            width: 12,
+            height: 12,
+            boxShadow: 'none',
+        },
+        track: {
+            border: `1px solid ${theme.palette.grey[500]}`,
+            borderRadius: 16 / 2,
+            opacity: 1,
+            backgroundColor: theme.palette.common.white,
+        },
+        checked: {},
+        }))(Switch);
+
+        let enabled = !data.disabled
+        console.log("Enabled: " + enabled)
+
+        const handleChange = (event) => {
+            console.log("event.target.checked: " + event.target.checked)
+            setData({
+                ...data,
+                disabled: !event.target.checked
+            })
+            axios.put(`/advertisement/toggleDisable/${advertisementId}`, {
+                disabled: !event.target.checked
+            },
+            {
+                headers: {
+                    AuthToken: authToken
+                }
+            }).then(res => {
+                console.log("axios call went through")
+            }).catch (function(error) {
+                console.log(error.response.data)
+                isError(true)
+                isSuccessful(false)
+                setError(error.response.data)
+            })
+        };
 
     return (
         <>
+            <ThemeProvider theme={theme}>
+            <div className="content">
+                    <Row>
+                        <Col md = "12">
+                            <Card className="card-name">
+                                <CardHeader>
+                                    <div className="form-row">
+                                    <CardTitle className="col-md-10" tag="h5">Advertisement Details (ID: {data.id}) {expireMsg}</CardTitle>
+                                    </div>
+                                </CardHeader>
+                                <CardBody>
+                                    <form>
+                                        <div className="text-center">
+                                            <CardImg style={{width:"15rem"}} top src={image} alt="..."/>
+                                        </div>
+                                        <fieldset>  
+                                            <FormGroup>
+                                                <Label for="inputTitle">Title</Label>
+                                                <Input
+                                                    type="text"
+                                                    id="inputTitle"
+                                                    placeholder="title here"
+                                                    value={title}
+                                                    onChange={onChangeTitle}
+                                                />
+                                            </FormGroup>
+                                            <FormGroup>
+                                                <Label for="inputDescription">Description</Label>
+                                                <Input
+                                                    type="textarea"
+                                                    id="inputDescription"
+                                                    placeholder="description here"
+                                                    value={description}
+                                                    onChange={onChangeDescription}
+                                                />
+                                            </FormGroup>
+                                            {advertiserUrl !== null &&
+                                                <FormGroup>
+                                                    <Label for="inputAdvertiserUrl">Advertiser URL</Label>
+                                                    <Input 
+                                                        type="text"
+                                                        id="inputAdvertiserUrl"
+                                                        placeholder="advertiser url here"
+                                                        value={advertiserUrl}
+                                                        onChange={onChangeAdvertiserUrl}
+                                                    />
+                                                </FormGroup>
+                                            }
+                                            {amountPaid !== null && staffId === null && 
+                                                <FormGroup>
+                                                    <Label for="inputAmountPaid">Amount Paid</Label>
+                                                    <Input
+                                                        type="text"
+                                                        id="inputAmountPaid"
+                                                        placeholder="input amount paid here"
+                                                        value={amountPaid}
+                                                        onChange={onChangeAmountPaid}
+                                                    />
+                                                </FormGroup>
+                                            }
+                                            {advertiserMobile !== null && advertiserEmail !== null &&
+                                                <div className = "form-row"> 
+                                                    <FormGroup className="col-md-6">
+                                                        <Label for="inputAdvertiserMobile">Advertiser Mobile</Label>
+                                                        <Input
+                                                            type="text"
+                                                            id="inputAdvertiserMobile"
+                                                            placeholder="input advertiser mobile here"
+                                                            value={advertiserMobile}
+                                                            onChange={onChangeAdvertiserMobile}
+                                                        />
+                                                    </FormGroup>
+                                                    <FormGroup className="col-md-6">
+                                                        <Label for="inputAdvertiserEmail">Advertiser Email</Label>
+                                                        <Input
+                                                            type="text"
+                                                            id="inputAdvertiserEmail"
+                                                            placeholder="input advertiser email here"
+                                                            value={advertiserEmail}
+                                                            onChange={onChangeAdvertiserEmail}
+                                                        />
+                                                    </FormGroup>
+                                                </div>                                              
+                                            }
+                                            </fieldset>
+                                            {staffId !== null &&
+                                                <fieldset disabled>
+                                                    <FormGroup>
+                                                        <Label for="inputStaffId">Staff ID</Label>
+                                                        <Input 
+                                                            type="text" 
+                                                            id="inputStaffId" 
+                                                            placeholder="staff id" 
+                                                            value={staffId}                                                    
+                                                            />
+                                                    </FormGroup> 
+                                                </fieldset>                                                 
+                                            }                                       
+                                            {merchantId !== null &&
+                                                <fieldset disabled>
+                                                    <FormGroup>
+                                                        <Label for="inputMerchantId">Merchant ID</Label>
+                                                        <Input 
+                                                            type="text" 
+                                                            id="inputMerchantId" 
+                                                            placeholder="merchant id" 
+                                                            value={merchantId}                                                    
+                                                            />
+                                                    </FormGroup> 
+                                                </fieldset>   
+                                            }       
+                                            <div className="form-row"> 
+                                                <FormGroup className="col-md-6">
+                                                    <Label for="inputStartDate">Start Date</Label>
+                                                    <Input
+                                                        type="date"
+                                                        id="inputStartDate"
+                                                        placeholder="start date here"
+                                                        value={startDate}
+                                                        onChange={onChangeStartDate}
+                                                    />
+                                                </FormGroup>
+                                                <FormGroup className="col-md-6">
+                                                    <Label for="inputEndDate">End Date</Label>
+                                                    <Input
+                                                        type="date"
+                                                        id="inputEndDate"
+                                                        placeholder="end date here"
+                                                        value={endDate}
+                                                        onChange={onChangeEndDate}
+                                                    />
+                                                </FormGroup>
+                                            </div>
+                                            {canApprove && staffId === null && 
+                                                <fieldset>
+                                                    <div className="form-row">
+                                                        <FormGroup className="col-md-6 ml-4 form-row">
+                                                            <Label for="approvalStatus" check>
+                                                                <Input disabled={approved} defaultChecked={approved} type="checkbox" id="approvalStatus" style={{width:"20px",height:"20px"}} onChange={onApprovalChange}/>{' '}
+                                                                <p style={{...padding(7, 0, 0, 10)}}>Approve Advertisement</p>
+                                                            </Label>  
+                                                            <Tooltip placement="bottom" isOpen={tooltipOpenApproval} target="approvalStatus" toggle={toggleTooltipApproval}>
+                                                                Once approved, the advertisement cannot be unapproved.
+                                                            </Tooltip>  
+                                                        </FormGroup>                            
+                                                    </div>                    
+                                                </fieldset> 
+                                            }
+                                        <Row>
+                                            <div className="update ml-auto mr-auto" >
+                                                <Button color="success" size="sm" type="submit" onClick={updateAdvertisement}>Update Product</Button>
+                                            </div>
+                                        </Row>
+                                        <Row>
+                                            <p></p>
+                                        </Row>             
+                                        <Row>
+                                            <div className="update ml-auto mr-auto" >
+                                                <Typography component="div">
+                                                    <Grid component="label" container alignItems="center" spacing={1}>
+                                                    <Grid item>Disabled</Grid>
+                                                    <Grid item>
+                                                        <DisableSwitch checked={!data.disabled} onChange={handleChange} name="checked" />
+                                                    </Grid>
+                                                    <Grid item>Enabled</Grid>
+                                                    </Grid>
+                                                </Typography>
+                                            </div> 
+                                        </Row>
+                                        {err &&<Alert color="danger">{error}</Alert> }
+                                        {successful &&<Alert color="success">{successMsg}</Alert>}
+                                        <Row>
+                                            <Col md="12">
+                                                <div className="form-add">
+                                                    <Button onClick={() => {
+                                                        history.push('/admin/advertisements')
+                                                        localStorage.removeItem('advertisementToView')
+                                                    }}> back
+                                                    </Button>
+                                                </div>
+                                            </Col>
+                                        </Row>
+                                    </form>
+                                </CardBody>
+                            </Card>
+                        </Col>
+                    </Row>
+                </div>
+            </ThemeProvider>
         </>
     )
+}
+
+function padding(a, b, c, d) {
+    return {
+        paddingTop: a,
+        paddingRight: b ? b : a,
+        paddingBottom: c ? c : a,
+        paddingLeft: d ? d : (b ? b : a)
+    }
 }
 
 export default AdvertisementDetails;
