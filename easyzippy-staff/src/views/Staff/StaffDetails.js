@@ -51,7 +51,7 @@ function StaffDetails() {
 
     //const [staffRoleEnum, setStaffRoleEnum] = useState('')
    // const [staffRoleEnum, setStaffRoleEnum] = useState(staff.staffRoleEnum)
-    const [staffRoleEnum, setStaffRoleEnum] = useState('')
+    const [staffRoleEnum, setStaffRoleEnum] = useState(data.staffRoleEnum)
     const [staffRolesEnum, setStaffRolesEnum] = useState([])
 
     const staff_toupdate = {
@@ -68,6 +68,7 @@ function StaffDetails() {
         }).then(res => {
             console.log("axios get staff to view")
             setData(res.data)
+            setStaffRoleEnum(res.data.staffRoleEnum)
             console.log(res.data)
         }).catch (function(error) {
             console.log(error.response.data)
@@ -103,13 +104,15 @@ function StaffDetails() {
             }
         }).then((response) => {
             console.log("update staff role axios went through")
-            setStaffRoleEnum(response.data.staffRole)
-            staff_toupdate.staffRoleEnum = response.data.staffRole
-            localStorage['staffToView'] = JSON.stringify(staff_toupdate)
+            setStaffRoleEnum(response.data[1][0].staffRoleEnum)
+            console.log("new staff role: " + response.data[1][0].staffRoleEnum)
+            // staff_toupdate.staffRoleEnum = response.data.staffRole
+            // localStorage['staffToView'] = JSON.stringify(staff_toupdate)
+            setData(response.data[1][0])
             isError(false)
             isSuccessful(true)
             setMsg("Staff Role updated successfully!")
-            document.location.reload()
+            window.location.reload()
         }).catch(function(error) {
             console.log(error.response.data)
             isError(true)
@@ -262,7 +265,7 @@ function StaffDetails() {
                                                     type="select" 
                                                     name="select" 
                                                     id="inputStaffRoleEnun" 
-                                                    value={data.staffRoleEnum} 
+                                                    value={staffRoleEnum} 
                                                     onChange={onChangeStaffRoleEnum}
                                                     >
                                                         {
