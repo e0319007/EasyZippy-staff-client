@@ -341,7 +341,7 @@ function Advertisements() {
                                             },          
                                             {
                                                 icon: 'add',
-                                                onClick: (event, rowData) => {
+                                                onClick: () => {
                                                     toggle()
                                                 },
                                                 isFreeAction: true,
@@ -349,7 +349,7 @@ function Advertisements() {
                                             },
                                             {
                                                 icon: 'sort',
-                                                onClick: (event, rowData) => {
+                                                onClick: () => {
                                                     setViewApprove(false)
                                                 },
                                                 isFreeAction: true,
