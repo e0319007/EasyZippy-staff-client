@@ -120,29 +120,6 @@ function MaintenanceActionDetails() {
         })
     }
 
-    // to use when viewing 
-    function formatDate(d) {
-        if (d === undefined){
-            d = (new Date()).toISOString()
-            console.log(undefined)
-        }
-        let currDate = new Date(d);
-        console.log("currDate: " + currDate)
-        let year = currDate.getFullYear();
-        let month = currDate.getMonth() + 1;
-        let dt = currDate.getDate();
-
-        if (dt < 10) {
-            dt = '0' + dt;
-        }
-        if (month < 10) {
-            month = '0' + month;
-        }
-
-        //return dt + "/" + month + "/" + year + " " + time ;
-        return dt + "/" + month + "/" + year;
-    }
-
     return(
         <>
             <ThemeProvider theme={theme}>
