@@ -93,7 +93,8 @@ function AdvertisementDetails() {
             //have to check the start date, compare to today's date and if start date is over
             //should not allow them to approve
             let startArray = res.data.startDate.substr(0,10).split("-") 
-            var pastdate = new Date(startArray[0], startArray[1], startArray[2])
+            var pastdate = new Date(startArray[0], startArray[1]-1, startArray[2])
+            console.log(pastdate)
             var today = new Date()
 
             if (today > pastdate) {
