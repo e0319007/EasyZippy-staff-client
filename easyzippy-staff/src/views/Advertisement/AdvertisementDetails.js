@@ -127,11 +127,27 @@ function AdvertisementDetails() {
 
     const onChangeTitle = e => {
         const title = e.target.value;
+
+        if (title.trim().length == 0) {
+            setError("Title is a required field")
+            isError(true)
+        } else {
+            isError(false)
+        }
+
         setTitle(title)
     }
 
     const onChangeDescription = e => {
         const description = e.target.value;
+
+        if (description.trim().length == 0) {
+            setError("Description is a required field")
+            isError(true)
+        } else {
+            isError(false)
+        }
+
         setDescription(description)
     }
     
@@ -147,27 +163,61 @@ function AdvertisementDetails() {
     
     const onChangeAdvertiserMobile = e => {
         const mobile = e.target.value;
-        setAdvertiserMobile(mobile)
+
+        var nums = /^[0-9]+$/
+        if (!mobile.match(nums)) { //if not all numbers
+            setError("Please enter a valid mobile number")
+            isError(true)
+        } else {
+            isError(false)
+        }
+
+        setAdvertiserMobile(mobile.trim())
     }
     
     const onChangeAdvertiserEmail = e => {
         const email = e.target.value;
-        setAdvertiserEmail(email)
+        setAdvertiserEmail(email.trim())
     }
 
     const onChangeAdvertiserUrl = e => {
         const url = e.target.value;
-        setAdvertiserUrl(url)
+        setAdvertiserUrl(url.trim())
     }
 
     const onChangeAmountPaid = e => {
         const amountPaid = e.target.value;
-        setAmountPaid(amountPaid)
+
+        var nums = /^[0-9]+$/
+        if (!amountPaid.match(nums)) { //if not all numbers
+            setError("Please enter a valid amount")
+            isError(true)
+        } else {
+            isError(false)
+        }
+        
+        setAmountPaid(amountPaid.trim())
     }
 
     const updateAdvertisement = e => {
         e.preventDefault()
         //add validation
+
+        if (title === undefined || title === "") {
+            isError(true)
+            isSuccessful(false)
+            setError("Title field is required")
+            return;
+        }
+
+        if (description === undefined || description === "") {
+            isError(true)
+            isSuccessful(false)
+            setError("Description field is required")
+            return;
+        }
+
+
 
         axios.put(`/advertisement/${advertisementId}`, {
             title: title, 
@@ -186,22 +236,22 @@ function AdvertisementDetails() {
             }
         }).then(res => {
             
-            setTitle(res.data.title)
-            setDescription(res.data.description)
-            setAdvertiserUrl(res.data.advertiserUrl)
-            setStartDate((res.data.startDate).substr(0,10))
-            setEndDate((res.data.endDate).substr(0,10))
-            setAmountPaid(res.data.amountPaid)
-            setExpired(res.data.expired)
-            setAdvertiserMobile(res.data.advertiserMobile)
-            setAdvertiserEmail(res.data.advertiserEmail)
-            setStaffId(res.data.staffId)
-            setMerchantId(res.data.merchantId)
+            setTitle(res.data[1][0].title)
+            setDescription(res.data[1][0].description)
+            setAdvertiserUrl(res.data[1][0].advertiserUrl)
+            setStartDate((res.data[1][0].startDate).substr(0,10))
+            setEndDate((res.data[1][0].endDate).substr(0,10))
+            setAmountPaid(res.data[1][0].amountPaid)
+            setExpired(res.data[1][0].expired)
+            setAdvertiserMobile(res.data[1][0].advertiserMobile)
+            setAdvertiserEmail(res.data[1][0].advertiserEmail)
+            setStaffId(res.data[1][0].staffId)
+            setMerchantId(res.data[1][0].merchantId)
 
-            console.log("update product axios went through")
+            console.log("update ad axios went through")
 
-            //set to approved
-            if (approval) {
+            //set to approved if it can be approved
+            if (approval === true && canApprove === true) {
                 axios.put(`/approveAdvertisement/${advertisementId}`, {
                     headers: {
                         AuthToken: authToken
@@ -227,6 +277,9 @@ function AdvertisementDetails() {
                     setError(errormsg)
                 })
             }
+            isSuccessful(true)
+            isError(false)
+            setMsg("Advertisement successfully updated!")
         }).catch (function (error) {
             let errormsg = error.response.data;
     
