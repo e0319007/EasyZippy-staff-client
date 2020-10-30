@@ -269,7 +269,7 @@ function Lockers() {
                                                     toggle()
                                                 },
                                                 isFreeAction: true,
-                                                tooltip: 'Add Button',
+                                                tooltip: 'Add',
                                             }                                 
                                     ]}
                                     editable={{
