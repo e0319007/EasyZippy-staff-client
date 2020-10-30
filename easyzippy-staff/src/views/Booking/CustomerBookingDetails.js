@@ -332,7 +332,7 @@ function CustomerBookingDetails() {
                                             <Col md="12">
                                                 <div className="form-add">
                                                     <Button onClick={() => {
-                                                        history.push('/admin/customerBookings')
+                                                        history.push('/admin/Bookings')
                                                         localStorage.removeItem('bookingToView')
                                                     }}> back
                                                     </Button>

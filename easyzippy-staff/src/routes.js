@@ -21,10 +21,9 @@ import BookingPackageDetails from "views/BookingPackages/BookingPackageDetails";
 import MaintenanceActions from "views/MaintenanceAction/MaintenanceActions";
 import MaintenanceActionDetails from "views/MaintenanceAction/MaintenanceActionDetails";
 import CustomerBookingDetails from "views/Booking/CustomerBookingDetails";
-import CustomerBookings from "views/Booking/CustomerBookings";
-import MerchantBookings from "views/Booking/MerchantBookings";
 import MerchantBookingDetails from "views/Booking/MerchantBookingDetails";
 import AdvertisementDetails from "views/Advertisement/AdvertisementDetails"
+import Bookings from "views/Booking/Bookings";
 
 var routes = [
   {
@@ -108,18 +107,11 @@ var routes = [
     component: Promotions,
     layout: "/admin"
   },
-  // {
-  //   collapse: true, 
-  //   name: "Bookings", 
-  //   icon: "nc-icon nc-bookmark-2",
-  //   state: "string",
-  //   views: ["/customerBookings", "/merchantBookings"]
-  // },
   {
-    path: "/customerBookings",
-    name: "Customer Bookings",
+    path: "/Bookings",
+    name: "Bookings",
     icon: "nc-icon nc-bookmark-2",
-    component: CustomerBookings,
+    component: Bookings,
     layout: "/admin",
     collapse:true
   },
@@ -130,13 +122,6 @@ var routes = [
     component: CustomerBookingDetails,
     layout: "/admin",
     invisible: true
-  },
-  {
-    path: "/merchantBookings",
-    name: "Merchant Bookings",
-    icon: "nc-icon nc-bookmark-2",
-    component: MerchantBookings,
-    layout: "/admin"
   },
   {
     path: "/merchantBookingDetails",

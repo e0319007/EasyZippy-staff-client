@@ -22,16 +22,16 @@ const theme = createMuiTheme({
     },
 });
 
-function CustomerBookings() {
+function Bookings() {
     const authToken = JSON.parse(Cookies.get('authToken'))
 
     const history = useHistory()
 
     // DECLARING COLUMNS 
-    var columns = [
+    var customerColumns = [
         {title: "Id", field: "id", editable: "never"},
         {title: "Name", field:"customerId", editable: "never", 
-            customFilterAndSearch: (term, rowData) => getCustomerName(rowData.customerId).toLowerCase().includes(term.toLowerCase()),
+            customFilterAndSearch: (term, rowData) => getCustomerName(rowData.customerId).toLowerCase().includes(term.toLowerCase()), 
             render: row => <span>{getCustomerName(row["customerId"])}</span>},
         {title: "Locker Type", field: "lockerTypeId", editable: "never", 
             customFilterAndSearch: (term, rowData) => getLockerType(rowData.lockerTypeId).toLowerCase().includes(term.toLowerCase()),
@@ -46,9 +46,31 @@ function CustomerBookings() {
             customFilterAndSearch: (term, rowData) => formatDate(rowData.endDate).toLowerCase().includes(term.toLowerCase()),
             render: row => <span>{ formatDate(row["endDate"]) }</span>},
     ]
+    var merchantColumns = [
+        {title: "Id", field: "id", editable: "never"},
+        {title: "Name", field:"merchantId", editable: "never", 
+            customFilterAndSearch: (term, rowData) => getMerchantName(rowData.merchantId).toLowerCase().includes(term.toLowerCase()), 
+            render: row => <span>{getMerchantName(row["merchantId"])}</span>},
+        {title: "Locker Type", field: "lockerTypeId", editable: "never", 
+            customFilterAndSearch: (term, rowData) => getLockerType(rowData.lockerTypeId).toLowerCase().includes(term.toLowerCase()),
+            render: row => <span>{getLockerType(row["lockerTypeId"])}</span>},    
+        {title: "Price", field: "bookingPrice"},
+        {title: "Booking Source", field: "bookingSourceEnum", lookup:{Mobile: "Mobile", Kiosk: "Kiosk"}},
+        {title: "Status", field: "bookingStatusEnum", lookup:{Unfulfilled: "Unfulfilled", Fulfilled: "Fulfilled", Active: "Active", Cancelled: "Cancelled"}},
+        {title: "Start Date", field: "startDate", 
+            customFilterAndSearch: (term, rowData) => formatDate(rowData.startDate).toLowerCase().includes(term.toLowerCase()),
+            render: row => <span>{ formatDate(row["startDate"]) }</span>},
+        {title: "End Date", field: "endDate",
+            customFilterAndSearch: (term, rowData) => formatDate(rowData.endDate).toLowerCase().includes(term.toLowerCase()),
+            render: row => <span>{ formatDate(row["endDate"]) }</span>},
+    ]
 
-    const [data, setData] = useState([])
+    const [viewCustomers, setViewCustomers] = useState(true)
+
+    const [customerData, setCustomerData] = useState([])
+    const [merchantData, setMerchantData] = useState([])
     const [customers, setCustomers] = useState([])
+    const [merchants, setMerchants] = useState([])
     const [lockerTypes, setLockerTypes] = useState([])
 
     useEffect(() => {
@@ -59,7 +81,18 @@ function CustomerBookings() {
                 AuthToken: authToken
             }
         }).then (res => {
-            setData(res.data)
+            setCustomerData(res.data)
+
+            axios.get("/merchantBookings", 
+            {
+                headers: {
+                    AuthToken: authToken
+                }
+            }).then (res => {
+                setMerchantData(res.data)
+            }).catch(function (error) {
+                console.log(error.response.data)
+            })
 
             axios.get("/customers", 
             {
@@ -68,6 +101,17 @@ function CustomerBookings() {
                 }
             }).then(res => {
                 setCustomers(res.data)
+
+                axios.get("/merchants", 
+                {
+                    headers: {
+                        AuthToken: authToken
+                    }
+                }).then(res => {
+                    setMerchants(res.data)
+                }).catch(function (error) {
+                    console.log(error.response.data)
+                })
             }).catch (err => console.error(err))
 
             axios.get("/lockerTypes", 
@@ -86,6 +130,14 @@ function CustomerBookings() {
         for (var i in customers) {
             if (customers[i].id === id) {
                 return customers[i].firstName + " " + customers[i].lastName
+            }
+        }
+    }
+    //match merchant id to merchant name 
+    function getMerchantName(id) {
+        for (var i in merchants) {
+            if (merchants[i].id === id) {
+                return merchants[i].name
             }
         }
     }
@@ -128,10 +180,11 @@ function CustomerBookings() {
                 <Row>
                     <Col md = "12">
                         <Card>
+                            { viewCustomers &&
                             <MaterialTable
                                 title="Customer Booking List"
-                                columns={columns}
-                                data={data}
+                                columns={customerColumns}
+                                data={customerData}
                                 options={{
                                     search: false,
                                     filtering: true,
@@ -151,8 +204,52 @@ function CustomerBookings() {
                                         localStorage.setItem('bookingToView', JSON.stringify(rowData.id))
                                     }
                                 },
+                                {
+                                    icon: 'sort',
+                                    onClick: () => {
+                                        setViewCustomers(false)
+                                    },
+                                    isFreeAction: true,
+                                    tooltip: 'Click to view merchant bookings'
+                                }
                             ]}
                             />
+                            }
+                            {!viewCustomers && 
+                                <MaterialTable
+                                title="Merchant Booking List"
+                                columns={merchantColumns}
+                                data={merchantData}
+                                options={{
+                                    search: false,
+                                    filtering: true,
+                                    headerStyle: {
+                                        backgroundColor: '#98D0E1', 
+                                        color: '#FFF',
+                                        fontWeight: 1000,
+                                    },
+                                    actionsColumnIndex: -1
+                                }}
+                            actions={[
+                                {
+                                    icon: 'info',
+                                    tooltip: "View Booking Details",
+                                    onClick: (event, rowData) => {
+                                        history.push('/admin/merchantBookingDetails')
+                                        localStorage.setItem('bookingToView', JSON.stringify(rowData.id))
+                                    }
+                                },
+                                {
+                                    icon: 'sort',
+                                    onClick: () => {
+                                        setViewCustomers(true)
+                                    },
+                                    isFreeAction: true,
+                                    tooltip: 'Click to view customer bookings'
+                                }
+                            ]}
+                            />             
+                            }
                         </Card>
                     </Col>
                 </Row>
@@ -161,4 +258,4 @@ function CustomerBookings() {
     );
 }
 
-export default CustomerBookings;
+export default Bookings;
