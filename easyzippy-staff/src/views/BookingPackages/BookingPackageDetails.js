@@ -15,7 +15,7 @@ import {
     Row,
     Col,
     Input,
-    CardHeader, FormGroup, Label, Button, Modal, ModalHeader, ModalBody, Tooltip
+    CardHeader, FormGroup, Label, Button, Alert
 } from "reactstrap";
 
 const theme = createMuiTheme({
@@ -35,6 +35,25 @@ function BookingPackageDetails() {
     const bookingPackageId = JSON.parse(localStorage.getItem('bookingPackageToView'))
     const [data, setData] = useState([])
 
+    //for error handling
+    const [error, setError] = useState('')
+    const [err, isError] = useState(false)
+
+    const [successful, isSuccessful] = useState(false)
+    const [successMsg, setMsg] = useState('')
+
+    const [name, setName] = useState(data.name)
+    const [description, setDescription] = useState(data.description)
+    const [quota, setQuota] = useState(data.quota)
+    const [price, setPrice] = useState(data.price)
+    const [duration, setDuration] = useState(data.duration)
+
+    const [newLockerType, setNewLockerType] = useState(data.lockerTypeId);
+    console.log("new locker type: " + data.lockerTypeId)
+    const [newLockerTypeId, setNewLockerTypeId] = useState('');
+
+    const [lockerTypes, setLockerTypes] = useState([])
+
     useEffect(() => {
         axios.get(`/bookingPackageModel/${bookingPackageId}`, 
         {
@@ -43,11 +62,104 @@ function BookingPackageDetails() {
             }
         }).then(res => {
             setData(res.data)
+            setName(res.data.name)
+            setDescription(res.data.description)
+            setQuota(res.data.quota)
+            setPrice(res.data.price)
+            setDuration(res.data.duration)
+            setNewLockerType(res.data.lockerTypeId)
+
+            axios.get("/lockerTypes", 
+            {
+                headers: {
+                    AuthToken: authToken
+                }
+            }).then(res => {
+                setLockerTypes(res.data)
+            }).catch(err => console.error(err))
         }).catch (function(error) {
             console.log(error.response.data)
         })
     },[])
 
+    const onChangeName = e => {
+        const name = e.target.value
+        setName(name)
+    }
+    const onChangeDescription = e => {
+        const description = e.target.value
+        setDescription(description)
+    }
+    const onChangeQuota = e => {
+        const quota = e.target.value
+        setQuota(quota)
+    }
+    const onChangePrice = e => {
+        const price = e.target.value
+        setPrice(price)
+    }
+    const onChangeDuration = e => {
+        const duration = e.target.value
+        setDuration(duration)
+    }
+    const onChangeNewLockerType = e => {
+        console.log(e.target.value)
+        setNewLockerType(e.target.value)
+        const lockerType = getLockerId(e.target.value);
+        console.log("new lt key: " + lockerType)
+        setNewLockerTypeId(lockerType)
+    }
+
+    //match locker type id to locker type name
+    function getLockerType(id) {
+        for (var i in lockerTypes) {
+            if (lockerTypes[i].id === id) {
+                return lockerTypes[i].name
+            }
+        }
+    }
+
+    function getLockerId(name) {
+        for (var i in lockerTypes) {
+            if ((lockerTypes[i].name).toLowerCase() === name.trim().toLowerCase()) {
+                return lockerTypes[i].id
+            }
+        }
+    }
+
+    const updateBookingPackage = e => {
+        e.preventDefault()
+        axios.put(`/bookingPackageModel/${bookingPackageId}`, {
+            name: name,
+            description: description,
+            quota: quota,
+            price: price,
+            duration: duration, 
+            lockerTypeId: newLockerTypeId
+        },
+        {
+            headers: {
+                AuthToken: authToken
+            }
+        }).then(res => {
+            setName(res.data.name)
+            setDescription(res.data.description)
+            setQuota(res.data.quota)
+            setPrice(res.data.price)
+            setDuration(res.data.duration)
+            //setNewLockerType(res.data.newLockerType)
+            setNewLockerTypeId(res.data.newLockerTypeId)
+            console.log("new locker type in update: " + res.data.newLockerType)
+            isError(false)
+            isSuccessful(true)
+            setMsg("Booking package updated successfully")
+        }).catch(function (error) {
+            isSuccessful(false)
+            console.log(error.response.data)
+            isError(true)
+            setError(error.response.data)
+        })
+    }
     const DisableSwitch = withStyles((theme) => ({
     root: {
         width: 28,
@@ -152,13 +264,16 @@ function BookingPackageDetails() {
                                                     value={data.id}
                                                 />
                                             </FormGroup>
+                                        </fieldset>
+                                        <fieldset>
                                             <FormGroup>
                                                 <Label for="inputName">Name</Label>
                                                 <Input
                                                     type="text"
                                                     id="inputName"
                                                     placeholder="name here"
-                                                    value={data.name}
+                                                    value={name}
+                                                    onChange={onChangeName}
                                                 />
                                             </FormGroup>
                                             <FormGroup>
@@ -167,35 +282,39 @@ function BookingPackageDetails() {
                                                     type="text"
                                                     id="inputDescription"
                                                     placeholder="description here"
-                                                    value={data.description}
+                                                    value={description}
+                                                    onChange={onChangeDescription}
                                                 />
                                             </FormGroup>
                                             <div className="form-row"> 
                                                 <FormGroup className="col-md-4">
                                                     <Label for="inputQuota">Quota</Label>
                                                     <Input
-                                                        type="text"
+                                                        type="number"
                                                         id="inputQuota"
-                                                        placeholder="quota here"
-                                                        value={data.quota}
+                                                        placeholder="Quota"
+                                                        value={quota}
+                                                        onChange={onChangeQuota}
                                                     />
                                                 </FormGroup>
                                                 <FormGroup className="col-md-4">
-                                                    <Label for="inputPrice">Price</Label>
+                                                    <Label for="inputPrice">Price ($)</Label>
                                                     <Input
-                                                        type="text"
+                                                        type="number"
                                                         id="inputPrice"
-                                                        placeholder="price here"
-                                                        value={data.price}
+                                                        placeholder="Price"
+                                                        value={price}
+                                                        onChange={onChangePrice}
                                                     />
                                                 </FormGroup>
                                                 <FormGroup className="col-md-4">
-                                                    <Label for="inputDuration">Duration</Label>
+                                                    <Label for="inputDuration">Duration (in days)</Label>
                                                     <Input
-                                                        type="text"
+                                                        type="number"
                                                         id="inputDuration"
-                                                        placeholder="duration here"
-                                                        value={data.duration}
+                                                        placeholder="Duration"
+                                                        value={duration}
+                                                        onChange={onChangeDuration}
                                                     />
                                                 </FormGroup>
 
@@ -203,12 +322,21 @@ function BookingPackageDetails() {
                                             <FormGroup>
                                                 <Label for="inputLockerTypeId">Locker Type</Label>
                                                 <Input
-                                                    type="text"
+                                                    type="select"
                                                     id="inputLockerTypeId"
-                                                    placeholder="inputLockerTypeId here"
-                                                    value={data.lockerTypeId}
-                                                />
+                                                    placeholder="Locker Type"
+                                                    value={getLockerType(newLockerType)}
+                                                    onChange={onChangeNewLockerType}
+                                                >
+                                                    {
+                                                        lockerTypes.map(newLockerType => (
+                                                            <option key={newLockerType.id}>{newLockerType.name}</option>
+                                                        ))
+                                                    }
+                                                </Input>
                                             </FormGroup>
+                                            </fieldset>
+                                            <fieldset disabled>
                                             <FormGroup>
                                                 <Label for="inputCreatedAt">Created On</Label>
                                                 <Input 
@@ -217,8 +345,15 @@ function BookingPackageDetails() {
                                                     placeholder="Created At" 
                                                     value={formatDate(data.createdAt)}                                                    
                                                     />
-                                            </FormGroup>                           
+                                            </FormGroup>   
+                                            { err &&<Alert color="danger">{error}</Alert> }
+                                            { successful &&<Alert color="success">{successMsg}</Alert>}                         
                                         </fieldset>
+                                        <Row>
+                                            <div className="update ml-auto mr-auto">
+                                                <Button color="success" size="sm" type="submit" onClick={updateBookingPackage}>Update</Button>
+                                            </div>
+                                        </Row>
                                         <Row>
                                             <div className="update ml-auto mr-auto" >
                                                 <Typography component="div">

@@ -88,7 +88,25 @@ function MaintenanceActionDetails() {
     }
 
     const updateMaintenanceAction = e => {
+
         e.preventDefault()
+
+        var d = maintenanceDate
+        d = d.toString().replace('/-/g', '/')
+
+        if (d === undefined || d === "") {
+            isError(true)
+            setError("Unable to create new maintenance advertisement. Please fill in the maintenance date field.")
+            isSuccessful(false)
+            return;
+        }
+
+        if(lockerId === undefined || lockerId === "") {
+            isError(true)
+            setError("Unable to create new maintenance advertisement. Please fill in the locker Id field.")
+            isSuccessful(false)
+            return;
+        }
 
         axios.put(`/maintenanceAction/${maintenanceActionId}`, {
             maintenanceDate: maintenanceDate,
@@ -107,16 +125,10 @@ function MaintenanceActionDetails() {
             isSuccessful(true)
             setMsg("Maintenance action updated successfully")
         }).catch(function (error) {
-            let errormsg = error.response.data;
-    
-            if ((error.response.data).startsWith("<!DOCTYPE html>")) {
-                errormsg = "An unexpected error has occurred. The Advertisement cannot be approved."
-            }
-
             isSuccessful(false)
             console.log(error.response.data)
             isError(true)
-            setError(errormsg)
+            setError(error.response.data)
         })
     }
 

@@ -98,7 +98,7 @@ function MaintenanceActions() {
         if (d === undefined || d === "") {
             isInModal(true)
             isError(true)
-            setError("Unable to create new maintenance advertisement. Please fill in the maintenance date field.")
+            setError("Unable to create new maintenance action. Please fill in the maintenance date field.")
             isSuccessful(false)
             return;
         }
@@ -106,7 +106,7 @@ function MaintenanceActions() {
         if(lockerId === undefined || lockerId === "") {
             isInModal(true)
             isError(true)
-            setError("Unable to create new maintenance advertisement. Please fill in the locker Id field.")
+            setError("Unable to create new maintenance action. Please fill in the locker Id field.")
             isSuccessful(false)
             return;
         }
@@ -130,7 +130,7 @@ function MaintenanceActions() {
             let errormsg = error.response.data;
     
             if ((error.response.data).startsWith("<!DOCTYPE html>")) {
-                errormsg = "An unexpected error has occurred. The Advertisement cannot be deleted."
+                errormsg = "An unexpected error has occurred. The maintenance action cannot be deleted."
             }
             console.log(error.response.data)
             isInModal(true)
