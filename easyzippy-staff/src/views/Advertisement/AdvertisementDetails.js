@@ -172,17 +172,17 @@ function AdvertisementDetails() {
             isError(false)
         }
 
-        setAdvertiserMobile(mobile)
+        setAdvertiserMobile(mobile.trim())
     }
     
     const onChangeAdvertiserEmail = e => {
         const email = e.target.value;
-        setAdvertiserEmail(email)
+        setAdvertiserEmail(email.trim())
     }
 
     const onChangeAdvertiserUrl = e => {
         const url = e.target.value;
-        setAdvertiserUrl(url)
+        setAdvertiserUrl(url.trim())
     }
 
     const onChangeAmountPaid = e => {
@@ -196,7 +196,7 @@ function AdvertisementDetails() {
             isError(false)
         }
         
-        setAmountPaid(amountPaid)
+        setAmountPaid(amountPaid.trim())
     }
 
     const updateAdvertisement = e => {
@@ -220,14 +220,14 @@ function AdvertisementDetails() {
 
 
         axios.put(`/advertisement/${advertisementId}`, {
-            title: title.trim(), 
-            description: description.trim(),
-            advertiserUrl: advertiserUrl.trim(),
+            title: title, 
+            description: description,
+            advertiserUrl: advertiserUrl,
             startDate: startDate,
             endDate: endDate,
-            amountPaid: amountPaid.trim(),
-            advertiserMobile: advertiserMobile.trim(),
-            advertiserEmail: advertiserEmail.trim()
+            amountPaid: amountPaid,
+            advertiserMobile: advertiserMobile,
+            advertiserEmail: advertiserEmail
         },
         {
             headers: {
