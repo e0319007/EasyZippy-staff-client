@@ -345,7 +345,7 @@ function Advertisements() {
                                                     toggle()
                                                 },
                                                 isFreeAction: true,
-                                                tooltip: 'Add Button',
+                                                tooltip: 'Add',
                                             },
                                             {
                                                 icon: 'sort',
@@ -483,7 +483,7 @@ function Advertisements() {
                     </form>
                 </ModalBody>
                 <ModalFooter>
-                <Button color="primary" onClick={createStaffAdvertisement}>Create</Button>{' '}
+                    <Button color="primary" onClick={createStaffAdvertisement}>Create</Button>{' '}
                 </ModalFooter>
             </Modal> 
             <link

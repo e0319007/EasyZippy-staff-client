@@ -26,6 +26,8 @@ import MerchantBookingDetails from "views/Booking/MerchantBookingDetails.js";
 import AdvertisementDetails from "views/Advertisement/AdvertisementDetails"
 import ErrorPage from "views/ErrorPage.js";
 import Dashboard from "./layouts/Admin.js";
+import MerchantPromotionDetails from "views/Promotion/MerchantPromotionDetails.js";
+import MallPromotionDetails from "views/Promotion/MallPromotionDetails.js";
 
 
 const hist = createBrowserHistory();
@@ -64,6 +66,9 @@ function App(props) {
                 <Route exact path="/admin/customerBookingDetails" component={CustomerBookingDetails}/>
                 <Route exact path="/admin/merchantBookingDetails" component={MerchantBookingDetails}/>
                 <Route exact path="/admin/advertisementDetails" component={AdvertisementDetails}/>
+                <Route exact path="/admin/merchantPromotionDetails" component={MerchantPromotionDetails}/>
+                <Route exact path="/admin/mallPromotionDetails" component={MallPromotionDetails}/>
+
                 {/* <Route component={ErrorPage}/> */}
         
                 {/* <Redirect to="/error" component={Error} /> */}
