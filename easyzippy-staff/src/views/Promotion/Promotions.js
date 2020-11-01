@@ -53,7 +53,7 @@ function Promotions() {
         {title: "End Date", field: "endDate", 
             customFilterAndSearch: (term, rowData) => formatDate(rowData.endDate).toLowerCase().includes(term.toLowerCase()),
             render: row => <span>{ formatDate(row["endDate"]) }</span>},
-        {title: "Expired", field:"expired"}          
+        {title: "Expired", field:"expired", lookup:{false: "Not Expired", true: "Expired"}}          
     ]
 
     var merchantColumns = [
@@ -69,7 +69,7 @@ function Promotions() {
         {title: "End Date", field: "endDate", 
             customFilterAndSearch: (term, rowData) => formatDate(rowData.endDate).toLowerCase().includes(term.toLowerCase()),
             render: row => <span>{ formatDate(row["endDate"]) }</span>},
-        {title: "Expired", field:"expired"}          
+        {title: "Expired", field:"expired", lookup:{false: "Not Expired", true: "Expired"}}          
     ]
 
     const [mallData, setMallData] = useState([])
