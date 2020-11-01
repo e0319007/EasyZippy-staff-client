@@ -15,7 +15,7 @@ import {
     Row,
     Col,
     Input,
-    CardHeader, FormGroup, Label, Button
+    CardHeader, FormGroup, Label, Button, Alert
 } from "reactstrap";
 
 const theme = createMuiTheme({
@@ -112,7 +112,7 @@ function StaffDetails() {
             isError(false)
             isSuccessful(true)
             setMsg("Staff Role updated successfully!")
-            window.location.reload()
+            //window.location.reload()
         }).catch(function(error) {
             console.log(error.response.data)
             isError(true)
@@ -305,7 +305,7 @@ function StaffDetails() {
                                                     placeholder="Created At" 
                                                     value={formatDate(data.createdAt)}                                                    
                                                     />
-                                            </FormGroup>                           
+                                            </FormGroup>                         
                                         </fieldset>
                                         <p></p>
                                         <Row>
@@ -313,6 +313,8 @@ function StaffDetails() {
                                                 <Button color="success" size="sm" type="submit" onClick={updateStaffDetails}>Update</Button>
                                             </div>
                                         </Row>
+                                        {err &&<Alert color="danger">{error}</Alert> }
+                                        {successful &&<Alert color="success">{successMsg}</Alert>}  
                                         <Row>
                                             <div className="update ml-auto mr-auto" >
                                                 <Typography component="div">
