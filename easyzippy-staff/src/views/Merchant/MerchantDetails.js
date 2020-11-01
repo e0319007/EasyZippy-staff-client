@@ -26,6 +26,7 @@ import {
     ModalBody,
     ModalHeader
 } from "reactstrap";
+import MerchantPromotionHistory from "./MerchantPromotionHistory";
 
 const theme = createMuiTheme({
     typography: {
@@ -475,10 +476,10 @@ function MerchantDetails() {
                                     </form>
                                 </CardBody>
 
-                                <Modal isOpen={modalPromo} toggle={toggleModalPromo}>
+                                <Modal size="lg"isOpen={modalPromo} toggle={toggleModalPromo}>
                                     <ModalHeader toggle={toggleModalPromo}>Promotion History</ModalHeader>
                                     <ModalBody>
-                                        promotion history details here
+                                        <MerchantPromotionHistory/>
                                     </ModalBody>
                                 </Modal>
 
