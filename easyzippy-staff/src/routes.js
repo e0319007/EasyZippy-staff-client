@@ -24,6 +24,8 @@ import CustomerBookingDetails from "views/Booking/CustomerBookingDetails";
 import MerchantBookingDetails from "views/Booking/MerchantBookingDetails";
 import AdvertisementDetails from "views/Advertisement/AdvertisementDetails"
 import Bookings from "views/Booking/Bookings";
+import MerchantPromotionDetails from "views/Promotion/MerchantPromotionDetails";
+import MallPromotionDetails from "views/Promotion/MallPromotionDetails";
 
 var routes = [
   {
@@ -106,6 +108,22 @@ var routes = [
     icon: "nc-icon nc-tag-content",
     component: Promotions,
     layout: "/admin"
+  },
+  {
+    path: "/merchantPromotionDetails",
+    name: "Merchant Promotion Details",
+    icon: "nc-icon nc-tag-content",
+    component: MerchantPromotionDetails,
+    layout: "/admin",
+    invisible: true
+  },
+  {
+    path: "/mallPromotionDetails",
+    name: "Mall Promotion Details",
+    icon: "nc-icon nc-tag-content",
+    component: MallPromotionDetails,
+    layout: "/admin",
+    invisible: true
   },
   {
     path: "/Bookings",

@@ -72,7 +72,7 @@ function Advertisements() {
         {title: "End Date", field:"endDate", editable: "never",
             customFilterAndSearch: (term, rowData) => formatDate(rowData.endDate).toLowerCase().includes(term.toLowerCase()),
             render: row => <span>{ formatDate(row["endDate"]) }</span>},
-        {title: "Expired", field:"expired", editable: "never"} 
+        {title: "Expired", field:"expired", editable: "never", lookup:{false: "Not Expired", true: "Expired"}} 
     ]
 
     useEffect(() => {
@@ -345,7 +345,7 @@ function Advertisements() {
                                                     toggle()
                                                 },
                                                 isFreeAction: true,
-                                                tooltip: 'Add Button',
+                                                tooltip: 'Add',
                                             },
                                             {
                                                 icon: 'sort',
@@ -483,7 +483,7 @@ function Advertisements() {
                     </form>
                 </ModalBody>
                 <ModalFooter>
-                <Button color="primary" onClick={createStaffAdvertisement}>Create</Button>{' '}
+                    <Button color="primary" onClick={createStaffAdvertisement}>Create</Button>{' '}
                 </ModalFooter>
             </Modal> 
             <link
