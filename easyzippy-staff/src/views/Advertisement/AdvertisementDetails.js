@@ -512,7 +512,7 @@ function AdvertisementDetails() {
                                             }
                                         <Row>
                                             <div className="update ml-auto mr-auto" >
-                                                <Button color="success" size="sm" type="submit" onClick={updateAdvertisement}>Update Product</Button>
+                                                <Button color="success" size="sm" type="submit" onClick={updateAdvertisement}>Update Advertisement</Button>
                                             </div>
                                         </Row>
                                         <Row>
