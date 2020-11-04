@@ -27,23 +27,11 @@ function Login() {
         // console.log("inside on change email")
         const email = e.target.value;
         setEmail(email)
-        if (email.trim().length == 0) {
-            setError("Email is a required field")
-            isError(true)
-        } else {
-            isError(false)
-        }
     }
 
     const onChangePassword = e => {
         const password = e.target.value;
         setPassword(password)
-        if (password.trim().length == 0) {
-            setError("Password is a required field")
-            isError(true)
-        } else {
-            isError(false)
-        }
     }
 
     const staff = {
