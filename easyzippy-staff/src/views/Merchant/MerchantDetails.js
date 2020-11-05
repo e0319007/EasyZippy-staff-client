@@ -25,7 +25,8 @@ import {
     Tooltip,
     Modal,
     ModalBody,
-    ModalHeader
+    ModalHeader,
+    CardImg
 } from "reactstrap";
 import MerchantPromotionHistory from "./MerchantPromotionHistory";
 
