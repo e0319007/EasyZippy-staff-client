@@ -154,16 +154,51 @@ function Promotions() {
 
         var enddate = endDate
         enddate = enddate.toString().replace('/-/g', '/')
-     
-        //add validation
+    
+        isInModal(true)
+        isSuccessful(false)
 
-        // if (promoCode === undefined || promoCode === "") {
-        //     isInModal(true)
-        //     isError(true)
-        //     setError("Unable to create new mall promotion. Please fill in the promo code field.")
-        //     isSuccessful(false)
-        //     return;
-        // }
+        //add validation
+        if (promoCode === undefined || promoCode === "") {
+            isError(true)
+            setError("Unable to create new mall promotion. Please fill in the promo code field.")
+            return;
+        }
+
+        if (startd === undefined || startd === "") {
+            isError(true)
+            setError("Unable to create new mall promotion. Please select a start date.")
+            return;  
+        }
+
+        if (enddate === undefined || enddate === "") {
+            isError(true)
+            setError("Unable to create new mall promotion. Please select an end date.")
+            return;  
+        }
+
+        var nums = /^\d+(,\d{3})*(\.\d{1,2})?$/gm
+        if (!discount.match(nums)) { //if not all numbers
+            setError("Unable to create new mall promotion. Please enter a valid discount value.")
+            isError(true)
+            return;
+        } 
+
+        if (!usageLimit.match(nums)) { //if not all numbers
+            setError("Unable to create new mall promotion. Please enter a valid usage limit.")
+            isError(true)
+            return;
+        }
+
+        if (minimumSpend.indexOf('$') > 0) {
+            setError("Please enter the minimum spend without a '$'sign")
+            isError(true)
+        } else {
+            if (!minimumSpend.match(nums)) { //if not all numbers
+                setError("Please enter a valid minimum spend value")
+                isError(true)
+            } 
+        } 
 
         var percentageDiscount = null
         var flatDiscount = null
@@ -564,7 +599,7 @@ function Promotions() {
                             <FormGroup className="col-md-6">
                                 <Label for="inputUsageLimit">Usage Limit</Label>
                                     <Input 
-                                        type="number" 
+                                        type="text" 
                                         id="inputUsageLimit" 
                                         placeholder="Usage Limit"
                                         value={usageLimit}
@@ -574,7 +609,7 @@ function Promotions() {
                             <FormGroup className="col-md-6">
                                 <Label for="inputMinimumSpend">Minimum Spend ($)</Label>
                                     <Input 
-                                        type="number" 
+                                        type="text" 
                                         id="inputMinimumSpend" 
                                         placeholder="Minimum Spend"
                                         value={minimunSpend}
