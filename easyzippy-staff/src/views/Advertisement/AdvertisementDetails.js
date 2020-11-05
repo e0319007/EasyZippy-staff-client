@@ -97,8 +97,12 @@ function AdvertisementDetails() {
             console.log(pastdate)
             var today = new Date()
 
+            console.log(today > pastdate)
+            
             if (today > pastdate) {
                 setCanApprove(false)
+            } else {
+                setCanApprove(true)
             }
 
             setApproved(res.data.approved)
@@ -218,14 +222,34 @@ function AdvertisementDetails() {
             return;
         }
 
+        var startd = startDate
+        startd = startd.toString().replace('/-/g', '/')
+        console.log(startd)
 
+        var enddate = endDate
+        enddate = enddate.toString().replace('/-/g', '/')
+        console.log(enddate)
+
+        if (startd === undefined || startd === "") {
+            isError(true)
+            setError("Unable to update advertisement. Please select a Start Date.")
+            isSuccessful(false)
+            return;
+        }
+
+        if (enddate === undefined || enddate === "") {
+            isError(true)
+            setError("Unable to update advertisement. Please select an End Date.")
+            isSuccessful(false)
+            return;
+        }
 
         axios.put(`/advertisement/${advertisementId}`, {
             title: title, 
             description: description,
             advertiserUrl: advertiserUrl,
-            startDate: startDate,
-            endDate: endDate,
+            startDate: startd,
+            endDate: enddate,
             amountPaid: amountPaid,
             advertiserMobile: advertiserMobile,
             advertiserEmail: advertiserEmail

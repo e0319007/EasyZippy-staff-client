@@ -10,6 +10,7 @@ import { Typography } from "@material-ui/core";
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import SweetAlert from 'react-bootstrap-sweetalert';
+import defaultLogo from '../../assets/img/user.png';
 import {
     Card,
     CardBody,
@@ -24,7 +25,8 @@ import {
     Tooltip,
     Modal,
     ModalBody,
-    ModalHeader
+    ModalHeader,
+    CardImg
 } from "reactstrap";
 import MerchantPromotionHistory from "./MerchantPromotionHistory";
 import MerchantOrderHistory from "./MerchantOrderHistory";
@@ -50,6 +52,7 @@ function MerchantDetails() {
     const [approve, setApproved] = useState([])
 
     const [pdf, setPdf] = useState([])
+    const [image, setImage] = useState(null)
     // const [disabled, isDisabled] = useState([])
 
     //tooltip
@@ -123,6 +126,27 @@ function MerchantDetails() {
                 createdAt: date,
                 disabled: res.data.disabled
             });
+
+            console.log(res.data.merchantLogoImage)
+
+            axios.get(`/assets/${res.data.merchantLogoImage}`, {
+                responseType: 'blob'
+            },
+            {
+                headers: {
+                    AuthToken: authToken,
+                    'Content-Type': 'application/json'
+                }
+            }).then (response => {
+                console.log('axios images thru')
+                var file = new File([response.data], {type:"image/png"})
+                let image = URL.createObjectURL(file)
+                console.log(image)
+                setImage(image)
+            }).catch(function (error) {
+                console.log(error.response.data)
+            })
+
             console.log(res.data.tenancyAgreement)
 
             axios.get(`/assets/${res.data.tenancyAgreement}`, 
@@ -249,9 +273,15 @@ function MerchantDetails() {
                         <Col md = "12">
                             <Card className="card-name">
                                 <CardHeader>
-                                    <div className="form-row">
-                                    <CardTitle className="col-md-10" tag="h5">{data.name}</CardTitle>
-                                    </div>
+                                    <span className="form-row">
+                                        {image !== null &&
+                                            <CardImg style={{width:"8rem"}} top src={image} alt='...'/>
+                                        }
+                                        {image === null &&
+                                            <CardImg style={{width:"8rem"}} top src={defaultLogo} alt='...'/>
+                                        }     
+                                        <CardTitle className="col-md-10" tag="h4" style={{...padding(21, 0, 0, 0)}}>{data.name}</CardTitle>
+                                    </span>
                                 </CardHeader>
                                 <CardBody>
                                     <form>
@@ -542,6 +572,15 @@ function formatDate(d) {
     }
 
     return dt + "/" + month + "/" + year + " " + time ;
+}
+
+function padding(a, b, c, d) {
+    return {
+        paddingTop: a,
+        paddingRight: b ? b : a,
+        paddingBottom: c ? c : a,
+        paddingLeft: d ? d : (b ? b : a)
+    }
 }
 
 export default MerchantDetails;
