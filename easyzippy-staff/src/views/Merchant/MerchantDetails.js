@@ -27,6 +27,7 @@ import {
     ModalHeader
 } from "reactstrap";
 import MerchantPromotionHistory from "./MerchantPromotionHistory";
+import MerchantOrderHistory from "./MerchantOrderHistory";
 
 const theme = createMuiTheme({
     typography: {
@@ -490,10 +491,10 @@ function MerchantDetails() {
                                     </ModalBody>
                                 </Modal>
 
-                                <Modal isOpen={modalOrder} toggle={toggleModalOrder}>
+                                <Modal size="lg" isOpen={modalOrder} toggle={toggleModalOrder}>
                                     <ModalHeader toggle={toggleModalOrder}>Order History</ModalHeader>
                                     <ModalBody>
-                                        order history details here
+                                        <MerchantOrderHistory/>
                                     </ModalBody>
                                 </Modal>
 

@@ -160,7 +160,7 @@ function Dashboard() {
                   </Col>
                   <Col md="8" xs="7">
                     <div className="numbers">
-                      <p className="card-category">Revenue</p>
+                      <p className="card-category">Revenue ($)</p>
                       <CardTitle tag="p">-</CardTitle>
                       <p />
                     </div>

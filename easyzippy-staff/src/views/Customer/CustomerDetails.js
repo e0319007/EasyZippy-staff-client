@@ -17,6 +17,7 @@ import {
     Input,
     CardHeader, FormGroup, Label, Button, Tooltip, Modal, ModalBody, ModalHeader
 } from "reactstrap";
+import CustomerOrderHistory from "./CustomerOrderHistory";
 
 const theme = createMuiTheme({
     typography: {
@@ -299,10 +300,10 @@ function CustomerDetails() {
                                     </ModalBody>
                                 </Modal>
 
-                                <Modal isOpen={modalOrder} toggle={toggleModalOrder}>
+                                <Modal size="lg" isOpen={modalOrder} toggle={toggleModalOrder}>
                                     <ModalHeader toggle={toggleModalOrder}>Order History</ModalHeader>
                                     <ModalBody>
-                                        order history details here
+                                        <CustomerOrderHistory/>
                                     </ModalBody>
                                 </Modal>
 
