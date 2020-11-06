@@ -275,7 +275,11 @@ function MerchantDetails() {
                                 <CardHeader>
                                     <span className="form-row">
                                         {image !== null &&
-                                            <CardImg style={{width:"8rem"}} top src={image} alt='...'/>
+                                            <CardImg 
+                                            style={{width:"8rem"}} 
+                                            top src={image} 
+                                            alt='...'
+                                            className='rounded-circle'/>
                                         }
                                         {image === null &&
                                             <CardImg style={{width:"8rem"}} top src={defaultLogo} alt='...'/>
