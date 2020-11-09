@@ -49,7 +49,7 @@ function Staffs() {
 
     useEffect(() => {
         console.log("retrieving staffs;; axios")
-        axios.get("/staff", 
+        axios.get("/staff",
         {
             headers: {
                 AuthToken: authToken
