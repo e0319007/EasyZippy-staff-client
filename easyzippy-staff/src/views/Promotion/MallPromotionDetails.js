@@ -33,7 +33,7 @@ function MallPromotionDetails() {
     const [data, setData] = useState([])
     const [staff, setStaff] = useState([])
     const [expireMsg, setExpireMsg] = useState()
-    //const staffId = parseInt(Cookies.get('staffUser'))
+    
 
 
     //for error handling
@@ -51,8 +51,14 @@ function MallPromotionDetails() {
     const [endDate, setEndDate] = useState('')
     const [percentageDiscount, setPercentageDiscount] = useState('')
     const [flatDiscount, setFlatDiscount] = useState('')
+    const [discount, setDiscount] = useState('')
     const [usageLimit, setUsageLimit] = useState('')
     const [minimumSpend, setMinimumSpend] = useState('')
+
+    const [isPercentage, setIsPercentage] = useState(true)
+    const [isFlat, setIsFlat] = useState(false)
+
+    const staffId = parseInt(Cookies.get('staffUser'))
     
     
 
@@ -73,6 +79,7 @@ function MallPromotionDetails() {
             setEndDate((res.data.endDate).substr(0,10))
             setPercentageDiscount(res.data.percentageDiscount)
             setFlatDiscount(res.data.flatDiscount)
+            setDiscount(res.data.discount)
             setUsageLimit(res.data.usageLimit)
             setMinimumSpend(res.data.minimumSpend)
 
@@ -118,25 +125,66 @@ function MallPromotionDetails() {
         const endDate = e.target.value
         setEndDate(endDate)
     }
-    const onChangePercentageDiscount = e => {
-        const percentageDiscount = e.target.value
-        setPercentageDiscount(percentageDiscount)
+    const onChangeDiscount = e => {
+        const discount = e.target.value
+        if (discount.trim().length === 0) {
+            setError("Discount is a required field")
+            isError(true)
+        } else if (discount.indexOf('$') > 0 || discount.indexOf('%') > 0) {
+            setError("Please enter the discount without a '$' or '%' sign")
+            isError(true)
+        } else {
+            var nums = /^\d+(,\d{3})*(\.\d{1,2})?$/gm
+            if (!discount.match(nums)) { //if not all numbers
+                setError("Please enter a valid discount value")
+                isError(true)
+            } else {
+                isError(false)
+            }
+        } 
+        setDiscount(discount)
     }
-    const onChangeFlatDiscount = e => {
-        const flatDiscount = e.target.value
-        setFlatDiscount(flatDiscount)
-    }
-    // const onChangeDiscount = e => {
-    //     const discount = e.target.value
-
-    // }
     const onChangeUsageLimit = e => {
         const usageLimit = e.target.value
+
+        var nums = /^[0-9]+$/
+        if (!usageLimit.match(nums)) { //if not all numbers
+            setError("Please enter a valid usage limit")
+            isError(true)
+        } else {
+            isError(false)
+        }
+    
         setUsageLimit(usageLimit)
     }
     const onChangeMinimumSpend = e => {
         const minimumSpend = e.target.value
+        if (minimumSpend.indexOf('$') > 0) {
+            setError("Please enter the minimum spend without a '$'sign")
+            isError(true)
+        } else {
+            var nums = /^\d+(,\d{3})*(\.\d{1,2})?$/gm
+            if (!minimumSpend.match(nums)) { //if not all numbers
+                setError("Please enter a valid minimum spend value")
+                isError(true)
+            } else {
+                isError(false)
+            }
+        } 
         setMinimumSpend(minimumSpend)
+    }
+    const onChangeRadioPercentage = e => {
+        const checked = e.target.checked
+        console.log("percentage checked: " + checked)
+        setIsPercentage(checked)
+        setIsFlat(!checked)
+    }
+
+    const onChangeRadioFlat = e => {
+        const checked = e.target.checked
+        console.log("flat checked: " + checked)
+        setIsPercentage(!checked)
+        setIsFlat(checked)
     }
 
     const updateMallPromotion = e => {
@@ -156,6 +204,14 @@ function MallPromotionDetails() {
         //     isSuccessful(false)
         //     return;
         // }
+        var percentageDiscount = null
+        var flatDiscount = null
+
+        if (isPercentage) {
+            percentageDiscount = discount
+        } else if (isFlat) {
+            flatDiscount = discount
+        }
 
         console.log("promo code: " + promoCode)
 
@@ -170,23 +226,23 @@ function MallPromotionDetails() {
             flatDiscount: flatDiscount,
             usageLimit: usageLimit,
             minimumSpend: minimumSpend,
-            //staffId: staffId
+            staffId: staffId
         }, 
         {
             headers: {
                 AuthToken: authToken
             }
         }).then(res => {
-            // setPromoCode(res.data[1][0].promoCode)
-            // setTitle(res.data[1][0].title)
-            // setDescription(res.data[1][0].description)
-            // setTermsAndConditions(res.data[1][0].termsAndConditions)
-            // setStartDate((res.data[1][0].startDate).substr(0,10))
-            // setEndDate((res.data[1][0].endDate).substr(0,10))
-            // setPercentageDiscount(res.data[1][0].percentageDiscount)
-            // setFlatDiscount(res.data[1][0].getFullYear)
-            // setUsageLimit(res.data[1][0].usageLimit)
-            // setMinimumSpend(res.data[1][0].minimumSpend)
+            setPromoCode(res.data[1][0].promoCode)
+            setTitle(res.data[1][0].title)
+            setDescription(res.data[1][0].description)
+            setTermsAndConditions(res.data[1][0].termsAndConditions)
+            setStartDate((res.data[1][0].startDate).substr(0,10))
+            setEndDate((res.data[1][0].endDate).substr(0,10))
+            setPercentageDiscount(res.data[1][0].percentageDiscount)
+            setFlatDiscount(res.data[1][0].getFullYear)
+            setUsageLimit(res.data[1][0].usageLimit)
+            setMinimumSpend(res.data[1][0].minimumSpend)
 
             // setPromoCode(res.data.promoCode)
             // setTitle(res.data.title)
@@ -325,25 +381,39 @@ function MallPromotionDetails() {
                                                 </FormGroup>
                                             </div>
                                             <div className="form-row">
-                                                <FormGroup className="col-md-6">
-                                                    <Label for="inputPercentageDiscount">Percentage Discount (%)</Label>
-                                                    <Input
-                                                        type="number"
-                                                        id="inputPercentageDiscount"
-                                                        placeholder="-"
-                                                        value={percentageDiscount}
-                                                        onChange={onChangePercentageDiscount}
-                                                    />
+                                                <FormGroup className="col-md-6" check>
+                                                    <Label check for="percentageRadio">
+                                                    <Input 
+                                                        type="radio" 
+                                                        id="percentageRadio" 
+                                                        checked={isPercentage}
+                                                        onChange={onChangeRadioPercentage}
+                                                        //style={{...padding(15,0,0,0)}}
+                                                        />
+                                                    Percentage Discount (%)</Label>
                                                 </FormGroup>
-                                                <FormGroup className="col-md-6">
-                                                    <Label for="inputFlatDiscount">Flat Discount ($)</Label>
-                                                    <Input
-                                                        type="number"
-                                                        id="inputFlatDiscount"
-                                                        placeholder="-"
-                                                        value={flatDiscount}
-                                                        onChange={onChangeFlatDiscount}
-                                                    />
+                                                <FormGroup className="col-md-6" check>
+                                                    <Label check for="flatRadio">
+                                                    <Input 
+                                                        type="radio" 
+                                                        id="flatRadio" 
+                                                        checked={isFlat}
+                                                        onChange={onChangeRadioFlat}
+                                                        //style={{...padding(15,0,0,0)}}
+                                                        />
+                                                    Flat Discount ($)</Label>
+                                                </FormGroup>
+                                            </div>
+                                            <div className="form-row">
+                                                <FormGroup className="col-md-12">
+                                                    <Label for="inputDiscount"></Label>
+                                                        <Input 
+                                                            type="text" 
+                                                            id="inputDiscount" 
+                                                            placeholder="Discount"
+                                                            value={discount}
+                                                            onChange={onChangeDiscount}
+                                                        />
                                                 </FormGroup>
                                             </div>
                                             <div className="form-row">
