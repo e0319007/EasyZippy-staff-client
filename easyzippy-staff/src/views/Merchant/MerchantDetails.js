@@ -30,6 +30,7 @@ import {
 } from "reactstrap";
 import MerchantPromotionHistory from "./MerchantPromotionHistory";
 import MerchantOrderHistory from "./MerchantOrderHistory";
+import MerchantBookingHistory from "./MerchantBookingHistory";
 
 const theme = createMuiTheme({
     typography: {
@@ -47,6 +48,10 @@ function MerchantDetails() {
 
     const merchantId = JSON.parse(localStorage.getItem('merchantToView'))
     console.log("test merchant id: " + merchantId)
+
+    const [bookingPackageModel, setBookingPackageModel] = useState('')
+    const [bookingPackages, setBookingPackages] = useState([])
+    const [bookingPackage, setBookingPackage] = useState([])
 
     const [data, setData] = useState([])
     const [approve, setApproved] = useState([])
@@ -128,6 +133,39 @@ function MerchantDetails() {
             });
 
             console.log(res.data.merchantLogoImage)
+
+            axios.get(`/merchantBookingPackages/${merchantId}`, 
+            {
+                headers: {
+                    AuthToken: authToken
+                }
+            }).then(res => {
+                if (res.data !== undefined || res.data.length !== 0) {
+                    for (var i in res.data) {
+                        if (res.data[i].expired === false) {
+                            var bookingPackageModelId = res.data[i].bookingPackageModelId
+                            setBookingPackage(res.data[i])
+    
+                            axios.get(`/bookingPackageModel/${bookingPackageModelId}`, {
+                                headers: {
+                                    AuthToken: authToken
+                                }
+                            }).then(res => {
+                                console.log("get booking package model thru")
+                                setBookingPackageModel(res.data)
+                                console.log("Booking package model: ")
+                                console.log(res.data)
+                            }).catch(function (error) {
+                                console.log(error)
+                            })
+    
+                            break;
+                        }
+                    }
+                }
+            }).catch(function (error) {
+                console.log(error)
+            })
 
             axios.get(`/assets/${res.data.merchantLogoImage}`, {
                 responseType: 'blob'
@@ -272,7 +310,7 @@ function MerchantDetails() {
                     <Row>
                         <Col md = "12">
                             <Card className="card-name">
-                                <CardHeader>
+                                <CardHeader style={{display:"flex", justifyContent:"center"}}>
                                     <span className="form-row">
                                         {image !== null &&
                                             <CardImg 
@@ -284,7 +322,7 @@ function MerchantDetails() {
                                         {image === null &&
                                             <CardImg style={{width:"8rem"}} top src={defaultLogo} alt='...'/>
                                         }     
-                                        <CardTitle className="col-md-10" tag="h4" style={{...padding(21, 0, 0, 0)}}>{data.name}</CardTitle>
+                                        {/* <CardTitle className="col-md-10" tag="h4" style={{...padding(21, 0, 0, 0)}}>{data.name}</CardTitle> */}
                                     </span>
                                 </CardHeader>
                                 <CardBody>
@@ -407,12 +445,12 @@ function MerchantDetails() {
                                                     />
                                             </FormGroup>
                                             <FormGroup>
-                                                <Label for="inputBookingPackage">Booking Package</Label>
+                                                <Label for="inputBookingPackage">Booking Package (if any)</Label>
                                                 <Input
                                                     type="text"
                                                     id="inputBookingPackage"
-                                                    placeholder="Booking Package"
-                                                    //value={}
+                                                    placeholder="-"
+                                                    value={bookingPackageModel.name}
                                                     />
                                             </FormGroup>
                                         </fieldset>                                      
@@ -518,10 +556,10 @@ function MerchantDetails() {
                                     </ModalBody>
                                 </Modal>
 
-                                <Modal isOpen={modalBooking} toggle={toggleModalBooking}>
+                                <Modal size="lg" isOpen={modalBooking} toggle={toggleModalBooking}>
                                     <ModalHeader toggle={toggleModalBooking}>Booking History</ModalHeader>
                                     <ModalBody>
-                                        booking history details here
+                                        <MerchantBookingHistory/>
                                     </ModalBody>
                                 </Modal>
 

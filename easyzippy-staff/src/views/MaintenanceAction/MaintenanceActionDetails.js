@@ -31,6 +31,9 @@ function MaintenanceActionDetails() {
     const maintenanceActionId = JSON.parse(localStorage.getItem('maintenanceActionToView'))
     const [data, setData] = useState([])
 
+    const [kiosks, setKiosks] = useState([])
+    const [kiosk, setKiosk] = useState('')
+
     //for error handling
     const [error, setError] = useState('')
     const [err, isError] = useState(false)
@@ -39,6 +42,8 @@ function MaintenanceActionDetails() {
     const [successMsg, setMsg] = useState('')
 
     const [maintenanceDate, setMaintenanceDate] = useState(data.maintenanceDate)
+    const [lockerCode, setLockerCode] = useState('')
+    const [kioskId, setKioskId] = useState('')
     const [description, setDescription] = useState(data.description)
     const [lockerId, setLockerId] = useState(data.lockerId)
 
@@ -57,6 +62,8 @@ function MaintenanceActionDetails() {
 
             setMaintenanceDate((res.data.maintenanceDate).substr(0,10))
             setDescription(res.data.description)
+            setKioskId(res.data.kioskId)
+            //setLockerCode(res.data.lockerCode)
             setLockerId(res.data.lockerId)
 
             axios.get("/lockers", 
@@ -70,11 +77,26 @@ function MaintenanceActionDetails() {
         }).catch (function(error) {
             console.log(error.response.data)
         })
+
+        axios.get("/kiosks", {
+            headers: {
+                AuthToken: authToken
+            }
+        }).then(res => {
+            setKiosks(res.data)
+        }).catch(function(error) {
+            console.log(error)
+        })
     },[])
 
-    const onChangeMaintenanceDate = e => {
-        const maintenanceDate = e.target.value
-        setMaintenanceDate(maintenanceDate)
+    //match kiosk id to kiosk address 
+    function getKioskName(id) {
+        for (var i in kiosks) {
+            //find the address match to the id
+            if (kiosks[i].id === id) {
+                return kiosks[i].address
+            }
+        }
     }
 
     const onChangeDescription = e => {
@@ -82,9 +104,13 @@ function MaintenanceActionDetails() {
         setDescription(description)
     }
 
-    const onChangeLockerId = e => {
-        const lockerId = e.target.value
-        setLockerId(lockerId)
+    function getLockerCode(id) {
+        for (var i in lockers) {
+            //find the address match to the id
+            if (lockers[i].id === id) {
+                return lockers[i].lockerCode
+            }
+        }
     }
 
     const updateMaintenanceAction = e => {
@@ -101,17 +127,12 @@ function MaintenanceActionDetails() {
             return;
         }
 
-        if(lockerId === undefined || lockerId === "") {
-            isError(true)
-            setError("Unable to create new maintenance advertisement. Please fill in the locker Id field.")
-            isSuccessful(false)
-            return;
-        }
-
         axios.put(`/maintenanceAction/${maintenanceActionId}`, {
             maintenanceDate: maintenanceDate,
             description: description,
-            lockerId: lockerId
+            //lockerId: lockerId
+            kioskId: kioskId,
+            lockerCode: lockerCode
         },
         {
             headers: {
@@ -120,7 +141,8 @@ function MaintenanceActionDetails() {
         }).then(res => {
             setMaintenanceDate(res.data.maintenanceDate.substr(0,10))
             setDescription(res.data.description)
-            setLockerId(res.data.lockerId)
+            setKioskId(res.data.kioskId)
+            setLockerCode(res.data.lockerCode)
             isError(false)
             isSuccessful(true)
             setMsg("Maintenance action updated successfully")
@@ -156,8 +178,8 @@ function MaintenanceActionDetails() {
                                                     value={data.id}                 
                                                 />
                                             </FormGroup>
-                                        </fieldset>
-                                        <fieldset>
+                                       
+                               
                                             <FormGroup>
                                                 <Label for="inputDate">Created On</Label>
                                                 <Input
@@ -165,9 +187,22 @@ function MaintenanceActionDetails() {
                                                     id="inputDate"
                                                     placeholder="Date here"
                                                     value={maintenanceDate}
-                                                    onChange={onChangeMaintenanceDate}
+                                 
                                                 />
                                             </FormGroup>
+                                            <FormGroup>
+                                                <Label for="inputKiosk">Kiosk</Label>
+                                                <Input
+                                                    type="text"
+                                                    id="inputKiosk"
+                                                    value={getKioskName(kioskId)}
+                                           
+                                                >
+                                                    
+                                                </Input>
+                                            </FormGroup>
+                                            </fieldset>
+                                            <fieldset>
                                             <FormGroup>
                                                 <Label for="inputDescription">Description</Label>
                                                 <Input 
@@ -178,22 +213,19 @@ function MaintenanceActionDetails() {
                                                     onChange={onChangeDescription}
                                                 />
                                             </FormGroup>
+                                            </fieldset>
+                                            <fieldset disabled>
                                             <FormGroup>
-                                                <Label for="inputLockerId">Locker Id</Label>
-                                                <Input
-                                                    type="select"
-                                                    id="inputLocker"
-                                                    value={lockerId}
-                                                    onChange={onChangeLockerId}
-                                                >
-                                                    <option>[select]</option>
-                                                    {
-                                                        lockers.map(locker => (
-                                                            <option key={locker.id}>{locker.id}</option>
-                                                        ))
-                                                    }
-                                                </Input>
-                                            </FormGroup>    
+                                                <Label for="inputLockerCode">Locker Code</Label>
+                                                    <Input
+                                                        type="text"
+                                                        id="inputLockerCode"
+                                                        placeholder="Locker Code"
+                                                        value={getLockerCode(lockerId)}
+                                              
+                                                    />
+                                            </FormGroup>                                      
+                                           
                                             { err &&<Alert color="danger">{error}</Alert> }
                                             { successful &&<Alert color="success">{successMsg}</Alert>}                       
                                         </fieldset>

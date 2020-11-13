@@ -26,6 +26,7 @@ import AdvertisementDetails from "views/Advertisement/AdvertisementDetails"
 import Bookings from "views/Booking/Bookings";
 import MerchantPromotionDetails from "views/Promotion/MerchantPromotionDetails";
 import MallPromotionDetails from "views/Promotion/MallPromotionDetails";
+import CustomerOrderDetails from "views/Customer/CustomerOrderDetails";
 
 var routes = [
   {
@@ -69,6 +70,14 @@ var routes = [
     name: "Customer Details",
     icon: "nc-icon nc-single-02",
     component: CustomerDetails,
+    layout: "/admin",
+    invisible: true
+  },
+  {
+    path: "/customerOrderDetails",
+    name: "Customer Order Details",
+    icon: "nc-icon nc-bookmark-2",
+    component: CustomerOrderDetails,
     layout: "/admin",
     invisible: true
   },

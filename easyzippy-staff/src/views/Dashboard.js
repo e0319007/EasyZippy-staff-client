@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Cookies from 'js-cookie';
 // react plugin used to create charts
-import { Line } from "react-chartjs-2";
+
 // reactstrap components
 import {
   Card,
@@ -12,18 +12,11 @@ import {
   CardTitle,
   Row,
   Col,
-  Button,
-  Dropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem,
   ListGroup,
   ListGroupItem
 } from "reactstrap";
 // core components
-import {
-  dashboard24HoursPerformanceChart,
-} from "variables/charts.js";
+
 
 function Dashboard() {
 

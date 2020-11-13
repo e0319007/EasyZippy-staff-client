@@ -17,6 +17,7 @@ import {
     Input,
     CardHeader, FormGroup, Label, Button, Tooltip, Modal, ModalBody, ModalHeader
 } from "reactstrap";
+import LockerActionsRecord from "./LockerActionsRecord";
 
 const theme = createMuiTheme({
     typography: {
@@ -202,6 +203,15 @@ function LockerDetails() {
                                                     value={data.id}
                                                 />
                                             </FormGroup>
+                                            <FormGroup>
+                                                <Label for="inputLockerCode">Locker Code</Label>
+                                                <Input
+                                                    type="text"
+                                                    id="inputLockerCode"
+                                                    placeholder="-"
+                                                    value={data.lockerCode}
+                                                />
+                                            </FormGroup>
                                             <div className="form-row">
                                                 <FormGroup className="col-md-6">
                                                     <Label for="lockerType">Locker Type</Label>
@@ -245,7 +255,7 @@ function LockerDetails() {
                                             <div className="update ml-auto mr-auto" >
                                                 {/* view lockers list modal and tooltip */}
                                                 <Button className="btn-round" size="lg" color="primary" id="viewLockerActionRecord" onClick={toggleModalLockerActionRecord}>
-                                                    <i className="fas fa-archive"/>
+                                                    <i className="nc-icon nc-button-play"/>
                                                 </Button>&nbsp;
                                                 <Tooltip placement="left" isOpen={tooltipOpen} target="viewLockerActionRecord" toggle={toggleTooltip}>
                                                     View Locker Action Records
@@ -283,7 +293,7 @@ function LockerDetails() {
                                 <Modal isOpen={modalLockerActionRecord} toggle={toggleModalLockerActionRecord}>
                                     <ModalHeader toggle={toggleModalLockerActionRecord}>Locker Action Records</ModalHeader>
                                     <ModalBody>
-                                        locker action records
+                                        <LockerActionsRecord/>
                                     </ModalBody>
                                 </Modal>
 

@@ -12,6 +12,7 @@ import {
     Col,
     Card,
 } from "reactstrap";
+import { data } from "jquery";
 
 const theme = createMuiTheme({
     typography: {
@@ -31,23 +32,24 @@ function CustomerOrderHistory() {
     // DECLARING COLUMNS
 
     var columns = [
-        {title: "Id", field: 'id'},
-        {title: "Merchant Name", field: "merchantId", 
-            customFilterAndSearch: (term, rowData) => getMerchantName(rowData.merchantId).toLowerCase().includes(term.toLowerCase()), 
-            render: row => <span>{getMerchantName(row["merchantId"])}</span>}, 
-        {title: "Total Amount ($)", field: "totalAmount"},
-        {title: "Order Date", field: "orderDate", 
-            customFilterAndSearch: (term, rowData) => formatDate(rowData.orderDate).toLowerCase().includes(term.toLowerCase()),
-            render: row => <span>{ formatDate(row["orderDate"]) }</span>},
-        {title: "Collection Method", field: "collectionMethodEnum"},
-        {title: "Order Status", field:"orderStatusEnum", lookup:{Processing: "Processing", ReadyForCollection: "Ready For Collection"}}          
+        {title: "Id", field: 'order.id'},
+        {title: "Merchant Name", field: "order.merchantId", 
+            customFilterAndSearch: (term, rowData) => getMerchantName(rowData.order.merchantId).toLowerCase().includes(term.toLowerCase()), 
+            render: row => <span>{getMerchantName(row.order["merchantId"])}</span>}, 
+        {title: "Total Amount ($)", field: "order.totalAmount"},
+        {title: "Order Date", field: "order.orderDate", 
+            customFilterAndSearch: (term, rowData) => formatDate(rowData.order.orderDate).toLowerCase().includes(term.toLowerCase()),
+            render: row => <span>{ formatDate(row["order.orderDate"]) }</span>},
+        {title: "Collection Method", field: "order.collectionMethodEnum"},
+        {title: "Order Status", field:"order.orderStatusEnum",
+            customFilterAndSearch: (term, rowData) => (rowData.orderStatusEnum).toLowerCase().includes(term.toLowerCase())}
     ]
 
     const [orderData, setOrderData] = useState([])
     const [merchants, setMerchants] = useState([])
     
-    const customerId = parseInt(Cookies.get('customerUser'))
-
+    const customerId = JSON.parse(localStorage.getItem('customerToView'))
+    
 
     useEffect(() => {
         axios.get(`/orders/customer/${customerId}`, 
@@ -57,10 +59,9 @@ function CustomerOrderHistory() {
             }
         }).then(res => {
             setOrderData(res.data)
-            console.log(res.data)
 
         }).catch(function (error) {
-            console.log(error.response.data)
+            console.log(error)
         })
 
         axios.get("/merchants", 
@@ -87,7 +88,7 @@ function CustomerOrderHistory() {
         //console.log(d)
         if (d === undefined){
             d = (new Date()).toISOString()
-            console.log(undefined)
+            //console.log(undefined)
         }
         let currDate = new Date(d);
         let year = currDate.getFullYear();
@@ -124,6 +125,17 @@ function CustomerOrderHistory() {
                                     },
                                     actionsColumnIndex: -1
                                 }}
+                                actions={[
+                                    {
+                                        icon: 'info',
+                                        tooltip: "View Order Details",
+                                        onClick: (event, rowData) => {
+                                            history.push('/admin/customerOrderDetails')
+                                            localStorage.setItem('orderToView', JSON.stringify(rowData.order.id))
+                                        }
+                                    },
+                                ]}
+                               
                             />    
                         </Card>
                     </Col>

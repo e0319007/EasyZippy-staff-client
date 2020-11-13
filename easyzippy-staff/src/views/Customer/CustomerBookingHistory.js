@@ -21,17 +21,16 @@ const theme = createMuiTheme({
     },
 });
 
-function MerchantBookings() {
+function CustomerBookingHistory() {
     const authToken = JSON.parse(Cookies.get('authToken'))
 
     const history = useHistory()
+    const customerId = JSON.parse(localStorage.getItem('customerToView'))
+
 
     // DECLARING COLUMNS 
     var columns = [
         {title: "Id", field: "id", editable: "never"},
-        {title: "Name", field:"customerId", editable: "never", 
-            customFilterAndSearch: (term, rowData) => getMerchantName(rowData.merchantId).toLowerCase().includes(term.toLowerCase()),
-            render: row => <span>{getMerchantName(row["merchantId"])}</span>},
         {title: "Locker Type", field: "lockerTypeId", editable: "never", 
             customFilterAndSearch: (term, rowData) => getLockerType(rowData.lockerTypeId).toLowerCase().includes(term.toLowerCase()),
             render: row => <span>{getLockerType(row["lockerTypeId"])}</span>},    
@@ -47,27 +46,16 @@ function MerchantBookings() {
     ]
 
     const [data, setData] = useState([])
-    const [merchants, setMerchants] = useState([])
     const [lockerTypes, setLockerTypes] = useState([])
 
     useEffect(() => {
-        console.log("retrieving merchant bookings;; axios")
-        axios.get("/merchantBookings", 
+        axios.get(`/customerBooking/${customerId}`, 
         {
             headers: {
                 AuthToken: authToken
             }
         }).then (res => {
             setData(res.data)
-
-            axios.get("/merchants", 
-            {
-                headers: {
-                    AuthToken: authToken
-                }
-            }).then(res => {
-                setMerchants(res.data)
-            }).catch (err => console.error(err))
 
             axios.get("/lockerTypes", 
             {
@@ -80,14 +68,7 @@ function MerchantBookings() {
         }).catch (err => console.error(err))
     },[authToken])
 
-    //match merchant id to merchant name 
-    function getMerchantName(id) {
-        for (var i in merchants) {
-            if (merchants[i].id === id) {
-                return merchants[i].name 
-            }
-        }
-    }
+  
 
     //match locker type id to locker type name 
     function getLockerType(id) {
@@ -128,7 +109,7 @@ function MerchantBookings() {
                     <Col md = "12">
                         <Card>
                             <MaterialTable
-                                title="Merchant Booking List"
+                                title="Booking List"
                                 columns={columns}
                                 data={data}
                                 options={{
@@ -146,7 +127,7 @@ function MerchantBookings() {
                                     icon: 'info',
                                     tooltip: "View Booking Details",
                                     onClick: (event, rowData) => {
-                                        history.push('/admin/merchantBookingDetails')
+                                        history.push('/admin/customerBookingDetails')
                                         localStorage.setItem('bookingToView', JSON.stringify(rowData.id))
                                     }
                                 },
@@ -160,4 +141,4 @@ function MerchantBookings() {
     );
 }
 
-export default MerchantBookings;
+export default CustomerBookingHistory;

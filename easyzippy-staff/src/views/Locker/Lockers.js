@@ -57,10 +57,12 @@ function Lockers() {
 
     const [newLockerType, setNewLockerType] = useState('');
     const [newLockerTypeId, setNewLockerTypeId] = useState('');
+    const [lockerCode, setLockerCode] = useState('')
 
     // DECLARING COLUMNS (created at can put inside details)
     var columns = [
         {title: "Id", field: "id", editable: "never"},
+        {title: "Locker Code", field: "lockerCode", editable: "never"},
         {title: "Locker Status", field:"lockerStatusEnum", editable: "never", searchable: false, lookup:{Empty: "Empty", InUse: "In Use"}},
         {title: "Locker Type", field:"lockerTypeId", editable: "never", searchable: false,
             customFilterAndSearch: (term, rowData) => getLockerType(rowData.lockerTypeId).toLowerCase().includes(term.toLowerCase()),
@@ -159,7 +161,8 @@ function Lockers() {
     const addLocker = e => {
         axios.post("/locker", {
             lockerTypeId: newLockerTypeId,
-            kioskId: kioskId
+            kioskId: kioskId,
+            lockerCode: lockerCode
         },
         {
         headers: {
@@ -195,6 +198,11 @@ function Lockers() {
         const kioskid = getKioskId(e.target.value)
         console.log("kiosk id: " + kioskid)
         setKioskId(kioskid)
+    }
+
+    const onChangeLockerCode = e => {
+        const lockerCode = e.target.value
+        setLockerCode(lockerCode)
     }
 
     function getKioskId(address) {
@@ -320,6 +328,15 @@ function Lockers() {
                                     ))
                                 }
                             </Input>
+                        </FormGroup>
+                        <FormGroup>
+                            <Label for="inputLockerCode">Locker Code</Label>
+                            <Input
+                                type="text"
+                                id="inputLockerCode"
+                                value={lockerCode}
+                                onChange={onChangeLockerCode}
+                            />
                         </FormGroup>
                         { inModal && err &&<UncontrolledAlert color="danger">{error}</UncontrolledAlert> }
                         { inModal && successful &&<UncontrolledAlert color="success">{successMsg}</UncontrolledAlert>}                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       

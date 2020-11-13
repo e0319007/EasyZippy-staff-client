@@ -35,6 +35,7 @@ function MerchantBookingDetails() {
     const [bookingPackages, setBookingPackages] = useState([])
     const [lockerTypes, setLockerTypes] = useState([])
     const [kiosks, setKiosks] = useState([])
+    const [promos, setPromos] = useState([])
 
 
     useEffect(() => {
@@ -92,6 +93,14 @@ function MerchantBookingDetails() {
         }).catch (function(error) {
             console.log(error.response.data)
         })
+
+        axios.get("/promotions", {
+            headers: {
+                AuthToken: authToken
+            }
+        }).then(res => {
+            setPromos(res.data)
+        })
     },[])
 
     //match customer id to customer name 
@@ -139,6 +148,14 @@ function MerchantBookingDetails() {
             }
         }
     }
+    //match promo id to promo name 
+    function getPromoCode(id) {
+        for (var i in promos) {
+            if (promos[i].id === id) {
+                return promos[i].promoCode
+            }
+        }
+    }
 
     // to use when viewing 
     function formatDate(d) {
@@ -179,8 +196,8 @@ function MerchantBookingDetails() {
                                 <CardBody>
                                     <form>
                                         <fieldset disabled> 
-                                        <div className="form-row">
-                                            <FormGroup className="col-md-6">
+                                        {/* <div className="form-row"> */}
+                                            <FormGroup>
                                                 <Label for="inputName">Merchant Name</Label>
                                                 <Input
                                                     type="text"
@@ -189,7 +206,7 @@ function MerchantBookingDetails() {
                                                     value={getMerchantName(data.merchantId)}
                                                 />
                                             </FormGroup>
-                                            <FormGroup className="col-md-6">
+                                            {/* <FormGroup className="col-md-6">
                                                 <Label for="inputName">Collector Name</Label>
                                                 <Input
                                                     type="text"
@@ -197,10 +214,10 @@ function MerchantBookingDetails() {
                                                     placeholder="-"
                                                     value={getCustomerName(data.collecterId)}
                                                 />
-                                            </FormGroup>                                  
-                                        </div> 
-                                            <div className="form-row">
-                                            <FormGroup className="col-md-6">
+                                            </FormGroup>                                   */}
+                                        {/* </div>  */}
+                                            {/* <div className="form-row"> */}
+                                            <FormGroup>
                                                 <Label for="inputId">Booking Id</Label>
                                                 <Input
                                                     type="text"
@@ -209,7 +226,7 @@ function MerchantBookingDetails() {
                                                     value={data.id}
                                                 />
                                             </FormGroup>
-                                            <FormGroup className="col-md-6">
+                                            {/* <FormGroup className="col-md-6">
                                                 <Label for="inputId">Order Id (if any)</Label>
                                                 <Input
                                                     type="text"
@@ -217,8 +234,8 @@ function MerchantBookingDetails() {
                                                     placeholder="-"
                                                     value={data.orderId}
                                                 />
-                                            </FormGroup>
-                                            </div>
+                                            </FormGroup> */}
+                                            {/* </div> */}
                                             
                                             <div className="form-row">
                                                 <FormGroup className="col-md-4">
@@ -265,7 +282,7 @@ function MerchantBookingDetails() {
                                                         type="text"
                                                         id="inputPromoIdUsed"
                                                         placeholder="-"
-                                                        value={data.promoIdUsed}
+                                                        value={getPromoCode(data.promoIdUsed)}
                                                     />
                                                 </FormGroup>
                                             </div>

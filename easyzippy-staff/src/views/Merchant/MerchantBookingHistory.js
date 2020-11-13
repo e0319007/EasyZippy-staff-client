@@ -21,17 +21,16 @@ const theme = createMuiTheme({
     },
 });
 
-function MerchantBookings() {
+function MerchantBookingHistory() {
     const authToken = JSON.parse(Cookies.get('authToken'))
 
     const history = useHistory()
+    const merchantId = JSON.parse(localStorage.getItem('merchantToView'))
+
 
     // DECLARING COLUMNS 
     var columns = [
         {title: "Id", field: "id", editable: "never"},
-        {title: "Name", field:"customerId", editable: "never", 
-            customFilterAndSearch: (term, rowData) => getMerchantName(rowData.merchantId).toLowerCase().includes(term.toLowerCase()),
-            render: row => <span>{getMerchantName(row["merchantId"])}</span>},
         {title: "Locker Type", field: "lockerTypeId", editable: "never", 
             customFilterAndSearch: (term, rowData) => getLockerType(rowData.lockerTypeId).toLowerCase().includes(term.toLowerCase()),
             render: row => <span>{getLockerType(row["lockerTypeId"])}</span>},    
@@ -52,22 +51,13 @@ function MerchantBookings() {
 
     useEffect(() => {
         console.log("retrieving merchant bookings;; axios")
-        axios.get("/merchantBookings", 
+        axios.get(`/merchantBooking/${merchantId}`, 
         {
             headers: {
                 AuthToken: authToken
             }
         }).then (res => {
             setData(res.data)
-
-            axios.get("/merchants", 
-            {
-                headers: {
-                    AuthToken: authToken
-                }
-            }).then(res => {
-                setMerchants(res.data)
-            }).catch (err => console.error(err))
 
             axios.get("/lockerTypes", 
             {
@@ -80,14 +70,7 @@ function MerchantBookings() {
         }).catch (err => console.error(err))
     },[authToken])
 
-    //match merchant id to merchant name 
-    function getMerchantName(id) {
-        for (var i in merchants) {
-            if (merchants[i].id === id) {
-                return merchants[i].name 
-            }
-        }
-    }
+  
 
     //match locker type id to locker type name 
     function getLockerType(id) {
@@ -160,4 +143,4 @@ function MerchantBookings() {
     );
 }
 
-export default MerchantBookings;
+export default MerchantBookingHistory;

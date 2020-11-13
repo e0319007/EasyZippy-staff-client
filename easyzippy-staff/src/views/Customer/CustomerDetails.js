@@ -18,6 +18,8 @@ import {
     CardHeader, FormGroup, Label, Button, Tooltip, Modal, ModalBody, ModalHeader
 } from "reactstrap";
 import CustomerOrderHistory from "./CustomerOrderHistory";
+import CustomerBookingDetails from "views/Booking/CustomerBookingDetails";
+import CustomerBookingHistory from "./CustomerBookingHistory";
 
 const theme = createMuiTheme({
     typography: {
@@ -36,6 +38,10 @@ function CustomerDetails() {
     const customerId = JSON.parse(localStorage.getItem('customerToView'))
 
     const [data, setData] = useState([])
+    const [bookingPackage, setBookingPackage] = useState([])
+    const [bookingPackageModel, setBookingPackageModel] = useState('')
+
+
 
     //tooltip
     const [tooltipOpenBooking, setTooltipOpenBooking] = useState(false);
@@ -74,9 +80,44 @@ function CustomerDetails() {
             setData(res.data)
 
         }).catch(function(error) {
-            console.log(error.response.data)
+            console.log(error)
         })
+
+        axios.get(`/customerBookingPackages/${customerId}`, 
+        {
+            headers: {
+                AuthToken: authToken
+            }
+        }).then(res => {
+            if (res.data !== undefined || res.data.length !== 0) {
+                for (var i in res.data) {
+                    if (res.data[i].expired === false) {
+                        var bookingPackageModelId = res.data[i].bookingPackageModelId
+                        setBookingPackage(res.data[i])
+    
+                        axios.get(`/bookingPackageModel/${bookingPackageModelId}`, {
+                            headers: {
+                                AuthToken: authToken
+                            }
+                        }).then(res => {
+                            console.log("get booking package model thru")
+                            setBookingPackageModel(res.data)
+                            console.log("Booking package model: ")
+                            console.log(res.data)
+                        }).catch(function (error) {
+                            console.log(error)
+                        })
+    
+                        break;
+                    }
+                }
+            }
+        }).catch(function (error) {
+            console.log(error)
+        })
+
     }, [])
+
 
     const DisableSwitch = withStyles((theme) => ({
         root: {
@@ -221,12 +262,12 @@ function CustomerDetails() {
                                                     />
                                             </FormGroup>
                                             <FormGroup>
-                                                <Label for="inputBookingPackage">Booking Package</Label>
+                                                <Label for="inputBookingPackage">Booking Package (if any)</Label>
                                                 <Input 
                                                     type="text" 
                                                     id="inputBookingPackage" 
-                                                    placeholder="Booking Package" 
-                                                    //value={}
+                                                    placeholder="-" 
+                                                    value={bookingPackageModel.name}
                                                     />
                                             </FormGroup>                            
                                         </fieldset>
@@ -293,10 +334,10 @@ function CustomerDetails() {
                                     </form>
                                 </CardBody>
 
-                                <Modal isOpen={modalBooking} toggle={toggleModalBooking}>
+                                <Modal size="lg" isOpen={modalBooking} toggle={toggleModalBooking}>
                                     <ModalHeader toggle={toggleModalBooking}>Booking History</ModalHeader>
                                     <ModalBody>
-                                        booking history details here
+                                        <CustomerBookingHistory/>
                                     </ModalBody>
                                 </Modal>
 

@@ -240,7 +240,7 @@ function MallPromotionDetails() {
             setStartDate((res.data[1][0].startDate).substr(0,10))
             setEndDate((res.data[1][0].endDate).substr(0,10))
             setPercentageDiscount(res.data[1][0].percentageDiscount)
-            setFlatDiscount(res.data[1][0].getFullYear)
+            setFlatDiscount(res.data[1][0].flatDiscount)
             setUsageLimit(res.data[1][0].usageLimit)
             setMinimumSpend(res.data[1][0].minimumSpend)
 

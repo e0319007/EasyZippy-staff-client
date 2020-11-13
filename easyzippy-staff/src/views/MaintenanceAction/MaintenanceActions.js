@@ -45,16 +45,27 @@ function MaintenanceActions() {
             customFilterAndSearch: (term, rowData) => formatDate(rowData.maintenanceDate).toLowerCase().includes(term.toLowerCase()),
             render: row => <span>{ formatDate(row["maintenanceDate"]) }</span>,
         },
+        {title: "Kiosk", field:"kioskId", editable: "never", searchable: false,
+        customFilterAndSearch: (term, rowData) => getKioskName(rowData.kioskId).toLowerCase().includes(term.toLowerCase()),
+        render: row => <span>{ getKioskName(row["kioskId"]) }</span>},
         {title: "Description", field:"description"},
-        {title: "Locker Id", field:"lockerId"}
+        // {title: "Locker Id", field:"lockerId"}
+        {title: "Locker Code", field: "lockerId", 
+        customFilterAndSearch: (term, rowData) => getLockerCode(rowData.lockerId).toLowerCase().includes(term.toLowerCase()),
+        render: row => <span>{ getLockerCode(row["lockerId"]) }</span>}
     ]
 
     const[data, setData] = useState([])
     const [lockers, setLockers] = useState([])
+    const [kiosks, setKiosks] = useState([])
+    const [kiosk, setKiosk] = useState('')
+
 
     const [maintenanceDate, setMaintenanceDate] = useState('')
     const [description, setDescription] = useState('')
-    const [lockerId, setLockerId] = useState('')
+    //const [lockerId, setLockerId] = useState('')
+    const [lockerCode, setLockerCode] = useState('')
+    const [kioskId, setKioskId] = useState('')
 
     //for error handling
     const [error, setError] = useState('')
@@ -89,7 +100,40 @@ function MaintenanceActions() {
             }).catch(err => console.error(err))
         })
         .catch (err => console.error(err))
+
+        axios.get("/kiosks", {
+            headers: {
+                AuthToken: authToken
+            }
+        }).then(res => {
+            setKiosks(res.data)
+        })
     },[authToken])
+
+    //match kiosk id to kiosk address 
+    function getKioskName(id) {
+        for (var i in kiosks) {
+            //find the address match to the id
+            if (kiosks[i].id === id) {
+                return kiosks[i].address
+            }
+        }
+    }
+    function getKioskId(address) {
+        for (var i in kiosks) {
+            if ((kiosks[i].address).toLowerCase() === address.trim().toLowerCase()) {
+                return kiosks[i].id
+            }
+        }
+    }
+    function getLockerCode(id) {
+        for (var i in lockers) {
+            //find the address match to the id
+            if (lockers[i].id === id) {
+                return lockers[i].lockerCode
+            }
+        }
+    }
 
     const addMaintenanceAction = e => {
         var d = maintenanceDate
@@ -103,18 +147,20 @@ function MaintenanceActions() {
             return;
         }
 
-        if(lockerId === undefined || lockerId === "") {
-            isInModal(true)
-            isError(true)
-            setError("Unable to create new maintenance action. Please fill in the locker Id field.")
-            isSuccessful(false)
-            return;
-        }
+        // if(lockerId === undefined || lockerId === "") {
+        //     isInModal(true)
+        //     isError(true)
+        //     setError("Unable to create new maintenance action. Please fill in the locker Id field.")
+        //     isSuccessful(false)
+        //     return;
+        // }
 
         axios.post("/maintenanceAction", {
             maintenanceDate: d,
+            kioskId: kioskId,
             description: description,
-            lockerId: lockerId,
+            lockerCode: lockerCode
+            //lockerId: lockerId,
         }, 
         {
             headers: {
@@ -145,16 +191,28 @@ function MaintenanceActions() {
         const maintenanceDate = e.target.value
         setMaintenanceDate(maintenanceDate)
     }
+    const onChangeKiosk = e => {
+        console.log(e.target.value)
+        setKiosk(e.target.value)
+        const kioskid = getKioskId(e.target.value)
+        console.log("kiosk id: " + kioskid)
+        setKioskId(kioskid)
+    }
 
     const onChangeDescription = e => {
         const description = e.target.value
         setDescription(description)
     }
 
-    const onChangeLockerId = e => {
-        const lockerId = e.target.value
-        setLockerId(lockerId)
+    const onChangeLockerCode = e => {
+        const lockerCode = e.target.value
+        setLockerCode(lockerCode)
     }
+
+    // const onChangeLockerId = e => {
+    //     const lockerId = e.target.value
+    //     setLockerId(lockerId)
+    // }
 
 
     const handleRowDelete = (oldData, resolve) => {
@@ -282,6 +340,22 @@ function MaintenanceActions() {
                                 />
                         </FormGroup>
                         <FormGroup>
+                            <Label for="inputKiosk">Kiosk</Label>
+                            <Input
+                                type="select"
+                                id="inputKiosk"
+                                value={kiosk}
+                                onChange={onChangeKiosk}
+                            >
+                                <option>[select]</option>
+                                {
+                                    kiosks.map(k => (
+                                        <option key={k.id}>{k.address}</option>
+                                    ))
+                                }
+                            </Input>
+                        </FormGroup>
+                        <FormGroup>
                             <Label for="inputDescription">Description</Label>
                                 <Input
                                     type="textarea"
@@ -292,6 +366,17 @@ function MaintenanceActions() {
                                 />
                         </FormGroup>
                         <FormGroup>
+                            <Label for="inputLockerCode">Locker Code</Label>
+                                <Input
+                                    type="text"
+                                    id="inputLockerCode"
+                                    placeholder="Locker Code"
+                                    value={lockerCode}
+                                    onChange={onChangeLockerCode}
+                                />
+                        </FormGroup>
+                        
+                        {/* <FormGroup>
                             <Label for="inputLocker">Locker Id</Label>
                                 <Input
                                     type="select"
@@ -306,7 +391,7 @@ function MaintenanceActions() {
                                         ))
                                     }
                                 </Input>
-                        </FormGroup>
+                        </FormGroup> */}
                         { inModal && err && <UncontrolledAlert color="danger">{error}</UncontrolledAlert> }
                         { inModal && successful && <UncontrolledAlert color="success">{successMsg}</UncontrolledAlert> }
                     </form>

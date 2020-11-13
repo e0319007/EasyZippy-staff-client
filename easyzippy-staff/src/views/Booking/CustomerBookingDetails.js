@@ -180,8 +180,8 @@ function CustomerBookingDetails() {
                                 <CardBody>
                                     <form>
                                         <fieldset disabled>  
-                                            <div className="form-row">
-                                                <FormGroup className="col-md-4">
+                                            {/* <div className="form-row"> */}
+                                                <FormGroup>
                                                     <Label for="inputName">Customer Name</Label>
                                                     <Input
                                                         type="text"
@@ -190,7 +190,7 @@ function CustomerBookingDetails() {
                                                         value={getCustomerName(data.customerId)}
                                                     />
                                                 </FormGroup>
-                                                <FormGroup className="col-md-4">
+                                                {/* <FormGroup className="col-md-4">
                                                     <Label for="inputName">Collector Name (if any)</Label>
                                                     <Input
                                                         type="text"
@@ -207,10 +207,10 @@ function CustomerBookingDetails() {
                                                         placeholder="-"
                                                         value={getMerchantName(data.merchantId)}
                                                     />
-                                                </FormGroup>
-                                            </div>
-                                            <div className="form-row">
-                                            <FormGroup className="col-md-6">
+                                                </FormGroup> */}
+                                            {/* </div> */}
+                                            {/* <div className="form-row"> */}
+                                            <FormGroup>
                                                 <Label for="inputId">Booking Id</Label>
                                                 <Input
                                                     type="text"
@@ -219,7 +219,7 @@ function CustomerBookingDetails() {
                                                     value={data.id}
                                                 />
                                             </FormGroup>
-                                            <FormGroup className="col-md-6">
+                                            {/* <FormGroup className="col-md-6">
                                                 <Label for="inputId">Order Id (if any)</Label>
                                                 <Input
                                                     type="text"
@@ -227,8 +227,8 @@ function CustomerBookingDetails() {
                                                     placeholder="-"
                                                     value={data.orderId}
                                                 />
-                                            </FormGroup>
-                                            </div>
+                                            </FormGroup> */}
+                                            {/* </div> */}
                                             
                                             <div className="form-row">
                                                 <FormGroup className="col-md-4">

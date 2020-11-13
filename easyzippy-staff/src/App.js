@@ -28,6 +28,7 @@ import ErrorPage from "views/ErrorPage.js";
 import Dashboard from "./layouts/Admin.js";
 import MerchantPromotionDetails from "views/Promotion/MerchantPromotionDetails.js";
 import MallPromotionDetails from "views/Promotion/MallPromotionDetails.js";
+import CustomerOrderDetails from "views/Customer/CustomerOrderDetails.js";
 
 
 const hist = createBrowserHistory();
@@ -68,6 +69,8 @@ function App(props) {
                 <Route exact path="/admin/advertisementDetails" component={AdvertisementDetails}/>
                 <Route exact path="/admin/merchantPromotionDetails" component={MerchantPromotionDetails}/>
                 <Route exact path="/admin/mallPromotionDetails" component={MallPromotionDetails}/>
+                <Route exact path="/admin/customerOrderDetails" component={CustomerOrderDetails}/>
+
 
                 {/* <Route component={ErrorPage}/> */}
         

@@ -56,6 +56,9 @@ function KioskDetails() {
     const [newLockerType, setNewLockerType] = useState('');
     const [newLockerTypeId, setNewLockerTypeId] = useState('');
 
+    const [lockerCode, setLockerCode] = useState('')
+
+
     const [error, setError] = useState('')
     const [err, isError] = useState(false)
 
@@ -65,6 +68,7 @@ function KioskDetails() {
     //to view lockers
     var columns = [
         {title: "Id", field: "id", editable: "never"},
+        {title: "Locker Code", field: "lockerCode", editable: "never"},
         // {title: "Locker Status", field:"lockerStatusEnum", editable: "never"},
         {title: "Locker Type", field:"lockerTypeId", editable: "never", 
             render: row => <span>{ getLockerType(row["lockerTypeId"]) }</span>},
@@ -210,10 +214,16 @@ function KioskDetails() {
         setNewLockerTypeId(lockerType)
     }
 
+    const onChangeLockerCode = e => {
+        const lockerCode = e.target.value
+        setLockerCode(lockerCode)
+    }
+
     const addLocker = e => {
         axios.post("/locker", {
             lockerTypeId: newLockerTypeId,
-            kioskId: kioskId
+            kioskId: kioskId,
+            lockerCode: lockerCode
         },
         {
         headers: {
@@ -349,6 +359,15 @@ function KioskDetails() {
                                                         ))
                                                     }
                                                 </Input>
+                                            </FormGroup>
+                                            <FormGroup>
+                                                <Label for="inputLockerCode">Locker Code</Label>
+                                                <Input
+                                                    type="text"
+                                                    id="inputLockerCode"
+                                                    value={lockerCode}
+                                                    onChange={onChangeLockerCode}
+                                                />
                                             </FormGroup>
                                             {err &&<Alert color="danger">{error}</Alert> }
                                             {successful &&<Alert color="success">{successMsg}</Alert>} 
