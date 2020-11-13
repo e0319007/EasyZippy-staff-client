@@ -148,9 +148,9 @@ function MaintenanceActionDetails() {
             setMsg("Maintenance action updated successfully")
         }).catch(function (error) {
             isSuccessful(false)
-            console.log(error.response.data)
+            console.log(error)
             isError(true)
-            setError(error.response.data)
+            setError(error)
         })
     }
 

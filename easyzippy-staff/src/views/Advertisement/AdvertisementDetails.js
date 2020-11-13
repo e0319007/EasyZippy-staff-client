@@ -30,7 +30,7 @@ function AdvertisementDetails() {
 
     const history = useHistory()
     const authToken = (JSON.parse(Cookies.get('authToken'))).toString()
-    console.log(authToken)
+    //console.log(authToken)
 
     const advertisementId = JSON.parse(localStorage.getItem('advertisementToView'))
 
@@ -277,7 +277,10 @@ function AdvertisementDetails() {
 
             //set to approved if it can be approved
             if (approval === true && canApprove === true) {
+                console.log('*****authtoken: ' + authToken)
                 axios.put(`/approveAdvertisement/${advertisementId}`, {
+                    id: 5
+                }, {
                     headers: {
                         AuthToken: authToken
                     }

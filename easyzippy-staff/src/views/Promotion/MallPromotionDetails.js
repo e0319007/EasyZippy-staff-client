@@ -55,9 +55,7 @@ function MallPromotionDetails() {
     const [usageLimit, setUsageLimit] = useState('')
     const [minimumSpend, setMinimumSpend] = useState('')
 
-    const [isPercentage, setIsPercentage] = useState(true)
-    const [isFlat, setIsFlat] = useState(false)
-
+   
     const staffId = parseInt(Cookies.get('staffUser'))
     
     
@@ -173,19 +171,6 @@ function MallPromotionDetails() {
         } 
         setMinimumSpend(minimumSpend)
     }
-    const onChangeRadioPercentage = e => {
-        const checked = e.target.checked
-        console.log("percentage checked: " + checked)
-        setIsPercentage(checked)
-        setIsFlat(!checked)
-    }
-
-    const onChangeRadioFlat = e => {
-        const checked = e.target.checked
-        console.log("flat checked: " + checked)
-        setIsPercentage(!checked)
-        setIsFlat(checked)
-    }
 
     const updateMallPromotion = e => {
         e.preventDefault()
@@ -195,23 +180,6 @@ function MallPromotionDetails() {
 
         var enddate = endDate
         enddate = enddate.toString().replace('/-/g', '/')
-        //add validation
-
-        // if (promoCode === undefined || promoCode === "") {
-        //     isInModal(true)
-        //     isError(true)
-        //     setError("Unable to create new mall promotion. Please fill in the promo code field.")
-        //     isSuccessful(false)
-        //     return;
-        // }
-        var percentageDiscount = null
-        var flatDiscount = null
-
-        if (isPercentage) {
-            percentageDiscount = discount
-        } else if (isFlat) {
-            flatDiscount = discount
-        }
 
         console.log("promo code: " + promoCode)
 
@@ -265,8 +233,8 @@ function MallPromotionDetails() {
         }).catch(function (error) {
             isSuccessful(false)
             isError(true)
-            setError(error.response.data)
-            console.log(error.response.data)
+            setError(error)
+            console.log(error)
         })
     }
 
@@ -299,7 +267,7 @@ function MallPromotionDetails() {
             month = '0' + month;
         }
 
-        return dt + "/" + month + "/" + year ;
+        return dt + "/" + month + "/" + year + " " + time;
         
     }
 
@@ -317,7 +285,7 @@ function MallPromotionDetails() {
                                 </CardHeader>
                                 <CardBody>
                                     <form>
-                                        <fieldset>    
+                                        <fieldset disabled>    
                                             <FormGroup>
                                                 <Label for="inputPromoCode">Promo Code</Label>
                                                 <Input
@@ -338,6 +306,8 @@ function MallPromotionDetails() {
                                                     onChange={onChangeTitle}
                                                 />
                                             </FormGroup>
+                                            </fieldset>
+                                            <fieldset>
                                             <FormGroup>
                                                 <Label for="inputDescription">Description</Label>
                                                 <Input
@@ -358,6 +328,8 @@ function MallPromotionDetails() {
                                                     onChange={onChangeTermsAndConditions}
                                                 />
                                             </FormGroup>
+                                            </fieldset>
+                                            <fieldset disabled>
                                             <div className="form-row">
                                                 <FormGroup className="col-md-6">
                                                     <Label for="inputStartDate">Start Date</Label>
@@ -380,42 +352,24 @@ function MallPromotionDetails() {
                                                     />
                                                 </FormGroup>
                                             </div>
-                                            <div className="form-row">
-                                                <FormGroup className="col-md-6" check>
-                                                    <Label check for="percentageRadio">
-                                                    <Input 
-                                                        type="radio" 
-                                                        id="percentageRadio" 
-                                                        checked={isPercentage}
-                                                        onChange={onChangeRadioPercentage}
-                                                        //style={{...padding(15,0,0,0)}}
-                                                        />
-                                                    Percentage Discount (%)</Label>
-                                                </FormGroup>
-                                                <FormGroup className="col-md-6" check>
-                                                    <Label check for="flatRadio">
-                                                    <Input 
-                                                        type="radio" 
-                                                        id="flatRadio" 
-                                                        checked={isFlat}
-                                                        onChange={onChangeRadioFlat}
-                                                        //style={{...padding(15,0,0,0)}}
-                                                        />
-                                                    Flat Discount ($)</Label>
-                                                </FormGroup>
-                                            </div>
-                                            <div className="form-row">
-                                                <FormGroup className="col-md-12">
-                                                    <Label for="inputDiscount"></Label>
-                                                        <Input 
-                                                            type="text" 
-                                                            id="inputDiscount" 
-                                                            placeholder="Discount"
-                                                            value={discount}
-                                                            onChange={onChangeDiscount}
-                                                        />
-                                                </FormGroup>
-                                            </div>
+                                            <FormGroup>
+                                            <Label for="inputPercentageDiscount">Percentage Discount (%)</Label>
+                                                <Input
+                                                    type="text"
+                                                    id="inputPercentageDiscount"
+                                                    placeholder="-"
+                                                    value={percentageDiscount}                                               
+                                                />
+                                            </FormGroup>
+                                            <FormGroup>
+                                            <Label for="inputFlatDiscount">Flat Discount ($)</Label>
+                                                <Input
+                                                    type="text"
+                                                    id="inputFlatDiscount"
+                                                    placeholder="-"
+                                                    value={flatDiscount}                                               
+                                                />
+                                            </FormGroup>                                                                            
                                             <div className="form-row">
                                                 <FormGroup className="col-md-6">
                                                     <Label for="inputUsageLimit">Usage Limit</Label>
@@ -428,18 +382,17 @@ function MallPromotionDetails() {
                                                     />
                                                 </FormGroup>
                                                 <FormGroup className="col-md-6">
-                                                    <Label for="inputMinimumSpend">Minimum Spend</Label>
+                                                    <Label for="inputMinimumSpend">Minimum Spend ($)</Label>
                                                     <Input
                                                         type="text"
                                                         id="inputMinimumSpend"
                                                         placeholder="-"
-                                                        value={minimumSpend}
+                                                        value={parseFloat(minimumSpend).toFixed(2)}
                                                         onChange={onChangeMinimumSpend}
                                                     />
                                                 </FormGroup>
                                             </div>
-                                            </fieldset>
-                                            <fieldset disabled>
+           
                                                 <div className="form-row">
                                                     <FormGroup className="col-md-6">
                                                         <Label for="inputCreatedAt">Created On</Label>
