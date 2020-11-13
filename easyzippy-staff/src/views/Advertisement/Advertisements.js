@@ -222,7 +222,7 @@ function Advertisements() {
                 isError(false)
                 isSuccessful(true)
                 setMsg("Advertisement successfully created!")
-                // window.location.reload()
+                window.location.reload()
             }).catch (function (error) {
                 let errormsg = error.response.data;
     

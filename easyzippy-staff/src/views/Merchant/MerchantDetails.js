@@ -31,6 +31,7 @@ import {
 import MerchantPromotionHistory from "./MerchantPromotionHistory";
 import MerchantOrderHistory from "./MerchantOrderHistory";
 import MerchantBookingHistory from "./MerchantBookingHistory";
+import MerchantTransactionHistory from "./MerchantTransactionHistory";
 
 const theme = createMuiTheme({
     typography: {
@@ -73,13 +74,10 @@ function MerchantDetails() {
     const [tooltipOpenOrder, setTooltipOpenOrder] = useState(false);
     const toggleTooltipOrder = () => setTooltipOpenOrder(!tooltipOpenOrder);
 
-    const [tooltipOpenTopup, setTooltipOpenTopup] = useState(false);
-    const toggleTooltipTopup = () => setTooltipOpenTopup(!tooltipOpenTopup);
+    const [tooltipOpenTransaction, setTooltipOpenTransaction] = useState(false);
+    const toggleTooltipTransaction = () => setTooltipOpenTransaction(!tooltipOpenTransaction);
 
-    const [tooltipOpenCredit, setTooltipOpenCredit] = useState(false);
-    const toggleTooltipCredit = () => setTooltipOpenCredit(!tooltipOpenCredit);
-
-    // 5 modals
+    // 4 modals
     const [modalPromo, setModalPromo] = useState(false)
     const toggleModalPromo = () => setModalPromo(!modalPromo);
 
@@ -89,11 +87,8 @@ function MerchantDetails() {
     const [modalOrder, setModalOrder] = useState(false)
     const toggleModalOrder = () => setModalOrder(!modalOrder);
 
-    const [modalTopup, setModalTopup] = useState(false)
-    const toggleModalTopup = () => setModalTopup(!modalTopup);
-
-    const [modalCredit, setModalCredit] = useState(false)
-    const toggleModalCredit = () => setModalCredit(!modalCredit);
+    const [modalTransaction, setModalTransaction] = useState(false)
+    const toggleModalTransaction = () => setModalTransaction(!modalTransaction);
 
     const [tooltipOpenTenancy, setTooltipOpenTenancy] = useState(false);
     const toggleTooltipTenancy = () => {
@@ -506,20 +501,13 @@ function MerchantDetails() {
                                                 </Tooltip>
                                                 
                                                 {/* view topup history modal and tooltip */}
-                                                <Button className="btn-round"  size="lg" color="primary" id="viewTopupHistory" onClick={toggleModalTopup}>
+                                                <Button className="btn-round"  size="lg" color="primary" id="viewTransactionHistory" onClick={toggleModalTransaction}>
                                                     <i className="fa fa-dollar-sign"/>
                                                 </Button>&nbsp;
-                                                <Tooltip placement="bottom" isOpen={tooltipOpenTopup} target="viewTopupHistory" toggle={toggleTooltipTopup}>
-                                                    View Top Up History
+                                                <Tooltip placement="bottom" isOpen={tooltipOpenTransaction} target="viewTransactionHistory" toggle={toggleTooltipTransaction}>
+                                                    View Transaction History
                                                 </Tooltip>
-                                                
-                                                {/* view credit history modal and tooltip */}
-                                                <Button className="btn-round"  size="lg" color="primary" id="viewCreditHistory" onClick={toggleModalCredit}>
-                                                    <i className="fa fa-coins"/>
-                                                </Button>&nbsp;
-                                                <Tooltip placement="right" isOpen={tooltipOpenCredit} target="viewCreditHistory" toggle={toggleTooltipCredit}>
-                                                    View Credit History
-                                                </Tooltip>
+                                     
                                             </div>
                                         </Row>
                                         <p></p>
@@ -570,17 +558,10 @@ function MerchantDetails() {
                                     </ModalBody>
                                 </Modal>
 
-                                <Modal isOpen={modalTopup} toggle={toggleModalTopup}>
-                                    <ModalHeader toggle={toggleModalTopup}>Top Up History</ModalHeader>
+                                <Modal size="lg" isOpen={modalTransaction} toggle={toggleModalTransaction}>
+                                    <ModalHeader toggle={toggleModalTransaction}>Transaction History</ModalHeader>
                                     <ModalBody>
-                                        topup history details here
-                                    </ModalBody>
-                                </Modal>
-
-                                <Modal isOpen={modalCredit} toggle={toggleModalCredit}>
-                                    <ModalHeader toggle={toggleModalCredit}>Credit History</ModalHeader>
-                                    <ModalBody>
-                                        credit history details here
+                                        <MerchantTransactionHistory/>
                                     </ModalBody>
                                 </Modal>
                             </Card>

@@ -175,8 +175,8 @@ function MerchantPromotionDetails() {
                                                     />
                                                 </FormGroup>
                                             </div>
-                                            <div className="form-row">
-                                                <FormGroup className="col-md-6">
+                              
+                                                <FormGroup>
                                                     <Label for="inputPercentageDiscount">Percentage Discount (%)</Label>
                                                     <Input
                                                         type="text"
@@ -185,7 +185,7 @@ function MerchantPromotionDetails() {
                                                         value={data.percentageDiscount}
                                                     />
                                                 </FormGroup>
-                                                <FormGroup className="col-md-6">
+                                                <FormGroup>
                                                     <Label for="inputFlatDiscount">Flat Discount ($)</Label>
                                                     <Input
                                                         type="text"
@@ -194,7 +194,7 @@ function MerchantPromotionDetails() {
                                                         value={data.flatDiscount}
                                                     />
                                                 </FormGroup>
-                                            </div>
+                                       
                                             <div className="form-row">
                                                 <FormGroup className="col-md-6">
                                                     <Label for="inputUsageLimit">Usage Limit</Label>
