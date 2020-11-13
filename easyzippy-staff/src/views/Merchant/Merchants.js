@@ -32,7 +32,9 @@ function Merchants() {
         {title: "Name", field:"name"},
         {title: "Mobile Number", field:"mobileNumber"},
         {title: "Email", field:"email"},
-        {title: "Credit Balance", field:"creditBalance"},
+        {title: "Credit Balance", field:"creditBalance",
+            render: row => <span>{ parseFloat(row["creditBalance"]).toFixed(2) }</span>},
+
         {title: "Approved", field:"approved", lookup:{false: "Not Approved", true: "Approved"}},
         // {title: "Created At", field:"createdAt"},
         {title: "Disabled", field:"disabled", lookup:{false: "Enabled", true: "Disabled"}},

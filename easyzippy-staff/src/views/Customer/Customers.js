@@ -34,7 +34,8 @@ function Customers() {
         {title: "Last Name", field:"lastName"},
         {title: "Mobile Number", field:"mobileNumber"},
         {title: "Email", field:"email"},
-        {title: "Credit Balance", field:"creditBalance"},
+        {title: "Credit Balance", field:"creditBalance",
+            render: row => <span>{ parseFloat(row["creditBalance"]).toFixed(2) }</span>},
         {title: "Disabled", field:"disabled", lookup:{false: "Enabled", true: "Disabled"}},
         
     ]

@@ -243,7 +243,7 @@ function CustomerDetails() {
                                                     type="text" 
                                                     id="inputCreditBalance" 
                                                     placeholder="$" 
-                                                    value={data.creditBalance}
+                                                    value={parseFloat(data.creditBalance).toFixed(2)}
                                                     />
                                             </FormGroup>
                                             <FormGroup>

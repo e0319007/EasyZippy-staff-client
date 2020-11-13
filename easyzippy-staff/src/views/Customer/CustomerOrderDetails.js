@@ -11,7 +11,7 @@ import {
     Row,
     Col,
     Input,
-    CardHeader, FormGroup, Label, Button, Alert, Table
+    CardHeader, FormGroup, Label, Button, Alert, Table, Modal, ModalHeader, ModalFooter
 } from "reactstrap";
 
 
@@ -46,6 +46,10 @@ function CustomerOrderDetails() {
 
     const [successful, isSuccessful] = useState(false)
     const [successMsg, setMsg] = useState('')
+
+    //for delete confirmation
+    const [modal, setModal] = useState(false)
+    const toggle = () => setModal(!modal)
 
 
     useEffect(() => {
@@ -119,6 +123,27 @@ function CustomerOrderDetails() {
             isError(true)
             setError(error)
             isSuccessful(false)
+        })
+    }
+    const cancelOrder = e => {
+        e.preventDefault()
+
+        axios.post(`/order/cancel/${orderId}`, 
+        {
+            id: orderId
+        },
+        {
+            headers: {
+                AuthToken: authToken
+            }
+        }).then(res => {
+            console.log("axios cancel order went through")
+            //window.location.reload()
+            isError(false)
+            isSuccessful(true)
+            setMsg("Order successfully cancelled!")
+        }).catch(function (error) {
+            console.log(error)
         })
     }
 
@@ -210,7 +235,7 @@ function CustomerOrderDetails() {
                                                     type="text"
                                                     id="inputTotalAmount"
                                                     placeholder="-"
-                                                    value={order.totalAmount}
+                                                    value={parseFloat(order.totalAmount).toFixed(2)}
                                                 />
                                             </FormGroup>
                                             <FormGroup>
@@ -249,7 +274,7 @@ function CustomerOrderDetails() {
                                                 ))}         
                                             </tbody>
                                         </Table>
-                                        <fieldset>
+                                        {/* <fieldset>
                                                 <FormGroup>
                                                     <Label for="inputOrderStatus">Order Status</Label>
                                                     <Input
@@ -271,6 +296,11 @@ function CustomerOrderDetails() {
                                             <div className="update ml-auto mr-auto" >
                                                 <Button color="success" size="sm" type="submit" onClick={updateOrderStatus}>Update</Button>
                                             </div>
+                                        </Row> */}
+                                        <Row>
+                                            <div className="update ml-auto mr-auto" >
+                                                <Button color="danger" size="sm" onClick={toggle}>Cancel Order</Button>                                              
+                                            </div>
                                         </Row>
                                         {err &&<Alert color="danger">{error}</Alert> }
                                         {successful &&<Alert color="success">{successMsg}</Alert>} 
@@ -287,6 +317,16 @@ function CustomerOrderDetails() {
                                         </Row> 
                                     </form>
                                 </CardBody>
+                                <Modal isOpen={modal} toggle={toggle}>
+                                    <ModalHeader toggle={toggle}>Are you sure you want to cancel this order?</ModalHeader>
+                                    <ModalFooter style={{display: "flex",
+                                          justifyContent: "center",
+                                          alignItems: "center"}}>
+                                            <Button color="danger" onClick={cancelOrder}>Yes</Button>
+                                            {'  '}
+                                            <Button color="secondary" onClick={toggle}>No</Button>
+                                    </ModalFooter>
+                                </Modal>
                             </Card>
                         </Col>
                     </Row>
