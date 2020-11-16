@@ -47,7 +47,8 @@ function MerchantOrderHistory() {
     const [orderData, setOrderData] = useState([])
     const [customers, setCustomers] = useState([])
     
-    const merchantId = parseInt(Cookies.get('merchantUser'))
+    //const merchantId = parseInt(Cookies.get('merchantUser'))
+    const merchantId = JSON.parse(localStorage.getItem('merchantToView'))
 
 
     useEffect(() => {
