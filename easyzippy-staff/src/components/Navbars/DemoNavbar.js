@@ -311,7 +311,7 @@ class Header extends React.Component {
                   <DropdownItem header>Notifications</DropdownItem>
                   {this.state.notifications.map(notification => 
                     <div key={notification.id}>
-                      <DropdownItem  style={{backgroundColor: 'transparent', flexGrow:'inherit', whiteSpace:'pre-wrap', width:'20rem'}} onClick={() => this.redirectApprove(notification.senderId)} href='/admin/merchantDetails'>                          
+                      <DropdownItem  style={{backgroundColor: 'transparent', flexGrow:'inherit', whiteSpace:'pre-wrap', width:'20rem'}}>                          
                           <p style={{fontWeight:'bold', color:'grey'}}>{notification.title}</p> 
                           <br></br>
                           <small style={{color:'grey'}}>{this.formatDate(notification.sentTime)}</small>
