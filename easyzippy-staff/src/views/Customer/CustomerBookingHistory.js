@@ -22,7 +22,7 @@ const theme = createMuiTheme({
 });
 
 function CustomerBookingHistory() {
-    const authToken = JSON.parse(Cookies.get('authToken'))
+    const authTokenStaff = JSON.parse(Cookies.get('authTokenStaff'))
 
     const history = useHistory()
     const customerId = JSON.parse(localStorage.getItem('customerToView'))
@@ -52,7 +52,7 @@ function CustomerBookingHistory() {
         axios.get(`/customerBooking/${customerId}`, 
         {
             headers: {
-                AuthToken: authToken
+                AuthToken: authTokenStaff
             }
         }).then (res => {
             setData(res.data)
@@ -60,13 +60,13 @@ function CustomerBookingHistory() {
             axios.get("/lockerTypes", 
             {
                 headers: {
-                    AuthToken: authToken
+                    AuthToken: authTokenStaff
                 }
             }).then(res => {
                 setLockerTypes(res.data)
             }).catch(err => console.error(err))
         }).catch (err => console.error(err))
-    },[authToken])
+    },[authTokenStaff])
 
   
 

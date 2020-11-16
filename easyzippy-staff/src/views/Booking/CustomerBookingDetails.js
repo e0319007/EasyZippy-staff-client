@@ -25,8 +25,8 @@ const theme = createMuiTheme({
 function CustomerBookingDetails() {
 
     const history = useHistory()
-    const authToken = (JSON.parse(Cookies.get('authToken'))).toString()
-    console.log(authToken)
+    const authTokenStaff = (JSON.parse(Cookies.get('authTokenStaff'))).toString()
+    console.log(authTokenStaff)
 
     const bookingId = JSON.parse(localStorage.getItem('bookingToView'))
     const [data, setData] = useState([])
@@ -41,7 +41,7 @@ function CustomerBookingDetails() {
         axios.get(`/booking/${bookingId}`, 
         {
             headers: {
-                AuthToken: authToken
+                AuthToken: authTokenStaff
             }
         }).then(res => {
             setData(res.data)
@@ -49,7 +49,7 @@ function CustomerBookingDetails() {
 
             axios.get("/customers", {
                 headers: {
-                    AuthToken: authToken
+                    AuthToken: authTokenStaff
                 }
             }).then (res => {
                 setCustomers(res.data)
@@ -57,7 +57,7 @@ function CustomerBookingDetails() {
 
             axios.get("/merchants", {
                 headers: {
-                    AuthToken: authToken
+                    AuthToken: authTokenStaff
                 }
             }).then(res => {
                 setMerchants(res.data)
@@ -66,7 +66,7 @@ function CustomerBookingDetails() {
             axios.get("/bookingPackageModels", 
             {
                 headers: {
-                    AuthToken: authToken
+                    AuthToken: authTokenStaff
                 }
             }).then(res => {
                 setBookingPackages(res.data)
@@ -75,7 +75,7 @@ function CustomerBookingDetails() {
             axios.get("/lockerTypes", 
             {
                 headers: {
-                    AuthToken: authToken
+                    AuthToken: authTokenStaff
                 }
             }).then(res => {
                 setLockerTypes(res.data)
@@ -84,7 +84,7 @@ function CustomerBookingDetails() {
             axios.get("/kiosks", 
             {
                 headers: {
-                    AuthToken: authToken
+                    AuthToken: authTokenStaff
                 }
             }).then(res => {
                 setKiosks(res.data)

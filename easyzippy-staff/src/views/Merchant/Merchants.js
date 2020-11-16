@@ -23,7 +23,7 @@ const theme = createMuiTheme({
 function Merchants() {
 
     const history = useHistory()
-    const authToken = JSON.parse(Cookies.get('authToken'))
+    const authTokenStaff = JSON.parse(Cookies.get('authTokenStaff'))
 
     // DECLARING COLUMNS 
     //move created at to view merchant details
@@ -47,7 +47,7 @@ function Merchants() {
         axios.get("/merchants", 
         {
             headers: {
-                AuthToken: authToken
+                AuthToken: authTokenStaff
             }
         }).then(res => {
             // console.log(res.data)

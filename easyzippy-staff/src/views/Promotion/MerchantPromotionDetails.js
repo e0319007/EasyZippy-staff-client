@@ -26,8 +26,8 @@ const theme = createMuiTheme({
 function MerchantPromotionDetails() {
 
     const history = useHistory()
-    const authToken = (JSON.parse(Cookies.get('authToken'))).toString()
-    console.log(authToken)
+    const authTokenStaff = (JSON.parse(Cookies.get('authTokenStaff'))).toString()
+    console.log(authTokenStaff)
 
     const promotionId = JSON.parse(localStorage.getItem('promotionToView'))
     const [data, setData] = useState([])
@@ -39,7 +39,7 @@ function MerchantPromotionDetails() {
         axios.get(`/promotion/${promotionId}`, 
         {
             headers: {
-                AuthToken: authToken
+                AuthToken: authTokenStaff
             }
         }).then(res => {
             setData(res.data)
@@ -51,7 +51,7 @@ function MerchantPromotionDetails() {
 
             axios.get("/merchants", {
                 headers: {
-                    AuthToken: authToken
+                    AuthToken: authTokenStaff
                 }
             }).then(res => {
                 setMerchants(res.data)       

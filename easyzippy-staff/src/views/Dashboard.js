@@ -20,8 +20,8 @@ import {
 
 function Dashboard() {
 
-  const authToken = (JSON.parse(Cookies.get('authToken'))).toString()
-  console.log('token: ' + authToken)
+  const authTokenStaff = (JSON.parse(Cookies.get('authTokenStaff'))).toString()
+  console.log('token: ' + authTokenStaff)
 
   const [merchantLength, setMerchantLength] = useState('')
   const [customerLength, setCustomerLength] = useState('')
@@ -38,7 +38,7 @@ function Dashboard() {
 
     axios.get('/customers', {
       headers: {
-          AuthToken: authToken
+          AuthToken: authTokenStaff
       }
     }).then(res => {
       console.log("successfully retrieve customers")
@@ -50,7 +50,7 @@ function Dashboard() {
 
     axios.get('/merchants', {
       headers: {
-          AuthToken: authToken
+          AuthToken: authTokenStaff
       }
     }).then(res => {
       console.log("successfully retrieve merchants")
@@ -61,7 +61,7 @@ function Dashboard() {
 
     axios.get('/staff', {
       headers: {
-        AuthToken: authToken
+        AuthToken: authTokenStaff
       }
     }).then(res => {
       setStaffLength(res.data.length)
@@ -73,7 +73,7 @@ function Dashboard() {
 
     axios.get('/customerBookings', {
       headers: {
-        AuthToken: authToken
+        AuthToken: authTokenStaff
       }
     }).then(res => {
       setCustomerBookingLength(res.data.length)
@@ -83,7 +83,7 @@ function Dashboard() {
 
     axios.get('/merchantBookings', {
       headers: {
-        AuthToken: authToken
+        AuthToken: authTokenStaff
       }
     }).then(res => {
       setMerchantBookingLength(res.data.length)
@@ -93,7 +93,7 @@ function Dashboard() {
 
     axios.get('/promotion/mall', {
       headers: {
-        AuthToken: authToken
+        AuthToken: authTokenStaff
       }
     }).then(res => {
       setMallPromoLength(res.data.length)
@@ -104,7 +104,7 @@ function Dashboard() {
 
     axios.get('/promotion/merchant', {
       headers: {
-        AuthToken: authToken
+        AuthToken: authTokenStaff
       }
     }).then(res => {
       setMerchantPromoLength(res.data.length)
@@ -115,7 +115,7 @@ function Dashboard() {
 
     axios.get('/advertisements', {
       headers: {
-        AuthToken: authToken
+        AuthToken: authTokenStaff
       }
     }).then(res => {
       setAdvertisementLength(res.data.length)
@@ -125,7 +125,7 @@ function Dashboard() {
 
     axios.get('/notification/staff', {
       headers: {
-        AuthToken: authToken
+        AuthToken: authTokenStaff
       }
     }).then(res => {
       setNotifications(res.data)
@@ -133,7 +133,7 @@ function Dashboard() {
 
     axios.get('/announcements', {
       headers: {
-        AuthToken: authToken
+        AuthToken: authTokenStaff
       }
     }).then(res => {
       setAnnouncements(res.data)

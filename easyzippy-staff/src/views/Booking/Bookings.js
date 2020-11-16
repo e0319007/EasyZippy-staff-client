@@ -22,7 +22,7 @@ const theme = createMuiTheme({
 });
 
 function Bookings() {
-    const authToken = JSON.parse(Cookies.get('authToken'))
+    const authTokenStaff = JSON.parse(Cookies.get('authTokenStaff'))
 
     const history = useHistory()
 
@@ -77,7 +77,7 @@ function Bookings() {
         axios.get("/customerBookings", 
         {
             headers: {
-                AuthToken: authToken
+                AuthToken: authTokenStaff
             }
         }).then (res => {
             setCustomerData(res.data)
@@ -85,7 +85,7 @@ function Bookings() {
             axios.get("/merchantBookings", 
             {
                 headers: {
-                    AuthToken: authToken
+                    AuthToken: authTokenStaff
                 }
             }).then (res => {
                 setMerchantData(res.data)
@@ -96,7 +96,7 @@ function Bookings() {
             axios.get("/customers", 
             {
                 headers: {
-                    AuthToken: authToken
+                    AuthToken: authTokenStaff
                 }
             }).then(res => {
                 setCustomers(res.data)
@@ -104,7 +104,7 @@ function Bookings() {
                 axios.get("/merchants", 
                 {
                     headers: {
-                        AuthToken: authToken
+                        AuthToken: authTokenStaff
                     }
                 }).then(res => {
                     setMerchants(res.data)
@@ -116,13 +116,13 @@ function Bookings() {
             axios.get("/lockerTypes", 
             {
                 headers: {
-                    AuthToken: authToken
+                    AuthToken: authTokenStaff
                 }
             }).then(res => {
                 setLockerTypes(res.data)
             }).catch(err => console.error(err))
         }).catch (err => console.error(err))
-    },[authToken])
+    },[authTokenStaff])
 
     //match customer id to customer name 
     function getCustomerName(id) {

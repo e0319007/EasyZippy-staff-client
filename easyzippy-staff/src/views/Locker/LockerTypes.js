@@ -23,7 +23,7 @@ const theme = createMuiTheme({
 
 function LockerTypes() {
 
-    const authToken = JSON.parse(Cookies.get('authToken'))
+    const authTokenStaff = JSON.parse(Cookies.get('authTokenStaff'))
     const history = useHistory()
 
     // DECLARING COLUMNS
@@ -51,7 +51,7 @@ function LockerTypes() {
         axios.get("/lockerTypes", 
         {
             headers: {
-                AuthToken: authToken
+                AuthToken: authTokenStaff
             }
         }).then(res => {
             // console.log(res.data)
@@ -104,7 +104,7 @@ function LockerTypes() {
         },
         {
             headers: {
-                AuthToken: authToken
+                AuthToken: authTokenStaff
             }
         })
         .then(res => {
@@ -138,7 +138,7 @@ function LockerTypes() {
         },
         {
             headers: {
-                AuthToken: authToken
+                AuthToken: authTokenStaff
             }
         })
         .then(res => {
@@ -167,7 +167,7 @@ function LockerTypes() {
         },
         {
         headers: {
-            AuthToken: authToken
+            AuthToken: authTokenStaff
         }
     }).then(res => {
             console.log("axios call went through")

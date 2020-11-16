@@ -25,7 +25,7 @@ const theme = createMuiTheme({
 function Staffs() {
 
     const history = useHistory()
-    const authToken = JSON.parse(Cookies.get('authToken'))
+    const authTokenStaff = JSON.parse(Cookies.get('authTokenStaff'))
 
     // DECLARING COLUMNS
     var columns = [
@@ -52,13 +52,13 @@ function Staffs() {
         axios.get("/staff",
         {
             headers: {
-                AuthToken: authToken
+                AuthToken: authTokenStaff
             }
         }).then(res => {
             setData(res.data)
         })
         .catch (err => console.error(err))
-    },[authToken])
+    },[authTokenStaff])
 
     const handleRowAdd = (newData, resolve) => {
         //validation: if name is empty
@@ -112,7 +112,7 @@ function Staffs() {
         },
         {
             headers: {
-                AuthToken: authToken
+                AuthToken: authTokenStaff
             }
         })
         .then(res => {

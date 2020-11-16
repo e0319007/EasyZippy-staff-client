@@ -13,7 +13,7 @@ function Error() {
 
     // const [signin, isSignin] = useState(null)
 
-    // if (document.cookie.indexOf('staffUser') === -1 && document.cookie.indexOf('authToken') === -1) {
+    // if (document.cookie.indexOf('staffUser') === -1 && document.cookie.indexOf('authTokenStaff') === -1) {
     //     isSignin = false
     //     console.log("is signed in")
     // } else {
@@ -47,9 +47,9 @@ function Error() {
                     <p className='h4' style={{textAlign:"center", paddingTop:"80"}}>Error Page</p>
                     <p className='h7' style={{textAlign:"center", color:"blue"}}
                         onClick={() => {
-                            if (document.cookie.indexOf('staffUser') === -1 && document.cookie.indexOf('authToken') === -1){
+                            if (document.cookie.indexOf('staffUser') === -1 && document.cookie.indexOf('authTokenStaff') === -1){
                                 history.push('/login')
-                            } else if (document.cookie.indexOf('staffUser') > -1 && document.cookie.indexOf('authToken') > -1){
+                            } else if (document.cookie.indexOf('staffUser') > -1 && document.cookie.indexOf('authTokenStaff') > -1){
                                 history.push('/admin/dashboard')
                             }
                             

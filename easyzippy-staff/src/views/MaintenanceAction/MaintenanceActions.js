@@ -34,7 +34,7 @@ const theme = createMuiTheme({
 
 function MaintenanceActions() {
 
-    const authToken = JSON.parse(Cookies.get('authToken'))
+    const authTokenStaff = JSON.parse(Cookies.get('authTokenStaff'))
 
     const history = useHistory()
 
@@ -84,7 +84,7 @@ function MaintenanceActions() {
         axios.get("/maintenanceActions", 
         {
             headers: {
-                AuthToken: authToken
+                AuthToken: authTokenStaff
             }
         }).then(res => {
             console.log(res.data)
@@ -93,7 +93,7 @@ function MaintenanceActions() {
             axios.get("/lockers", 
             {
                 headers: {
-                    AuthToken: authToken
+                    AuthToken: authTokenStaff
                 }
             }).then(res => {
                 setLockers(res.data)
@@ -103,12 +103,12 @@ function MaintenanceActions() {
 
         axios.get("/kiosks", {
             headers: {
-                AuthToken: authToken
+                AuthToken: authTokenStaff
             }
         }).then(res => {
             setKiosks(res.data)
         })
-    },[authToken])
+    },[authTokenStaff])
 
     //match kiosk id to kiosk address 
     function getKioskName(id) {
@@ -164,7 +164,7 @@ function MaintenanceActions() {
         }, 
         {
             headers: {
-                AuthToken: authToken
+                AuthToken: authTokenStaff
             }
         }).then(res => {
             isInModal(true)
@@ -221,7 +221,7 @@ function MaintenanceActions() {
         },
         {
             headers: {
-                AuthToken: authToken
+                AuthToken: authTokenStaff
             }
         }).then(res => {
                 console.log("axios call went through")

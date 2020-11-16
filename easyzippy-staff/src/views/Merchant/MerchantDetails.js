@@ -44,8 +44,8 @@ const theme = createMuiTheme({
 function MerchantDetails() {
 
     const history = useHistory()
-    const authToken = (JSON.parse(Cookies.get('authToken'))).toString()
-    console.log(authToken)
+    const authTokenStaff = (JSON.parse(Cookies.get('authTokenStaff'))).toString()
+    console.log(authTokenStaff)
 
     const merchantId = JSON.parse(localStorage.getItem('merchantToView'))
     console.log("test merchant id: " + merchantId)
@@ -108,7 +108,7 @@ function MerchantDetails() {
         axios.get(`/merchant/${merchantId}`,
         {
             headers: {
-                AuthToken: authToken
+                AuthToken: authTokenStaff
             }
         }).then(res => {
             setData(res.data)
@@ -132,7 +132,7 @@ function MerchantDetails() {
             axios.get(`/merchantBookingPackages/${merchantId}`, 
             {
                 headers: {
-                    AuthToken: authToken
+                    AuthToken: authTokenStaff
                 }
             }).then(res => {
                 if (res.data !== undefined || res.data.length !== 0) {
@@ -143,7 +143,7 @@ function MerchantDetails() {
     
                             axios.get(`/bookingPackageModel/${bookingPackageModelId}`, {
                                 headers: {
-                                    AuthToken: authToken
+                                    AuthToken: authTokenStaff
                                 }
                             }).then(res => {
                                 console.log("get booking package model thru")
@@ -167,7 +167,7 @@ function MerchantDetails() {
             },
             {
                 headers: {
-                    AuthToken: authToken,
+                    AuthToken: authTokenStaff,
                     'Content-Type': 'application/json'
                 }
             }).then (response => {
@@ -187,7 +187,7 @@ function MerchantDetails() {
                 responseType: 'arraybuffer'
             },{
                 headers: {
-                    AuthToken: authToken,
+                    AuthToken: authTokenStaff,
                     'Content-Type': 'application/json'
                 }
             }).then(res => {
@@ -230,7 +230,7 @@ function MerchantDetails() {
         },
         {
             headers: {
-                AuthToken: authToken
+                AuthToken: authTokenStaff
             }
         }).then(res => {
             console.log("data: " + res.data.approved)
@@ -289,7 +289,7 @@ function MerchantDetails() {
             },
             {
                 headers: {
-                    AuthToken: authToken
+                    AuthToken: authTokenStaff
                 }
             }).then(res => {
                 console.log("axios call went through")

@@ -28,8 +28,8 @@ function Profile() {
     const staffid = parseInt(Cookies.get('staffUser'))
     console.log(typeof staffid)
 
-    const authToken = JSON.parse(Cookies.get('authToken'))
-    console.log(typeof authToken + " " + authToken)
+    const authTokenStaff = JSON.parse(Cookies.get('authTokenStaff'))
+    console.log(typeof authTokenStaff + " " + authTokenStaff)
 
     const [firstName, setFirstName] = useState(staff.firstName)
     const [lastName, setLastName] = useState(staff.lastName)
@@ -117,7 +117,7 @@ function Profile() {
         },
         {
             headers: {
-                AuthToken: authToken
+                AuthToken: authTokenStaff
             }
         }).then((response) => {
             console.log("axios call went through")
@@ -171,7 +171,7 @@ function Profile() {
         },
         {
             headers: {
-                AuthToken: authToken
+                AuthToken: authTokenStaff
             }
         }).then((response) => {
             console.log("axios call went through")

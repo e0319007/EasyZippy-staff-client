@@ -29,8 +29,8 @@ const theme = createMuiTheme({
 function StaffDetails() {
 
     const history = useHistory()
-    const authToken = (JSON.parse(Cookies.get('authToken'))).toString()
-    //console.log(authToken)
+    const authTokenStaff = (JSON.parse(Cookies.get('authTokenStaff'))).toString()
+    //console.log(authTokenStaff)
 
     const staffId = JSON.parse(localStorage.getItem('staffToView'))
     console.log("staff id: " + staffId)
@@ -63,7 +63,7 @@ function StaffDetails() {
         axios.get(`/staff/${staffId}`, 
         {
             headers: {
-                AuthToken: authToken
+                AuthToken: authTokenStaff
             }
         }).then(res => {
             console.log("axios get staff to view")
@@ -76,7 +76,7 @@ function StaffDetails() {
 
         axios.get('/staff/staffRoles', {
             headers: {
-                AuthToken: authToken
+                AuthToken: authTokenStaff
             }
         }).then (res => {
             console.log("get all staff roles axios")
@@ -100,7 +100,7 @@ function StaffDetails() {
         }, 
         {
             headers: {
-                AuthToken: authToken
+                AuthToken: authTokenStaff
             }
         }).then((response) => {
             console.log("update staff role axios went through")
@@ -130,7 +130,7 @@ function StaffDetails() {
     //     }, 
     //     {
     //         headers: {
-    //             AuthToken: authToken
+    //             AuthToken: authTokenStaff
     //         }
         
     //     }).then((response) => {
@@ -201,7 +201,7 @@ function StaffDetails() {
         },
         {
             headers: {
-                AuthToken: authToken
+                AuthToken: authTokenStaff
             }
         }).then(res => {
             console.log("axios call went through")

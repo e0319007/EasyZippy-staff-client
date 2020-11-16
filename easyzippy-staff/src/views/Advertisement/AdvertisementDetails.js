@@ -29,8 +29,8 @@ const theme = createMuiTheme({
 function AdvertisementDetails() {
 
     const history = useHistory()
-    const authToken = (JSON.parse(Cookies.get('authToken'))).toString()
-    //console.log(authToken)
+    const authTokenStaff = (JSON.parse(Cookies.get('authTokenStaff'))).toString()
+    //console.log(authTokenStaff)
 
     const advertisementId = JSON.parse(localStorage.getItem('advertisementToView'))
 
@@ -70,7 +70,7 @@ function AdvertisementDetails() {
         console.log("getting advertisements axios")
         axios.get(`/advertisement/${advertisementId}`, {
             headers: {
-                AuthToken: authToken
+                AuthToken: authTokenStaff
             }
         }).then (res => {
             setData(res.data)
@@ -114,7 +114,7 @@ function AdvertisementDetails() {
             },
             {
                 headers: {
-                    AuthToken: authToken,
+                    AuthToken: authTokenStaff,
                     'Content-Type': 'application/json'
                 }
             }).then (response => {
@@ -256,7 +256,7 @@ function AdvertisementDetails() {
         },
         {
             headers: {
-                AuthToken: authToken,
+                AuthToken: authTokenStaff,
                 'Content-Type': 'application/json'
             }
         }).then(res => {
@@ -277,12 +277,12 @@ function AdvertisementDetails() {
 
             //set to approved if it can be approved
             if (approval === true && canApprove === true) {
-                console.log('*****authtoken: ' + authToken)
+                console.log('*****authtoken: ' + authTokenStaff)
                 axios.put(`/approveAdvertisement/${advertisementId}`, {
                     id: 5
                 }, {
                     headers: {
-                        AuthToken: authToken
+                        AuthToken: authTokenStaff
                     }
                 }).then(res => {
                     console.log("approval axios went through")
@@ -375,7 +375,7 @@ function AdvertisementDetails() {
             },
             {
                 headers: {
-                    AuthToken: authToken
+                    AuthToken: authTokenStaff
                 }
             }).then(res => {
                 console.log("axios call went through")

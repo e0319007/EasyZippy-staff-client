@@ -22,7 +22,7 @@ const theme = createMuiTheme({
 
 function Category() {
 
-    const authToken = JSON.parse(Cookies.get('authToken'))
+    const authTokenStaff = JSON.parse(Cookies.get('authTokenStaff'))
 
     // DECLARING COLUMNS
     var columns = [
@@ -46,14 +46,14 @@ function Category() {
         axios.get("/categories", 
         {
             headers: {
-                AuthToken: authToken
+                AuthToken: authTokenStaff
             }
         }).then(res => {
             // console.log(res.data)
             setData(res.data)
         })
         .catch (err => console.error(err))
-    },[authToken])
+    },[authTokenStaff])
 
     const handleRowAdd = (newData, resolve) => {
         //validation: if name is empty
@@ -70,7 +70,7 @@ function Category() {
         },
         {
             headers: {
-                AuthToken: authToken
+                AuthToken: authTokenStaff
             }
         })
         .then(res => {
@@ -108,7 +108,7 @@ function Category() {
         },
         {
             headers: {
-                AuthToken: authToken
+                AuthToken: authTokenStaff
             }
         })
         .then(res => {
@@ -143,7 +143,7 @@ function Category() {
         },
         {
             headers: {
-                AuthToken: authToken
+                AuthToken: authTokenStaff
             }
         }).then(res => {
                 console.log("axios call went through")

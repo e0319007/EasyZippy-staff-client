@@ -33,8 +33,8 @@ const theme = createMuiTheme({
 function CustomerDetails() {
     
     const history = useHistory()
-    const authToken = (JSON.parse(Cookies.get('authToken'))).toString()
-    console.log(authToken)
+    const authTokenStaff = (JSON.parse(Cookies.get('authTokenStaff'))).toString()
+    console.log(authTokenStaff)
 
     const customerId = JSON.parse(localStorage.getItem('customerToView'))
 
@@ -69,7 +69,7 @@ function CustomerDetails() {
         axios.get(`/customer/${customerId}`, 
         {
             headers: {
-                AuthToken: authToken
+                AuthToken: authTokenStaff
             }
         }).then(res => {
             setData(res.data)
@@ -81,7 +81,7 @@ function CustomerDetails() {
         axios.get(`/customerBookingPackages/${customerId}`, 
         {
             headers: {
-                AuthToken: authToken
+                AuthToken: authTokenStaff
             }
         }).then(res => {
             if (res.data !== undefined || res.data.length !== 0) {
@@ -92,7 +92,7 @@ function CustomerDetails() {
     
                         axios.get(`/bookingPackageModel/${bookingPackageModelId}`, {
                             headers: {
-                                AuthToken: authToken
+                                AuthToken: authTokenStaff
                             }
                         }).then(res => {
                             console.log("get booking package model thru")
@@ -160,7 +160,7 @@ function CustomerDetails() {
             }, 
             {
                 headers: {
-                    AuthToken: authToken
+                    AuthToken: authTokenStaff
                 }
             }).then(res => {
                 console.log("axios call went through")

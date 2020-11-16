@@ -31,7 +31,7 @@ const theme = createMuiTheme({
 
 function Advertisements() {
 
-    const authToken = JSON.parse(Cookies.get('authToken'))
+    const authTokenStaff = JSON.parse(Cookies.get('authTokenStaff'))
 
     const staffId = parseInt(Cookies.get('staffUser'))
 
@@ -79,14 +79,14 @@ function Advertisements() {
         console.log("retrieving approved advertisements // axios")
         axios.get("/approvedAdvertisements", {
             headers: {
-                AuthToken: authToken
+                AuthToken: authTokenStaff
             }
         }).then (res => {
             setData(res.data)
 
             axios.get("/unapprovedAdvertisements", {
                 headers: {
-                    AuthToken: authToken
+                    AuthToken: authTokenStaff
                 }
             }).then (res => {
                 setUnapprovedData(res.data)
@@ -104,7 +104,7 @@ function Advertisements() {
         },
         {
         headers: {
-            AuthToken: authToken
+            AuthToken: authTokenStaff
         }
     }).then(res => {
             console.log("axios call went through")
@@ -154,7 +154,7 @@ function Advertisements() {
 
         axios.post("/advertisement/addImage", formData, {
             headers: {
-                AuthToken: authToken
+                AuthToken: authTokenStaff
             }
         }).then( res => {
             console.log("image upload axios call went through")
@@ -214,7 +214,7 @@ function Advertisements() {
             },
             {
             headers: {
-                AuthToken: authToken
+                AuthToken: authTokenStaff
             },
             }).then(res => {
                 console.log("create ad axios call went through")

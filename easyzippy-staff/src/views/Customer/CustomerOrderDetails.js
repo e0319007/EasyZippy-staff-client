@@ -26,8 +26,8 @@ const theme = createMuiTheme({
 function CustomerOrderDetails() {
 
     const history = useHistory()
-    const authToken = (JSON.parse(Cookies.get('authToken'))).toString()
-    //console.log(authToken)
+    const authTokenStaff = (JSON.parse(Cookies.get('authTokenStaff'))).toString()
+    //console.log(authTokenStaff)
 
     const orderId = JSON.parse(localStorage.getItem('orderToView'))
     console.log("order id: " + orderId)
@@ -56,7 +56,7 @@ function CustomerOrderDetails() {
         axios.get(`/order/${orderId}`,
         {
             headers: {
-                AuthToken: authToken
+                AuthToken: authTokenStaff
             }
         }).then(res => {
             setOrder(res.data.order)
@@ -69,7 +69,7 @@ function CustomerOrderDetails() {
         axios.get("/order/orderStatus", 
         {
             headers: {
-                AuthToken: authToken
+                AuthToken: authTokenStaff
             }
         }).then(res => {
             setOrderStatusesEnum(res.data)
@@ -80,7 +80,7 @@ function CustomerOrderDetails() {
         axios.get("/customers", 
         {
             headers: {
-                AuthToken: authToken
+                AuthToken: authTokenStaff
             }
         }).then(res => {
             setCustomers(res.data)
@@ -89,7 +89,7 @@ function CustomerOrderDetails() {
         axios.get("/promotions",
         {
             headers: {
-                AuthToken: authToken
+                AuthToken: authTokenStaff
             }
         }).then(res => {
             setPromotions(res.data)
@@ -110,7 +110,7 @@ function CustomerOrderDetails() {
         }, 
         {
             headers: {
-                AuthToken: authToken
+                AuthToken: authTokenStaff
             }
         }).then(res => {
             setOrderStatusEnum(res.data.orderStatusEnum)
@@ -134,7 +134,7 @@ function CustomerOrderDetails() {
         },
         {
             headers: {
-                AuthToken: authToken
+                AuthToken: authTokenStaff
             }
         }).then(res => {
             console.log("axios cancel order went through")

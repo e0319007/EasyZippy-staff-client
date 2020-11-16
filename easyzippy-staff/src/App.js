@@ -36,7 +36,7 @@ const hist = createBrowserHistory();
 function App(props) {
     console.log("initialising app")
     console.log("staffusercookie: " + document.cookie.indexOf('staffUser'))
-    console.log("auth cookie: " + document.cookie.indexOf('authToken'))
+    console.log("auth cookie: " + document.cookie.indexOf('authTokenStaff'))
     return (
         <Router history={hist}>
             <Switch>
@@ -44,11 +44,11 @@ function App(props) {
                 <Route exact path="/" component={Login} />
 
                 {/* if user and token do not exist in the cookies */}
-                {document.cookie.indexOf('staffUser') === -1 && document.cookie.indexOf('authToken') === -1 &&
+                {document.cookie.indexOf('staffUser') === -1 && document.cookie.indexOf('authTokenStaff') === -1 &&
                     <Route path="/login" component={Login} />
                 }
                 {/* if user and token exists in the cookies */}
-                { document.cookie.indexOf('staffUser') > -1 && document.cookie.indexOf('authToken') > -1 && 
+                { document.cookie.indexOf('staffUser') > -1 && document.cookie.indexOf('authTokenStaff') > -1 && 
                     <Route path="/admin" render={(props) => <AdminLayout {...props} />} /> 
                 }
                 {/* <Route exact path="/" component={Login} /> */}

@@ -30,7 +30,7 @@ class Header extends React.Component {
       annDropdownOpen: false, //announcement drop down
       color: "transparent",
       staffId: parseInt(Cookies.get('staffUser')),
-      authToken: JSON.parse(Cookies.get('authToken')),
+      authTokenStaff: JSON.parse(Cookies.get('authTokenStaff')),
       notifications: [],
       announcements: [],
       notifBadgeVisible: false
@@ -73,7 +73,7 @@ class Header extends React.Component {
         },
         {
           headers: {
-            AuthToken: this.state.authToken
+            AuthToken: this.state.authTokenStaff
           }
         }).then(res => {
           console.log("notifications set to read // axios went through")
@@ -128,13 +128,13 @@ class Header extends React.Component {
     window.addEventListener("resize", this.updateColor.bind(this));
     console.log("mounted")
     console.log(parseInt(Cookies.get('staffUser')))
-    console.log(JSON.parse(Cookies.get('authToken')))
+    console.log(JSON.parse(Cookies.get('authTokenStaff')))
 
     // GET NOTIFICATIONS
     axios.get('/notification/staff/', 
     {
       headers: {
-        AuthToken: this.state.authToken
+        AuthToken: this.state.authTokenStaff
       }
     }).then((res) => {
       const notifs = res.data
@@ -158,7 +158,7 @@ class Header extends React.Component {
     axios.get("/announcements", 
     {
         headers: {
-            AuthToken: this.state.authToken
+            AuthToken: this.state.authTokenStaff
         }
     }).then(res => {
       const anncemts = res.data
@@ -188,7 +188,7 @@ class Header extends React.Component {
       axios.get('/notification/staff', 
       {
         headers: {
-          AuthToken: this.state.authToken
+          AuthToken: this.state.authTokenStaff
         }
       }).then((res) => {
         const notifs = res.data
@@ -211,7 +211,7 @@ class Header extends React.Component {
       axios.get("/announcements", 
       {
           headers: {
-              AuthToken: this.state.authToken
+              AuthToken: this.state.authTokenStaff
           }
       }).then(res => {
         const anncemts = res.data
@@ -224,7 +224,7 @@ class Header extends React.Component {
   }
 
   logout(e) {
-    Cookies.remove('authToken')
+    Cookies.remove('authTokenStaff')
     Cookies.remove('staffUser')
     localStorage.clear()
   }

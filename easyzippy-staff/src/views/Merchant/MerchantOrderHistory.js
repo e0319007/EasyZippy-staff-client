@@ -24,7 +24,7 @@ const theme = createMuiTheme({
 
 function MerchantOrderHistory() {
 
-    const authToken = JSON.parse(Cookies.get('authToken'))
+    const authTokenStaff = JSON.parse(Cookies.get('authTokenStaff'))
 
     const history = useHistory()
 
@@ -55,7 +55,7 @@ function MerchantOrderHistory() {
         axios.get(`/orders/merchant/${merchantId}`, 
         {
             headers: {
-                AuthToken: authToken
+                AuthToken: authTokenStaff
             }
         }).then(res => {
             setOrderData(res.data)
@@ -68,7 +68,7 @@ function MerchantOrderHistory() {
         axios.get("/customers", 
         {
             headers: {
-                AuthToken:authToken
+                AuthToken:authTokenStaff
             }
         }).then(res => {
             setCustomers(res.data)

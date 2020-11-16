@@ -22,7 +22,7 @@ const theme = createMuiTheme({
 
 function CustomerTransactionHistory() {
 
-    const authToken = JSON.parse(Cookies.get('authToken'))
+    const authTokenStaff = JSON.parse(Cookies.get('authTokenStaff'))
 
     // DECLARING COLUMNS
 
@@ -46,7 +46,7 @@ function CustomerTransactionHistory() {
         axios.get(`/customerCreditPaymentRecords/${customerId}`, 
         {
             headers: {
-                AuthToken: authToken
+                AuthToken: authTokenStaff
             }
         }).then(res => {
             setCustomerData(res.data)

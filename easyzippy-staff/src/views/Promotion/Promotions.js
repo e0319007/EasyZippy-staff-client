@@ -38,7 +38,7 @@ const theme = createMuiTheme({
 
 function Promotions() {
 
-    const authToken = JSON.parse(Cookies.get('authToken'))
+    const authTokenStaff = JSON.parse(Cookies.get('authTokenStaff'))
 
     const history = useHistory()
 
@@ -110,14 +110,14 @@ function Promotions() {
         axios.get("/promotion/mall", 
         {
             headers: {
-                AuthToken: authToken
+                AuthToken: authTokenStaff
             }
         }).then(res => {
             setMallData(res.data)
 
             axios.get("/promotion/merchant", {
                 headers: {
-                    AuthToken: authToken
+                    AuthToken: authTokenStaff
                 }
             }).then (res => {
                 setMerchantData(res.data)
@@ -131,7 +131,7 @@ function Promotions() {
         axios.get("/merchants", 
         {
             headers: {
-                AuthToken:authToken
+                AuthToken:authTokenStaff
             }
         }).then(res => {
             setMerchants(res.data)
@@ -236,7 +236,7 @@ function Promotions() {
         },
         {
             headers: {
-                AuthToken: authToken
+                AuthToken: authTokenStaff
             }
         }).then(res => {
             console.log("create promo axios call went through")
@@ -353,7 +353,7 @@ function Promotions() {
         },
         {
         headers: {
-            AuthToken: authToken
+            AuthToken: authTokenStaff
         }
     }).then(res => {
             console.log("axios call went through")

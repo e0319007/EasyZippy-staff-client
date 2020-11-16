@@ -25,8 +25,8 @@ const theme = createMuiTheme({
 function MaintenanceActionDetails() {
 
     const history = useHistory()
-    const authToken = (JSON.parse(Cookies.get('authToken'))).toString()
-    console.log(authToken)
+    const authTokenStaff = (JSON.parse(Cookies.get('authTokenStaff'))).toString()
+    console.log(authTokenStaff)
 
     const maintenanceActionId = JSON.parse(localStorage.getItem('maintenanceActionToView'))
     const [data, setData] = useState([])
@@ -55,7 +55,7 @@ function MaintenanceActionDetails() {
         axios.get(`/maintenanceAction/${maintenanceActionId}`, 
         {
             headers: {
-                AuthToken: authToken
+                AuthToken: authTokenStaff
             }
         }).then(res => {
             setData(res.data)
@@ -69,7 +69,7 @@ function MaintenanceActionDetails() {
             axios.get("/lockers", 
                 {
                     headers: {
-                        AuthToken: authToken
+                        AuthToken: authTokenStaff
                     }
                 }).then(res => {
                     setLockers(res.data)
@@ -80,7 +80,7 @@ function MaintenanceActionDetails() {
 
         axios.get("/kiosks", {
             headers: {
-                AuthToken: authToken
+                AuthToken: authTokenStaff
             }
         }).then(res => {
             setKiosks(res.data)
@@ -136,7 +136,7 @@ function MaintenanceActionDetails() {
         },
         {
             headers: {
-                AuthToken: authToken
+                AuthToken: authTokenStaff
             }
         }).then(res => {
             setMaintenanceDate(res.data.maintenanceDate.substr(0,10))

@@ -65,7 +65,7 @@ function Login() {
             history.push('/admin/dashboard')
             document.location.reload()
             console.log(response.data.token)
-            Cookies.set('authToken', JSON.stringify(response.data.token))
+            Cookies.set('authTokenStaff', JSON.stringify(response.data.token))
             Cookies.set('staffUser', JSON.stringify(response.data.staff.id))
 
             staff.firstName = response.data.staff.firstName

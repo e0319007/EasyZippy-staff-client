@@ -28,7 +28,7 @@ const theme = createMuiTheme({
 
 function LockerActionsRecord() {
 
-    const authToken = JSON.parse(Cookies.get('authToken'))
+    const authTokenStaff = JSON.parse(Cookies.get('authTokenStaff'))
 
     const history = useHistory()
 
@@ -74,7 +74,7 @@ function LockerActionsRecord() {
         axios.get(`/lockerActions/${lockerId}`, 
         {
             headers: {
-                AuthToken: authToken
+                AuthToken: authTokenStaff
             }
         }).then(res => {
             setData(res.data)

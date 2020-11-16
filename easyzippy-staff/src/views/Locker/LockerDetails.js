@@ -30,8 +30,8 @@ const theme = createMuiTheme({
 function LockerDetails() {
 
     const history = useHistory()
-    const authToken = (JSON.parse(Cookies.get('authToken'))).toString()
-    console.log(authToken)
+    const authTokenStaff = (JSON.parse(Cookies.get('authTokenStaff'))).toString()
+    console.log(authTokenStaff)
 
     const lockerId = JSON.parse(localStorage.getItem('lockerToView'))
 
@@ -52,7 +52,7 @@ function LockerDetails() {
         axios.get(`/locker/${lockerId}`, 
         {
             headers: {
-                AuthToken: authToken
+                AuthToken: authTokenStaff
             }
         }).then(res => {
             setData(res.data)
@@ -60,7 +60,7 @@ function LockerDetails() {
             axios.get("/kiosks", 
             {
                 headers: {
-                    AuthToken: authToken
+                    AuthToken: authTokenStaff
                 }
             }).then(response => {
                 setKiosks(response.data)
@@ -69,7 +69,7 @@ function LockerDetails() {
 
             axios.get("/lockerTypes", {
                 headers: {
-                    AuthToken: authToken
+                    AuthToken: authTokenStaff
                 }
             }).then(response => {
                 setLockerTypes(response.data)
@@ -127,7 +127,7 @@ function LockerDetails() {
             }, 
             {
                 headers: {
-                    AuthToken: authToken
+                    AuthToken: authTokenStaff
                 }
             }).then(res => {
                 console.log("axios call went through")

@@ -6,7 +6,7 @@ function PrivateRoute({ component: Component, ...rest }) {
     
     const [login, isLogin] = useState(false)
     
-    if (document.cookie.indexOf('authToken') > -1 && document.cookie.indexOf('staffUser') > -1) {
+    if (document.cookie.indexOf('authTokenStaff') > -1 && document.cookie.indexOf('staffUser') > -1) {
         isLogin(true)
     }
 

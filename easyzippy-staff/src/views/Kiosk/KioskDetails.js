@@ -30,8 +30,8 @@ const theme = createMuiTheme({
 function KioskDetails() {
 
     const history = useHistory()
-    const authToken = (JSON.parse(Cookies.get('authToken'))).toString()
-    console.log(authToken)
+    const authTokenStaff = (JSON.parse(Cookies.get('authTokenStaff'))).toString()
+    console.log(authTokenStaff)
 
     const kioskId = JSON.parse(localStorage.getItem('kioskToView'))
     const [data, setData] = useState([])
@@ -79,7 +79,7 @@ function KioskDetails() {
         axios.get(`/kiosk/${kioskId}`, 
         {
             headers: {
-                AuthToken: authToken
+                AuthToken: authTokenStaff
             }
         }).then(res => {
             setData(res.data)
@@ -87,7 +87,7 @@ function KioskDetails() {
             axios.get(`/locker/kiosk/${kioskId}`, 
             {
                 headers: {
-                    AuthToken: authToken
+                    AuthToken: authTokenStaff
                 }
             }).then(response => {
                 setLockers(response.data)
@@ -96,7 +96,7 @@ function KioskDetails() {
 
             axios.get("/lockerTypes", {
                 headers: {
-                    AuthToken: authToken
+                    AuthToken: authTokenStaff
                 }
             }).then(response => {
                 setLockerTypes(response.data)
@@ -173,7 +173,7 @@ function KioskDetails() {
         },
         {
             headers: {
-                AuthToken: authToken
+                AuthToken: authTokenStaff
             }
         }).then(res => {
             console.log("axios call went through")
@@ -227,7 +227,7 @@ function KioskDetails() {
         },
         {
         headers: {
-            AuthToken: authToken
+            AuthToken: authTokenStaff
         }
     }).then((response) => {
         console.log("add locker axios went through")

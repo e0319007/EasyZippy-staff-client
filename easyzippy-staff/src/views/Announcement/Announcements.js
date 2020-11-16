@@ -22,7 +22,7 @@ const theme = createMuiTheme({
 
 function Announcements() {
 
-    const authToken = JSON.parse(Cookies.get('authToken'))
+    const authTokenStaff = JSON.parse(Cookies.get('authTokenStaff'))
     const staffid = parseInt(Cookies.get('staffUser'))
 
     // DECLARING COLUMNS,, don't let time be editable
@@ -50,7 +50,7 @@ function Announcements() {
         axios.get("/announcements", 
         {
             headers: {
-                AuthToken: authToken
+                AuthToken: authTokenStaff
             }
         }).then(res => {
             // console.log(res.data)
@@ -77,7 +77,7 @@ function Announcements() {
         },
         {
             headers: {
-                AuthToken: authToken
+                AuthToken: authTokenStaff
             }
         })
         .then(res => {
@@ -115,7 +115,7 @@ function Announcements() {
         },
         {
             headers: {
-                AuthToken: authToken
+                AuthToken: authTokenStaff
             }
         })
         .then(res => {
@@ -142,7 +142,7 @@ function Announcements() {
         axios.delete("/announcement/"+oldData.id,
         {
         headers: {
-            AuthToken: authToken
+            AuthToken: authTokenStaff
         }
     }).then(res => {
             console.log("axios call went through")

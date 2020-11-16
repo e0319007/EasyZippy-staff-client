@@ -22,7 +22,7 @@ const theme = createMuiTheme({
 });
 
 function MerchantBookings() {
-    const authToken = JSON.parse(Cookies.get('authToken'))
+    const authTokenStaff = JSON.parse(Cookies.get('authTokenStaff'))
 
     const history = useHistory()
 
@@ -55,7 +55,7 @@ function MerchantBookings() {
         axios.get("/merchantBookings", 
         {
             headers: {
-                AuthToken: authToken
+                AuthToken: authTokenStaff
             }
         }).then (res => {
             setData(res.data)
@@ -63,7 +63,7 @@ function MerchantBookings() {
             axios.get("/merchants", 
             {
                 headers: {
-                    AuthToken: authToken
+                    AuthToken: authTokenStaff
                 }
             }).then(res => {
                 setMerchants(res.data)
@@ -72,13 +72,13 @@ function MerchantBookings() {
             axios.get("/lockerTypes", 
             {
                 headers: {
-                    AuthToken: authToken
+                    AuthToken: authTokenStaff
                 }
             }).then(res => {
                 setLockerTypes(res.data)
             }).catch(err => console.error(err))
         }).catch (err => console.error(err))
-    },[authToken])
+    },[authTokenStaff])
 
     //match merchant id to merchant name 
     function getMerchantName(id) {

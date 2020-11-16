@@ -39,8 +39,8 @@ function Category3(props) {
     const [confirmModal, setConfirmModal] = useState({isOpen:false, title:''})
     const [notify, setNotify] = useState({isOpen: false, message:'', type:''})
 
-    const authToken = JSON.parse(Cookies.get('authToken'))
-    console.log(typeof authToken + " " + authToken)
+    const authTokenStaff = JSON.parse(Cookies.get('authTokenStaff'))
+    console.log(typeof authTokenStaff + " " + authTokenStaff)
 
     const [idOfCategoryToUpdate, setIdOfCategoryToUpdate] = useState(0);
 
@@ -76,14 +76,14 @@ function Category3(props) {
         .get("http://localhost:5000/categories", 
         {
             headers: {
-                AuthToken: authToken
+                AuthToken: authTokenStaff
             }
         }).then(res => {
             // console.log(res.data)
             setCategoryList(res.data)
         })
         .catch (err => console.error(err))
-    },[authToken])
+    },[authTokenStaff])
 
     const {
         TblContainer,
@@ -97,7 +97,7 @@ function Category3(props) {
         axios
         .post("http://localhost:5000/category", data, {
             headers: {
-                AuthToken: authToken
+                AuthToken: authTokenStaff
             }
         })
         .then(res => {
@@ -117,7 +117,7 @@ function Category3(props) {
         axios
         .delete(`http://localhost:5000/category/${id}`, {
             headers: {
-                AuthToken: authToken
+                AuthToken: authTokenStaff
             }
         })
         .then(res => {
@@ -154,7 +154,7 @@ function Category3(props) {
         // axios
         // .put(`http://localhost:5000/category/${id}`, {
         //     headers: {
-        //         AuthToken: authToken
+        //         AuthToken: authTokenStaff
         //     }, data: data
         // })
         // .then(res => {

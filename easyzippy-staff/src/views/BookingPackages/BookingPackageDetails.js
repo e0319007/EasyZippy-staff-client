@@ -29,8 +29,8 @@ const theme = createMuiTheme({
 function BookingPackageDetails() {
 
     const history = useHistory()
-    const authToken = (JSON.parse(Cookies.get('authToken'))).toString()
-    console.log(authToken)
+    const authTokenStaff = (JSON.parse(Cookies.get('authTokenStaff'))).toString()
+    console.log(authTokenStaff)
 
     const bookingPackageId = JSON.parse(localStorage.getItem('bookingPackageToView'))
     const [data, setData] = useState([])
@@ -58,7 +58,7 @@ function BookingPackageDetails() {
         axios.get(`/bookingPackageModel/${bookingPackageId}`, 
         {
             headers: {
-                AuthToken: authToken
+                AuthToken: authTokenStaff
             }
         }).then(res => {
             setData(res.data)
@@ -72,7 +72,7 @@ function BookingPackageDetails() {
             axios.get("/lockerTypes", 
             {
                 headers: {
-                    AuthToken: authToken
+                    AuthToken: authTokenStaff
                 }
             }).then(res => {
                 setLockerTypes(res.data)
@@ -139,7 +139,7 @@ function BookingPackageDetails() {
         },
         {
             headers: {
-                AuthToken: authToken
+                AuthToken: authTokenStaff
             }
         }).then(res => {
             setName(res.data.name)
@@ -208,7 +208,7 @@ function BookingPackageDetails() {
         },
         {
             headers: {
-                AuthToken: authToken
+                AuthToken: authTokenStaff
             }
         }).then(res => {
             console.log("axios call went through")

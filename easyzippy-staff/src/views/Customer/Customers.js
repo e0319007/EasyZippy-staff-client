@@ -23,7 +23,7 @@ const theme = createMuiTheme({
 
 function Customers() {
 
-    const authToken = JSON.parse(Cookies.get('authToken'))
+    const authTokenStaff = JSON.parse(Cookies.get('authTokenStaff'))
 
     const history = useHistory()
 
@@ -47,14 +47,14 @@ function Customers() {
         axios.get("/customers", 
         {
             headers: {
-                AuthToken: authToken
+                AuthToken: authTokenStaff
             }
         }).then(res => {
             // console.log(res.data)
             setData(res.data)
         })
         .catch (err => console.error(err))
-    },[authToken])
+    },[authTokenStaff])
 
 
     return (
