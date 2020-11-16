@@ -21,6 +21,7 @@ import {
 function Dashboard() {
 
   const authToken = (JSON.parse(Cookies.get('authToken'))).toString()
+  console.log('token: ' + authToken)
 
   const [merchantLength, setMerchantLength] = useState('')
   const [customerLength, setCustomerLength] = useState('')
@@ -64,6 +65,8 @@ function Dashboard() {
       }
     }).then(res => {
       setStaffLength(res.data.length)
+      console.log("res.data")
+      console.log(res.data)
     }).catch( function(error) {
       console.log(error.response)
     })
