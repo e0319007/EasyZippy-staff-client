@@ -26,12 +26,10 @@ function CustomerBookingDetails() {
 
     const history = useHistory()
     const authTokenStaff = (JSON.parse(Cookies.get('authTokenStaff'))).toString()
-    console.log(authTokenStaff)
 
     const bookingId = JSON.parse(localStorage.getItem('bookingToView'))
     const [data, setData] = useState([])
     const [customers, setCustomers] = useState([])
-    const [merchants, setMerchants] = useState([])
     const [bookingPackages, setBookingPackages] = useState([])
     const [lockerTypes, setLockerTypes] = useState([])
     const [kiosks, setKiosks] = useState([])
@@ -45,7 +43,6 @@ function CustomerBookingDetails() {
             }
         }).then(res => {
             setData(res.data)
-            console.log(res.data)
 
             axios.get("/customers", {
                 headers: {
@@ -53,15 +50,7 @@ function CustomerBookingDetails() {
                 }
             }).then (res => {
                 setCustomers(res.data)
-            }).catch (err => console.error(err))
-
-            axios.get("/merchants", {
-                headers: {
-                    AuthToken: authTokenStaff
-                }
-            }).then(res => {
-                setMerchants(res.data)
-            }).catch(err => console.error(err))
+            })
 
             axios.get("/bookingPackageModels", 
             {
@@ -70,7 +59,7 @@ function CustomerBookingDetails() {
                 }
             }).then(res => {
                 setBookingPackages(res.data)
-            }).catch (err => console.error(err))
+            })
 
             axios.get("/lockerTypes", 
             {
@@ -79,7 +68,7 @@ function CustomerBookingDetails() {
                 }
             }).then(res => {
                 setLockerTypes(res.data)
-            }).catch(err => console.error(err))
+            })
 
             axios.get("/kiosks", 
             {
@@ -88,12 +77,12 @@ function CustomerBookingDetails() {
                 }
             }).then(res => {
                 setKiosks(res.data)
-            }).catch(err => console.error(err))
+            })
             
         }).catch (function(error) {
-            console.log(error.response.data)
+        
         })
-    },[])
+    },[authTokenStaff,bookingId])
 
     //match customer id to customer name 
     function getCustomerName(id) {
@@ -104,18 +93,9 @@ function CustomerBookingDetails() {
         }
     }
 
-    //match merchant id to merchant name
-    function getMerchantName(id) {
-        for (var i in merchants) {
-            if (merchants[i].id === id) {
-                return merchants[i].name
-            }
-        }
-    }
 
     //match booking package id to booking package name
     function getBookingPackage(id) {
-        console.log("booking package id: " + id)
         for (var i in bookingPackages) {
             if (bookingPackages[i].id === id) {
                 return bookingPackages[i].name
@@ -145,10 +125,8 @@ function CustomerBookingDetails() {
     function formatDate(d) {
         if (d === undefined){
             d = (new Date()).toISOString()
-            console.log(undefined)
         }
         let currDate = new Date(d);
-        console.log("currDate: " + currDate)
         let year = currDate.getFullYear();
         let month = currDate.getMonth() + 1;
         let dt = currDate.getDate();
@@ -180,7 +158,6 @@ function CustomerBookingDetails() {
                                 <CardBody>
                                     <form>
                                         <fieldset disabled>  
-                                            {/* <div className="form-row"> */}
                                                 <FormGroup>
                                                     <Label for="inputName">Customer Name</Label>
                                                     <Input
@@ -190,26 +167,7 @@ function CustomerBookingDetails() {
                                                         value={getCustomerName(data.customerId)}
                                                     />
                                                 </FormGroup>
-                                                {/* <FormGroup className="col-md-4">
-                                                    <Label for="inputName">Collector Name (if any)</Label>
-                                                    <Input
-                                                        type="text"
-                                                        id="inputName"
-                                                        placeholder="-"
-                                                        value={getCustomerName(data.collecterId)}
-                                                    />
-                                                </FormGroup>
-                                                <FormGroup className="col-md-4">
-                                                    <Label for="inputName">Merchant Name (if any)</Label>
-                                                    <Input
-                                                        type="text"
-                                                        id="inputName"
-                                                        placeholder="-"
-                                                        value={getMerchantName(data.merchantId)}
-                                                    />
-                                                </FormGroup> */}
-                                            {/* </div> */}
-                                            {/* <div className="form-row"> */}
+                                  
                                             <FormGroup>
                                                 <Label for="inputId">Booking Id</Label>
                                                 <Input
@@ -218,17 +176,7 @@ function CustomerBookingDetails() {
                                                     placeholder="id number here"
                                                     value={data.id}
                                                 />
-                                            </FormGroup>
-                                            {/* <FormGroup className="col-md-6">
-                                                <Label for="inputId">Order Id (if any)</Label>
-                                                <Input
-                                                    type="text"
-                                                    id="inputId"
-                                                    placeholder="-"
-                                                    value={data.orderId}
-                                                />
-                                            </FormGroup> */}
-                                            {/* </div> */}
+                                            </FormGroup>           
                                             
                                             <div className="form-row">
                                                 <FormGroup className="col-md-4">

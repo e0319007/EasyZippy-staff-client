@@ -26,11 +26,10 @@ function MerchantBookingDetails() {
 
     const history = useHistory()
     const authTokenStaff = (JSON.parse(Cookies.get('authTokenStaff'))).toString()
-    console.log(authTokenStaff)
+
 
     const bookingId = JSON.parse(localStorage.getItem('bookingToView'))
     const [data, setData] = useState([])
-    const [customers, setCustomers] = useState([])
     const [merchants, setMerchants] = useState([])
     const [bookingPackages, setBookingPackages] = useState([])
     const [lockerTypes, setLockerTypes] = useState([])
@@ -47,21 +46,13 @@ function MerchantBookingDetails() {
         }).then(res => {
             setData(res.data)
 
-            axios.get("/customers", {
-                headers: {
-                    AuthToken: authTokenStaff
-                }
-            }).then(res => {
-                setCustomers(res.data)
-            }).catch(err => console.error(err))
-
             axios.get("/merchants", {
                 headers: {
                     AuthToken: authTokenStaff
                 }
             }).then(res => {
                 setMerchants(res.data)
-            }).catch(err => console.error(err))
+            })
 
             axios.get("/bookingPackageModels", 
             {
@@ -70,7 +61,7 @@ function MerchantBookingDetails() {
                 }
             }).then(res => {
                 setBookingPackages(res.data)
-            }).catch (err => console.error(err))
+            })
 
             axios.get("/lockerTypes", 
             {
@@ -79,7 +70,7 @@ function MerchantBookingDetails() {
                 }
             }).then(res => {
                 setLockerTypes(res.data)
-            }).catch(err => console.error(err))
+            })
 
             axios.get("/kiosks", 
             {
@@ -88,11 +79,10 @@ function MerchantBookingDetails() {
                 }
             }).then(res => {
                 setKiosks(res.data)
-            }).catch(err => console.error(err))
+            })
 
-        }).catch (function(error) {
-            console.log(error.response.data)
         })
+           
 
         axios.get("/promotions", {
             headers: {
@@ -101,16 +91,8 @@ function MerchantBookingDetails() {
         }).then(res => {
             setPromos(res.data)
         })
-    },[])
+    },[authTokenStaff,bookingId])
 
-    //match customer id to customer name 
-    function getCustomerName(id) {
-        for (var i in customers) {
-            if (customers[i].id === id) {
-                return customers[i].firstName + " " + customers[i].lastName
-            }
-        }
-    }
 
     //match merchant id to merchant name 
     function getMerchantName(id) {
@@ -123,7 +105,6 @@ function MerchantBookingDetails() {
 
     //match booking package id to booking package name
     function getBookingPackage(id) {
-        console.log("booking package id: " + id)
         for (var i in bookingPackages) {
             if (bookingPackages[i].id === id) {
                 return bookingPackages[i].name
@@ -157,14 +138,11 @@ function MerchantBookingDetails() {
         }
     }
 
-    // to use when viewing 
     function formatDate(d) {
         if (d === undefined){
             d = (new Date()).toISOString()
-            console.log(undefined)
         }
         let currDate = new Date(d);
-        console.log("currDate: " + currDate)
         let year = currDate.getFullYear();
         let month = currDate.getMonth() + 1;
         let dt = currDate.getDate();
@@ -196,7 +174,7 @@ function MerchantBookingDetails() {
                                 <CardBody>
                                     <form>
                                         <fieldset disabled> 
-                                        {/* <div className="form-row"> */}
+                              
                                             <FormGroup>
                                                 <Label for="inputName">Merchant Name</Label>
                                                 <Input
@@ -206,17 +184,7 @@ function MerchantBookingDetails() {
                                                     value={getMerchantName(data.merchantId)}
                                                 />
                                             </FormGroup>
-                                            {/* <FormGroup className="col-md-6">
-                                                <Label for="inputName">Collector Name</Label>
-                                                <Input
-                                                    type="text"
-                                                    id="inputName"
-                                                    placeholder="-"
-                                                    value={getCustomerName(data.collecterId)}
-                                                />
-                                            </FormGroup>                                   */}
-                                        {/* </div>  */}
-                                            {/* <div className="form-row"> */}
+                             
                                             <FormGroup>
                                                 <Label for="inputId">Booking Id</Label>
                                                 <Input
@@ -226,16 +194,7 @@ function MerchantBookingDetails() {
                                                     value={data.id}
                                                 />
                                             </FormGroup>
-                                            {/* <FormGroup className="col-md-6">
-                                                <Label for="inputId">Order Id (if any)</Label>
-                                                <Input
-                                                    type="text"
-                                                    id="inputId"
-                                                    placeholder="-"
-                                                    value={data.orderId}
-                                                />
-                                            </FormGroup> */}
-                                            {/* </div> */}
+                         
                                             
                                             <div className="form-row">
                                                 <FormGroup className="col-md-4">

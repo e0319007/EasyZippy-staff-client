@@ -12,7 +12,6 @@ import {
     Col,
     Card,
     Alert,
-    Table,
     Modal,
     ModalHeader,
     ModalBody,
@@ -79,7 +78,6 @@ function BookingPackages() {
     const toggle = () => setModal(!modal, setError(false), isSuccessful(false))
 
     useEffect(() => {
-        console.log("retrieving booking packages;; axios")
         axios.get("/bookingPackageModels", 
         {
             headers: {
@@ -87,9 +85,8 @@ function BookingPackages() {
             }
         }).then(res => {
             setData(res.data)
-            console.log("**booking packages**" + res.data)
         })
-        .catch (err => console.error(err))
+        .catch ()
 
         axios.get("/lockerTypes", 
         {
@@ -98,8 +95,7 @@ function BookingPackages() {
             }
         }).then(res => {
             setLockerTypes(res.data)
-            console.log("**locker types" + res.data)
-        }).catch(err => console.error(err))
+        }).catch()
     },[authTokenStaff])
 
     const addBookingPackage = e => {
@@ -159,7 +155,6 @@ function BookingPackages() {
             setMsg("Booking package added successfully")
             document.location.reload()
         }).catch(function (error) {
-            console.log(error.response.data)
             isInModal(true)
             isError(true)
             setError(error.response.data)
@@ -188,10 +183,8 @@ function BookingPackages() {
         setDuration(duration)
     }
     const onChangeNewLockerType = e => {
-        console.log(e.target.value)
         setNewLockerType(e.target.value)
         const lockerType = getLockerId(e.target.value);
-        console.log("new lt key: " + lockerType)
         setNewLockerTypeId(lockerType)
     }
 
@@ -221,7 +214,6 @@ function BookingPackages() {
                 AuthToken: authTokenStaff
             }
         }).then(res => {
-                console.log("axios call went through")
                 const dataDelete = [...data];
                 const index = oldData.tableData.id;
                 dataDelete.splice(index, 1);
@@ -235,7 +227,6 @@ function BookingPackages() {
                 isSuccessful(false)
                 isError(true)
                 setError(error.response.data)
-                console.log(error.response.data)
                 resolve()
             })
         }
@@ -251,7 +242,7 @@ function BookingPackages() {
                                 columns={columns}
                                 data={data}
                                 options={{   
-                                    //sorting: true, 
+                                 
                                     filtering: true,
                                     headerStyle: {
                                         backgroundColor: '#98D0E1',
@@ -272,7 +263,6 @@ function BookingPackages() {
                                     icon: 'info',
                                     tooltip: 'View Booking Package Details',
                                     onClick:(event, rowData) => {
-                                        console.log("in onclick")
                                         history.push('/admin/bookingPackageDetails')
                                         localStorage.setItem('bookingPackageToView', JSON.stringify(rowData.id))
                                         }

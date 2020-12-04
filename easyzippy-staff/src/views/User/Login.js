@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import { Link, useHistory } from 'react-router-dom';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import Sidebar from "../../components/Sidebar/Sidebar"
 
 import {
     FormGroup,
@@ -24,7 +23,6 @@ function Login() {
     const [err, isError] = useState(false)
 
     const onChangeEmail = e => {
-        // console.log("inside on change email")
         const email = e.target.value;
         setEmail(email)
     }
@@ -46,9 +44,7 @@ function Login() {
     }
 
     const postLogin = e =>  {
-        console.log("in login function")
         e.preventDefault()
-        // history.push('/admin/dashboard')
 
         if (email.length === 0 || password.length === 0) {
             isError(true)
@@ -60,11 +56,9 @@ function Login() {
             password: password
         })
         .then(response => {
-            console.log("axios call went through")
             isError(false)
             history.push('/admin/dashboard')
             document.location.reload()
-            console.log(response.data.token)
             Cookies.set('authTokenStaff', JSON.stringify(response.data.token))
             Cookies.set('staffUser', JSON.stringify(response.data.staff.id))
 
@@ -73,14 +67,12 @@ function Login() {
             staff.mobileNum = response.data.staff.mobileNumber
             staff.email = response.data.staff.email
 
-            console.log(staff)
 
             localStorage.setItem('currentStaff', JSON.stringify(staff))
 
         }).catch(function (error) {
             isError(true)
             setError(error.response.data)
-            console.log(error.response.data)
             history.push('/login') 
         })
     };

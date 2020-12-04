@@ -21,7 +21,6 @@ import {
 function Dashboard() {
 
   const authTokenStaff = (JSON.parse(Cookies.get('authTokenStaff'))).toString()
-  console.log('token: ' + authTokenStaff)
 
   const [merchantLength, setMerchantLength] = useState('')
   const [customerLength, setCustomerLength] = useState('')
@@ -41,11 +40,9 @@ function Dashboard() {
           AuthToken: authTokenStaff
       }
     }).then(res => {
-      console.log("successfully retrieve customers")
       setCustomerLength(res.data.length)
 
     }).catch( function(error) {
-      console.log(error.response)
     })
 
     axios.get('/merchants', {
@@ -53,10 +50,8 @@ function Dashboard() {
           AuthToken: authTokenStaff
       }
     }).then(res => {
-      console.log("successfully retrieve merchants")
       setMerchantLength(res.data.length)
     }).catch( function(error) {
-      console.log(error.response)
     })
 
     axios.get('/staff', {
@@ -65,10 +60,7 @@ function Dashboard() {
       }
     }).then(res => {
       setStaffLength(res.data.length)
-      console.log("res.data")
-      console.log(res.data)
     }).catch( function(error) {
-      console.log(error.response)
     })
 
     axios.get('/customerBookings', {
@@ -78,7 +70,6 @@ function Dashboard() {
     }).then(res => {
       setCustomerBookingLength(res.data.length)
     }).catch(function (error) {
-      console.log(error.response)
     })
 
     axios.get('/merchantBookings', {
@@ -88,7 +79,6 @@ function Dashboard() {
     }).then(res => {
       setMerchantBookingLength(res.data.length)
     }).catch(function (error) {
-      console.log(error.response)
     })
 
     axios.get('/promotion/mall', {
@@ -99,7 +89,6 @@ function Dashboard() {
       setMallPromoLength(res.data.length)
     })
     .catch(function (error) {
-      console.log(error.response)
     })
 
     axios.get('/promotion/merchant', {
@@ -110,7 +99,6 @@ function Dashboard() {
       setMerchantPromoLength(res.data.length)
     })
     .catch(function (error) {
-      console.log(error.response)
     })
 
     axios.get('/advertisements', {
@@ -120,7 +108,6 @@ function Dashboard() {
     }).then(res => {
       setAdvertisementLength(res.data.length)
     }).catch(function (error) {
-      console.log(error.response)
     })
 
     axios.get('/notification/staff', {
@@ -138,23 +125,18 @@ function Dashboard() {
     }).then(res => {
       setAnnouncements(res.data)
     })
-  }, [])
+  }, [authTokenStaff])
 
-  function getTotalBookings() {
-    return customerBookingLength + merchantBookingLength
-  }
+ 
 
   function formatDate(d) {
-    //console.log(d)
     if (d === undefined){
         d = (new Date()).toISOString()
-        console.log(undefined)
     }
     let currDate = new Date(d);
     let year = currDate.getFullYear();
     let month = currDate.getMonth() + 1;
     let dt = currDate.getDate();
-    //let time = currDate.toLocaleTimeString('en-SG')
 
     if (dt < 10) {
         dt = '0' + dt;
@@ -270,31 +252,7 @@ function Dashboard() {
               </CardFooter>
             </Card>
           </Col>
-          {/* <Col lg="3" md="6" sm="6">
-            <Card className="card-stats">
-              <CardBody>
-                <Row>
-                  <Col md="4" xs="5">
-                    <br/><br/>
-                    <div className="icon-big text-center icon-warning">
-                      <i className="nc-icon nc-money-coins text-primary" />
-                    </div>
-                  </Col>
-                  <Col md="8" xs="7">
-                    <br/><br/>
-                    <div className="numbers">
-                      <p className="card-category">Revenue ($)</p>
-                      <CardTitle tag="p">-</CardTitle>
-                      <p />
-                    </div>
-                  </Col>
-                </Row>
-              </CardBody>
-              <br/><br/>
-              <CardFooter>
-              </CardFooter>
-            </Card>
-          </Col> */}
+         
         </Row>
         <Row>
           <Col lg="3" md="6" sm="6">

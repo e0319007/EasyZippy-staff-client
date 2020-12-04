@@ -13,7 +13,6 @@ import {
     Input,
     CardHeader, FormGroup, Label, Button, Alert
 } from "reactstrap";
-import { data } from "jquery";
 
 const theme = createMuiTheme({
     typography: {
@@ -27,14 +26,11 @@ function MallPromotionDetails() {
 
     const history = useHistory()
     const authTokenStaff = (JSON.parse(Cookies.get('authTokenStaff'))).toString()
-    console.log(authTokenStaff)
 
     const promotionId = JSON.parse(localStorage.getItem('promotionToView'))
     const [data, setData] = useState([])
     const [staff, setStaff] = useState([])
     const [expireMsg, setExpireMsg] = useState()
-    
-
 
     //for error handling
     const [error, setError] = useState('')
@@ -51,7 +47,6 @@ function MallPromotionDetails() {
     const [endDate, setEndDate] = useState('')
     const [percentageDiscount, setPercentageDiscount] = useState('')
     const [flatDiscount, setFlatDiscount] = useState('')
-    const [discount, setDiscount] = useState('')
     const [usageLimit, setUsageLimit] = useState('')
     const [minimumSpend, setMinimumSpend] = useState('')
 
@@ -77,7 +72,6 @@ function MallPromotionDetails() {
             setEndDate((res.data.endDate).substr(0,10))
             setPercentageDiscount(res.data.percentageDiscount)
             setFlatDiscount(res.data.flatDiscount)
-            setDiscount(res.data.discount)
             setUsageLimit(res.data.usageLimit)
             setMinimumSpend(res.data.minimumSpend)
 
@@ -91,13 +85,11 @@ function MallPromotionDetails() {
                 }
             }).then(res => {
                 setStaff(res.data)
-                console.log("staff: " + res.data)
                
-            }).catch(err => console.error(err))
+            }).catch()
         }).catch (function (error) {
-            console.log(error.response.data)
         })
-    },[])
+    },[authTokenStaff,promotionId])
 
     const onChangePromoCode = e => {
         const promoCode = e.target.value
@@ -123,30 +115,12 @@ function MallPromotionDetails() {
         const endDate = e.target.value
         setEndDate(endDate)
     }
-    const onChangeDiscount = e => {
-        const discount = e.target.value
-        if (discount.trim().length === 0) {
-            setError("Discount is a required field")
-            isError(true)
-        } else if (discount.indexOf('$') > 0 || discount.indexOf('%') > 0) {
-            setError("Please enter the discount without a '$' or '%' sign")
-            isError(true)
-        } else {
-            var nums = /^\d+(,\d{3})*(\.\d{1,2})?$/gm
-            if (!discount.match(nums)) { //if not all numbers
-                setError("Please enter a valid discount value")
-                isError(true)
-            } else {
-                isError(false)
-            }
-        } 
-        setDiscount(discount)
-    }
+    
     const onChangeUsageLimit = e => {
         const usageLimit = e.target.value
 
         var nums = /^[0-9]+$/
-        if (!usageLimit.match(nums)) { //if not all numbers
+        if (!usageLimit.match(nums)) { 
             setError("Please enter a valid usage limit")
             isError(true)
         } else {
@@ -162,7 +136,7 @@ function MallPromotionDetails() {
             isError(true)
         } else {
             var nums = /^\d+(,\d{3})*(\.\d{1,2})?$/gm
-            if (!minimumSpend.match(nums)) { //if not all numbers
+            if (!minimumSpend.match(nums)) { 
                 setError("Please enter a valid minimum spend value")
                 isError(true)
             } else {
@@ -176,12 +150,10 @@ function MallPromotionDetails() {
         e.preventDefault()
         var startd = startDate
         startd = startd.toString().replace('/-/g', '/')
-        console.log("start: " + startd)
 
         var enddate = endDate
         enddate = enddate.toString().replace('/-/g', '/')
 
-        console.log("promo code: " + promoCode)
 
         axios.put(`/promotion/${promotionId}`, {
             promoCode: promoCode,
@@ -212,20 +184,7 @@ function MallPromotionDetails() {
             setUsageLimit(res.data[1][0].usageLimit)
             setMinimumSpend(res.data[1][0].minimumSpend)
 
-            // setPromoCode(res.data.promoCode)
-            // setTitle(res.data.title)
-            // setDescription(res.data.description)
-            // setTermsAndConditions(res.data.termsAndConditions)
-            // setStartDate((res.data.startDate).substr(0,10))
-            // setEndDate((res.data.endDate).substr(0,10))
-            // setPercentageDiscount(res.data.percentageDiscount)
-            // setFlatDiscount(res.data.getFullYear)
-            // setUsageLimit(res.data.usageLimit)
-            // setMinimumSpend(res.data.minimumSpend)
-
-            console.log("update promo axios call went through")
-            console.log("promo code: " + res.data[1][0].promoCode)
-            
+      
 
             isError(false)
             isSuccessful(true)
@@ -234,7 +193,6 @@ function MallPromotionDetails() {
             isSuccessful(false)
             isError(true)
             setError(error)
-            console.log(error)
         })
     }
 
@@ -251,10 +209,8 @@ function MallPromotionDetails() {
     function formatDate(d) {
         if (d === undefined){
             d = (new Date()).toISOString()
-            console.log(undefined)
         }
         let currDate = new Date(d);
-        console.log("currDate: " + currDate)
         let year = currDate.getFullYear();
         let month = currDate.getMonth() + 1;
         let dt = currDate.getDate();

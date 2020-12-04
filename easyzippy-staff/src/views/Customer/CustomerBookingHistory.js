@@ -64,9 +64,9 @@ function CustomerBookingHistory() {
                 }
             }).then(res => {
                 setLockerTypes(res.data)
-            }).catch(err => console.error(err))
-        }).catch (err => console.error(err))
-    },[authTokenStaff])
+            }).catch()
+        }).catch ()
+    },[authTokenStaff, customerId])
 
   
 
@@ -83,10 +83,10 @@ function CustomerBookingHistory() {
     function formatDate(d) {
         if (d === undefined){
             d = (new Date()).toISOString()
-            console.log(undefined)
+         
         }
         let currDate = new Date(d);
-        console.log("currDate: " + currDate)
+       
         let year = currDate.getFullYear();
         let month = currDate.getMonth() + 1;
         let dt = currDate.getDate();

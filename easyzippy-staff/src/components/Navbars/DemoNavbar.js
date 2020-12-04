@@ -1,9 +1,7 @@
 import React from "react";
-import { Link } from "react-router-dom";
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import Badge from '@material-ui/core/Badge';
-import { makeStyles } from '@material-ui/core/styles';
 import {
   Collapse,
   Navbar,
@@ -41,7 +39,7 @@ class Header extends React.Component {
     this.formatDate = this.formatDate.bind(this);
     this.sidebarToggle = React.createRef();
     this.logout = this.logout.bind(this);
-    // this.handleNotifVisibility = this.handleNotifVisibility.bind(this);
+ 
 
   }
 
@@ -61,11 +59,8 @@ class Header extends React.Component {
   }
   dropdownToggle(e) {
     //once dropdown, then mark all notifications as read 
-    console.log("inside notifications dropdown toggle")
     let n = this.state.notifications;
-    // console.log("0" + n[0].read)
     for (var i in n) {
-      console.log("n index read: " + n[i].read)
       if (n[i].read === false) {
         n[i].read = true
         axios.put(`/readNotification/${n[i].id}`, {
@@ -76,11 +71,11 @@ class Header extends React.Component {
             AuthToken: this.state.authTokenStaff
           }
         }).then(res => {
-          console.log("notifications set to read // axios went through")
+  
         }).catch (function (err){
-          console.log(err.response.data)
+          
         })
-      } else { //true
+      } else { 
         continue;
       }
     }
@@ -126,11 +121,7 @@ class Header extends React.Component {
   }
   componentDidMount() {
     window.addEventListener("resize", this.updateColor.bind(this));
-    console.log("mounted")
-    console.log(parseInt(Cookies.get('staffUser')))
-    console.log(JSON.parse(Cookies.get('authTokenStaff')))
-
-    // GET NOTIFICATIONS
+    
     axios.get('/notification/staff/', 
     {
       headers: {
@@ -138,11 +129,9 @@ class Header extends React.Component {
       }
     }).then((res) => {
       const notifs = res.data
-      console.log("mount notifs length: " + notifs.length)
       this.setState({notifications: notifs})
       let n = this.state.notifications;
       for(var i in n) {
-        console.log(n[i].read)
         if (n[i].read === false) {
           this.setState({
             notifBadgeVisible: true
@@ -153,8 +142,6 @@ class Header extends React.Component {
     }).catch (function(error){
       console.log(error.response.data)
     })
-
-    // GET ANNOUNCEMENTS
     axios.get("/announcements", 
     {
         headers: {
@@ -170,7 +157,6 @@ class Header extends React.Component {
   }
 
   componentDidUpdate(e) {
-    console.log("update")
     if (
       window.innerWidth < 993 &&
       e.history.location.pathname !== e.location.pathname &&
@@ -182,9 +168,7 @@ class Header extends React.Component {
   }
 
   componentWillReceiveProps(e) {
-    console.log("component will receive props")
-    //if this isn't the first render, then keep updating when re-render
-    if (this.state.notifications.length != 0) {
+    if (this.state.notifications.length !== 0) {
       axios.get('/notification/staff', 
       {
         headers: {
@@ -192,8 +176,6 @@ class Header extends React.Component {
         }
       }).then((res) => {
         const notifs = res.data
-        console.log("notifs length: " + notifs.length)
-        console.log("state notifs: " + this.state.notifications.length)
         //checking if there are new notifications
         if (notifs.length > this.state.notifications.length) {
           this.setState({
@@ -207,7 +189,7 @@ class Header extends React.Component {
     }
 
     //just to keep fetching in case got new i suppose
-    if (this.state.announcements.length != 0) {
+    if (this.state.announcements.length !== 0) {
       axios.get("/announcements", 
       {
           headers: {
@@ -237,7 +219,6 @@ class Header extends React.Component {
   formatDate(d) {
     if (d === undefined){
         d = (new Date()).toISOString()
-        console.log(undefined)
     }
     let currDate = new Date(d);
     let year = currDate.getFullYear();

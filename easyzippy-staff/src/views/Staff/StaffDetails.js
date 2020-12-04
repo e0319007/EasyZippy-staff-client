@@ -30,18 +30,12 @@ function StaffDetails() {
 
     const history = useHistory()
     const authTokenStaff = (JSON.parse(Cookies.get('authTokenStaff'))).toString()
-    //console.log(authTokenStaff)
 
     const staffId = JSON.parse(localStorage.getItem('staffToView'))
-    console.log("staff id: " + staffId)
-    //console.log("staff name: " + staffId.firstName)
-    //console.log("staff role: " + staffId.staffRoleEnum)
+
 
     const [data, setData] = useState([])
 
-    //const staff = JSON.parse(localStorage.getItem('currentStaff'))
-    //console.log("staff: " + staff.firstName)
-    // const staffid = parseInt(Cookies.get('staffUser'))
 
     const [error, setError] = useState('')
     const [err, isError] = useState(false)
@@ -49,15 +43,10 @@ function StaffDetails() {
     const [successful, isSuccessful] = useState(false)
     const [successMsg, setMsg] = useState('')
 
-    //const [staffRoleEnum, setStaffRoleEnum] = useState('')
-   // const [staffRoleEnum, setStaffRoleEnum] = useState(staff.staffRoleEnum)
     const [staffRoleEnum, setStaffRoleEnum] = useState(data.staffRoleEnum)
     const [staffRolesEnum, setStaffRolesEnum] = useState([])
 
-    const staff_toupdate = {
-        staffRoleEnum: '',
-       // staffRole:''
-    }
+  
 
     useEffect(() => {
         axios.get(`/staff/${staffId}`, 
@@ -66,12 +55,9 @@ function StaffDetails() {
                 AuthToken: authTokenStaff
             }
         }).then(res => {
-            console.log("axios get staff to view")
             setData(res.data)
             setStaffRoleEnum(res.data.staffRoleEnum)
-            console.log(res.data)
         }).catch (function(error) {
-            console.log(error.response.data)
         })
 
         axios.get('/staff/staffRoles', {
@@ -79,18 +65,13 @@ function StaffDetails() {
                 AuthToken: authTokenStaff
             }
         }).then (res => {
-            console.log("get all staff roles axios")
             setStaffRolesEnum(res.data)
-            console.log("retrieving staff roles: " + res.data[0])
-            console.log("retrieving staff roles: " + res.data[1])
-        }).catch(err => console.error(err))
-    },[])
+        }).catch()
+    },[authTokenStaff,staffId])
 
     const onChangeStaffRoleEnum = e => {
-        console.log("in onChangeStaffRoleEnum")
         const staffRoleEnum = e.target.value;
         setStaffRoleEnum(staffRoleEnum)
-        console.log("staff role enum: " + staffRoleEnum)
     }
 
     const updateStaffDetails = e => {
@@ -103,54 +84,18 @@ function StaffDetails() {
                 AuthToken: authTokenStaff
             }
         }).then((response) => {
-            console.log("update staff role axios went through")
             setStaffRoleEnum(response.data[1][0].staffRoleEnum)
-            console.log("new staff role: " + response.data[1][0].staffRoleEnum)
-            // staff_toupdate.staffRoleEnum = response.data.staffRole
-            // localStorage['staffToView'] = JSON.stringify(staff_toupdate)
             setData(response.data[1][0])
             isError(false)
             isSuccessful(true)
             setMsg("Staff Role updated successfully!")
-            //window.location.reload()
         }).catch(function(error) {
-            console.log(error.response.data)
             isError(true)
             setError(error.response.data)
             isSuccessful(false)
         })
     }
 
-    // const updateStaffDetails = e => {
-    //     e.preventDefault()
-    //     console.log("current staff role: " + data.staffRoleEnum)
-    //     console.log("*** in update staff")
-    //     axios.put(`/staff/staffRole/${staffId}`, {
-    //         staffRole: staffRoleEnum,
-    //     }, 
-    //     {
-    //         headers: {
-    //             AuthToken: authTokenStaff
-    //         }
-        
-    //     }).then((response) => {
-    //         console.log("update staff role axios went through")
-    //         //set response data to view 
-    //         //setStaffRoleEnum(response.data.staffRoleEnum)
-    //         setStaffRoleEnum(response.data.staffRole)
-            
-    //         //save new values to staff local storage
-    //         staff_toupdate.staffRoleEnum = response.data.staffRole
-    //         localStorage['staffToView'] = JSON.stringify(staff_toupdate)
-
-    //         isSuccessful(true)
-    //         setMsg("Staff Role updated successfully!")
-    //     }).catch(function (error) {
-    //         isError(true)
-    //         setError(error.response.data)
-    //         isSuccessful(false)
-    //     })
-    // }
 
 
     const DisableSwitch = withStyles((theme) => ({
@@ -187,11 +132,8 @@ function StaffDetails() {
     checked: {},
     }))(Switch);
 
-    let enabled = !data.disabled
-    console.log("Enabled: " + enabled)
 
     const handleChange = (event) => {
-        console.log("event.target.checked: " + event.target.checked)
         setData({
             ...data,
             disabled: !event.target.checked
@@ -204,9 +146,7 @@ function StaffDetails() {
                 AuthToken: authTokenStaff
             }
         }).then(res => {
-            console.log("axios call went through")
         }).catch (function(error) {
-            console.log(error.response.data)
         })
     };
 
@@ -214,10 +154,8 @@ function StaffDetails() {
     function formatDate(d) {
         if (d === undefined){
             d = (new Date()).toISOString()
-            //console.log(undefined)
         }
         let currDate = new Date(d);
-        //console.log("currDate: " + currDate)
         let year = currDate.getFullYear();
         let month = currDate.getMonth() + 1;
         let dt = currDate.getDate();

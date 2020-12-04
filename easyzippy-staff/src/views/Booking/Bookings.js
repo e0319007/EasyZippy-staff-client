@@ -26,7 +26,6 @@ function Bookings() {
 
     const history = useHistory()
 
-    // DECLARING COLUMNS 
     var customerColumns = [
         {title: "Id", field: "id", editable: "never"},
         {title: "Name", field:"customerId", editable: "never", 
@@ -73,7 +72,6 @@ function Bookings() {
     const [lockerTypes, setLockerTypes] = useState([])
 
     useEffect(() => {
-        console.log("retrieving customer bookings;; axios")
         axios.get("/customerBookings", 
         {
             headers: {
@@ -90,7 +88,6 @@ function Bookings() {
             }).then (res => {
                 setMerchantData(res.data)
             }).catch(function (error) {
-                console.log(error.response.data)
             })
 
             axios.get("/customers", 
@@ -109,9 +106,8 @@ function Bookings() {
                 }).then(res => {
                     setMerchants(res.data)
                 }).catch(function (error) {
-                    console.log(error.response.data)
                 })
-            }).catch (err => console.error(err))
+            })
 
             axios.get("/lockerTypes", 
             {
@@ -120,8 +116,8 @@ function Bookings() {
                 }
             }).then(res => {
                 setLockerTypes(res.data)
-            }).catch(err => console.error(err))
-        }).catch (err => console.error(err))
+            })
+        })
     },[authTokenStaff])
 
     //match customer id to customer name 
@@ -150,14 +146,11 @@ function Bookings() {
         }
     }
 
-    // to use when viewing 
     function formatDate(d) {
         if (d === undefined){
             d = (new Date()).toISOString()
-            console.log(undefined)
         }
         let currDate = new Date(d);
-        console.log("currDate: " + currDate)
         let year = currDate.getFullYear();
         let month = currDate.getMonth() + 1;
         let dt = currDate.getDate();

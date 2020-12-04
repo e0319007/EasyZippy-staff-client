@@ -25,7 +25,6 @@ function Announcements() {
     const authTokenStaff = JSON.parse(Cookies.get('authTokenStaff'))
     const staffid = parseInt(Cookies.get('staffUser'))
 
-    // DECLARING COLUMNS,, don't let time be editable
     var columns = [
         {title: "Id", field: "id", editable: "never"},
         {title: "Title", field:"title"},
@@ -46,23 +45,19 @@ function Announcements() {
     const [successMsg, setMsg] = useState('')
 
     useEffect(() => {
-        console.log("retrieving announcements // axios")
         axios.get("/announcements", 
         {
             headers: {
                 AuthToken: authTokenStaff
             }
         }).then(res => {
-            // console.log(res.data)
             setData(res.data)
         })
-        .catch (err => console.error(err))
-    },[])
+        
+    },[authTokenStaff])
 
-    // announcement creation
     const handleRowAdd = (newData, resolve) => {
         
-        //validation: if title is empty
         if(newData.title === undefined || newData.title === ""){
             isError(true)
             setError("Unable to add new announcement. Please fill in the title field.")
@@ -81,7 +76,6 @@ function Announcements() {
             }
         })
         .then(res => {
-            console.log("axios call went through")
             let dataToAdd = [...data];
             dataToAdd.push(newData);
             setData(dataToAdd);
@@ -95,13 +89,11 @@ function Announcements() {
             isSuccessful(false)
             isError(true)
             setError(error.response.data)
-            console.log(error.response.data)
             resolve()
         })
     }
 
     const handleRowUpdate = (newData, oldData, resolve) => {
-        //validation
         if(newData.title === undefined || newData.title === ""){
             isError(true)
             setError("Unable to update. Please fill in the title field for " + oldData.title + " announcement entry")
@@ -119,7 +111,6 @@ function Announcements() {
             }
         })
         .then(res => {
-            console.log("axios call went through")
             const dataUpdate = [...data];
             const index = oldData.tableData.id;
             dataUpdate[index] = newData;
@@ -133,7 +124,6 @@ function Announcements() {
             isSuccessful(false)
             isError(true)
             setError(error.response.data)
-            console.log(error.response.data)
             resolve()
         })
     }
@@ -145,7 +135,6 @@ function Announcements() {
             AuthToken: authTokenStaff
         }
     }).then(res => {
-            console.log("axios call went through")
             const dataDelete = [...data];
             const index = oldData.tableData.id;
             dataDelete.splice(index, 1);
@@ -165,7 +154,6 @@ function Announcements() {
             isSuccessful(false)
             isError(true)
             setError(errormsg)
-            console.log(error.response.data)
             resolve()
         })
     }   
@@ -181,7 +169,6 @@ function Announcements() {
                                 columns={columns}
                                 data={data}
                                 options={{   
-                                    //sorting: true, 
                                     filtering:true,
                                     headerStyle: {
                                         backgroundColor: '#98D0E1',
@@ -215,14 +202,11 @@ function Announcements() {
     );
 }
 
-// to use when viewing 
 function formatDate(d) {
     if (d === undefined){
         d = (new Date()).toISOString()
-        console.log(undefined)
     }
     let currDate = new Date(d);
-    console.log("currDate: " + currDate)
     let year = currDate.getFullYear();
     let month = currDate.getMonth() + 1;
     let dt = currDate.getDate();

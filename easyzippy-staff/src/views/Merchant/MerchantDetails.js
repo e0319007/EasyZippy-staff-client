@@ -9,12 +9,10 @@ import { withStyles } from '@material-ui/core/styles';
 import { Typography } from "@material-ui/core";
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
-import SweetAlert from 'react-bootstrap-sweetalert';
 import defaultLogo from '../../assets/img/user.png';
 import {
     Card,
     CardBody,
-    CardTitle,
     Row,
     Col,
     Input,
@@ -45,13 +43,10 @@ function MerchantDetails() {
 
     const history = useHistory()
     const authTokenStaff = (JSON.parse(Cookies.get('authTokenStaff'))).toString()
-    console.log(authTokenStaff)
 
     const merchantId = JSON.parse(localStorage.getItem('merchantToView'))
-    console.log("test merchant id: " + merchantId)
 
     const [bookingPackageModel, setBookingPackageModel] = useState('')
-    const [bookingPackages, setBookingPackages] = useState([])
     const [bookingPackage, setBookingPackage] = useState([])
 
     const [data, setData] = useState([])
@@ -59,9 +54,7 @@ function MerchantDetails() {
 
     const [pdf, setPdf] = useState([])
     const [image, setImage] = useState(null)
-    // const [disabled, isDisabled] = useState([])
-
-    //tooltip
+    
     const [tooltipOpenApproval, setTooltipApproval] = useState(false);
     const toggleTooltipApproval = () => setTooltipApproval(!tooltipOpenApproval);
 
@@ -92,7 +85,6 @@ function MerchantDetails() {
 
     const [tooltipOpenTenancy, setTooltipOpenTenancy] = useState(false);
     const toggleTooltipTenancy = () => {
-        // toggle tooltip
         setTooltipOpenTenancy(!tooltipOpenTenancy);
     }
 
@@ -103,7 +95,6 @@ function MerchantDetails() {
     }
 
     useEffect(() => {
-        console.log("getting merchant details")
 
         axios.get(`/merchant/${merchantId}`,
         {
@@ -117,9 +108,7 @@ function MerchantDetails() {
             } else {
                 setApproved("Not Approved")
             }
-            console.log("name: " + res.data.name)
             let date = formatDate(res.data.createdAt)
-            // let creditbalance = "$" + res.data.creditBalance
             setData({
                 ...data, 
                 name: res.data.name,
@@ -127,7 +116,6 @@ function MerchantDetails() {
                 disabled: res.data.disabled
             });
 
-            console.log(res.data.merchantLogoImage)
 
             axios.get(`/merchantBookingPackages/${merchantId}`, 
             {
@@ -146,12 +134,10 @@ function MerchantDetails() {
                                     AuthToken: authTokenStaff
                                 }
                             }).then(res => {
-                                console.log("get booking package model thru")
                                 setBookingPackageModel(res.data)
-                                console.log("Booking package model: ")
-                                console.log(res.data)
+                            
                             }).catch(function (error) {
-                                console.log(error)
+                     
                             })
     
                             break;
@@ -159,7 +145,6 @@ function MerchantDetails() {
                     }
                 }
             }).catch(function (error) {
-                console.log(error)
             })
 
             axios.get(`/assets/${res.data.merchantLogoImage}`, {
@@ -171,16 +156,12 @@ function MerchantDetails() {
                     'Content-Type': 'application/json'
                 }
             }).then (response => {
-                console.log('axios images thru')
                 var file = new File([response.data], {type:"image/png"})
                 let image = URL.createObjectURL(file)
-                console.log(image)
                 setImage(image)
             }).catch(function (error) {
-                console.log(error.response.data)
             })
 
-            console.log(res.data.tenancyAgreement)
 
             axios.get(`/assets/${res.data.tenancyAgreement}`, 
             {
@@ -194,24 +175,14 @@ function MerchantDetails() {
                 var blob = new Blob([res.data], {type: "application/pdf;charset=utf-8"});
                 setPdf(blob)
             }).catch (function (error) {
-                console.log(error.response.data)
             })
         })
         .catch (function (error) {
-            console.log(error.response.data)
         })
-    },[])
+    },[authTokenStaff,merchantId,data])
 
-    const onCancel = e => {
-        console.log(null)
-    }
-
-    const onContinue = e => {
-        console.log(null)
-    }
 
     const onApprovalChange = e => {
-        console.log("in approval on change")
 
         const status = e.target.value
         let statusBoolean = '';
@@ -233,11 +204,9 @@ function MerchantDetails() {
                 AuthToken: authTokenStaff
             }
         }).then(res => {
-            console.log("data: " + res.data.approved)
             setData(res)
             window.location.reload()
         }).catch (function(error) {
-            console.log(error.response.data)
         })
     }
 
@@ -275,11 +244,8 @@ function MerchantDetails() {
         checked: {},
         }))(Switch);
 
-        let enabled = !data.disabled
-        console.log("Enabled: " + enabled)
 
         const handleChange = (event) => {
-            console.log("event.target.checked: " + event.target.checked)
             setData({
                 ...data,
                 disabled: !event.target.checked
@@ -292,9 +258,7 @@ function MerchantDetails() {
                     AuthToken: authTokenStaff
                 }
             }).then(res => {
-                console.log("axios call went through")
             }).catch (function(error) {
-                console.log(error.response.data)
             })
         };
     
@@ -317,7 +281,6 @@ function MerchantDetails() {
                                         {image === null &&
                                             <CardImg style={{width:"8rem"}} top src={defaultLogo} alt='...'/>
                                         }     
-                                        {/* <CardTitle className="col-md-10" tag="h4" style={{...padding(21, 0, 0, 0)}}>{data.name}</CardTitle> */}
                                     </span>
                                 </CardHeader>
                                 <CardBody>
@@ -578,10 +541,8 @@ function MerchantDetails() {
 function formatDate(d) {
     if (d === undefined){
         d = (new Date()).toISOString()
-        console.log(undefined)
     }
     let currDate = new Date(d);
-    console.log("currDate: " + currDate)
     let year = currDate.getFullYear();
     let month = currDate.getMonth() + 1;
     let dt = currDate.getDate();
@@ -597,13 +558,6 @@ function formatDate(d) {
     return dt + "/" + month + "/" + year + " " + time ;
 }
 
-function padding(a, b, c, d) {
-    return {
-        paddingTop: a,
-        paddingRight: b ? b : a,
-        paddingBottom: c ? c : a,
-        paddingLeft: d ? d : (b ? b : a)
-    }
-}
+
 
 export default MerchantDetails;

@@ -12,7 +12,6 @@ import {
     Col,
     Card,
 } from "reactstrap";
-import { data } from "jquery";
 
 const theme = createMuiTheme({
     typography: {
@@ -29,7 +28,6 @@ function CustomerOrderHistory() {
 
     const history = useHistory()
 
-    // DECLARING COLUMNS
 
     var columns = [
         {title: "Id", field: 'order.id'},
@@ -61,7 +59,6 @@ function CustomerOrderHistory() {
             setOrderData(res.data)
 
         }).catch(function (error) {
-            console.log(error)
         })
 
         axios.get("/merchants", 
@@ -72,7 +69,7 @@ function CustomerOrderHistory() {
         }).then(res => {
             setMerchants(res.data)
         })
-    },[])
+    },[authTokenStaff,customerId])
 
     //match merchant id to merchant name
     function getMerchantName(id) {
@@ -85,16 +82,13 @@ function CustomerOrderHistory() {
 
     // to use when viewing 
     function formatDate(d) {
-        //console.log(d)
         if (d === undefined){
             d = (new Date()).toISOString()
-            //console.log(undefined)
         }
         let currDate = new Date(d);
         let year = currDate.getFullYear();
         let month = currDate.getMonth() + 1;
         let dt = currDate.getDate();
-        //let time = currDate.toLocaleTimeString('en-SG')
 
         if (dt < 10) {
             dt = '0' + dt;

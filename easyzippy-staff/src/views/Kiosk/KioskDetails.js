@@ -31,7 +31,6 @@ function KioskDetails() {
 
     const history = useHistory()
     const authTokenStaff = (JSON.parse(Cookies.get('authTokenStaff'))).toString()
-    console.log(authTokenStaff)
 
     const kioskId = JSON.parse(localStorage.getItem('kioskToView'))
     const [data, setData] = useState([])
@@ -65,11 +64,9 @@ function KioskDetails() {
     const [successful, isSuccessful] = useState(false)
     const [successMsg, setMsg] = useState('')
 
-    //to view lockers
     var columns = [
         {title: "Id", field: "id", editable: "never"},
         {title: "Locker Code", field: "lockerCode", editable: "never"},
-        // {title: "Locker Status", field:"lockerStatusEnum", editable: "never"},
         {title: "Locker Type", field:"lockerTypeId", editable: "never", 
             render: row => <span>{ getLockerType(row["lockerTypeId"]) }</span>},
         {title: "Disabled", field:"disabled", editable: "never"}
@@ -91,8 +88,7 @@ function KioskDetails() {
                 }
             }).then(response => {
                 setLockers(response.data)
-                console.log(response.data)
-            }).catch (err => console.error(err))
+            }).catch ()
 
             axios.get("/lockerTypes", {
                 headers: {
@@ -100,13 +96,11 @@ function KioskDetails() {
                 }
             }).then(response => {
                 setLockerTypes(response.data)
-                console.log(response.data)
-            }).catch (err => console.error(err))
+            }).catch ()
 
         }).catch (function(error) {
-            console.log(error.response.data)
         })
-    },[])
+    },[authTokenStaff,kioskId])
 
     //match locker type id to locker type name
     function getLockerType(id) {
@@ -159,11 +153,8 @@ function KioskDetails() {
     checked: {},
     }))(Switch);
 
-    let enabled = !data.disabled
-    console.log("Enabled: " + enabled)
 
     const handleChange = (event) => {
-        console.log("event.target.checked: " + event.target.checked)
         setData({
             ...data,
             disabled: !event.target.checked
@@ -176,20 +167,15 @@ function KioskDetails() {
                 AuthToken: authTokenStaff
             }
         }).then(res => {
-            console.log("axios call went through")
         }).catch (function(error) {
-            console.log(error.response.data)
         })
     };
 
-    // to use when viewing 
     function formatDate(d) {
         if (d === undefined){
             d = (new Date()).toISOString()
-            console.log(undefined)
         }
         let currDate = new Date(d);
-        console.log("currDate: " + currDate)
         let year = currDate.getFullYear();
         let month = currDate.getMonth() + 1;
         let dt = currDate.getDate();
@@ -206,11 +192,9 @@ function KioskDetails() {
     }
 
     const onChangeNewLockerType = e => {
-        //dk if this works tho
-        console.log(e.target.value)
+      
         setNewLockerType(e.target.value)
         const lockerType = getLockerId(e.target.value);
-        console.log("new lt key: " + lockerType)
         setNewLockerTypeId(lockerType)
     }
 
@@ -230,12 +214,10 @@ function KioskDetails() {
             AuthToken: authTokenStaff
         }
     }).then((response) => {
-        console.log("add locker axios went through")
         isError(false)
         isSuccessful(true)
         setMsg("locker added successfully!")
     }).catch(function (error) {
-        console.log(error.response.data)
         isError(true)
         setError(error.response.data)
         isSuccessful(false)

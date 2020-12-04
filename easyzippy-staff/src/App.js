@@ -9,7 +9,6 @@ import "perfect-scrollbar/css/perfect-scrollbar.css";
 
 import AdminLayout from "./layouts/Admin.js";
 import Login from "./views/User/Login.js"
-import Error from "./views/Error.js"
 import ForgotPassword from "./views/User/ForgotPassword.js";
 import CheckValidToken from "./views/User/CheckValidToken.js";
 import ResetPassword from "./views/User/ResetPassword.js";
@@ -24,8 +23,6 @@ import MaintenanceActionDetails from "views/MaintenanceAction/MaintenanceActionD
 import CustomerBookingDetails from "views/Booking/CustomerBookingDetails.js";
 import MerchantBookingDetails from "views/Booking/MerchantBookingDetails.js";
 import AdvertisementDetails from "views/Advertisement/AdvertisementDetails"
-import ErrorPage from "views/ErrorPage.js";
-import Dashboard from "./layouts/Admin.js";
 import MerchantPromotionDetails from "views/Promotion/MerchantPromotionDetails.js";
 import MallPromotionDetails from "views/Promotion/MallPromotionDetails.js";
 import CustomerOrderDetails from "views/Customer/CustomerOrderDetails.js";
@@ -34,9 +31,7 @@ import CustomerOrderDetails from "views/Customer/CustomerOrderDetails.js";
 const hist = createBrowserHistory();
 
 function App(props) {
-    console.log("initialising app")
-    console.log("staffusercookie: " + document.cookie.indexOf('staffUser'))
-    console.log("auth cookie: " + document.cookie.indexOf('authTokenStaff'))
+
     return (
         <Router history={hist}>
             <Switch>
@@ -51,8 +46,7 @@ function App(props) {
                 { document.cookie.indexOf('staffUser') > -1 && document.cookie.indexOf('authTokenStaff') > -1 && 
                     <Route path="/admin" render={(props) => <AdminLayout {...props} />} /> 
                 }
-                {/* <Route exact path="/" component={Login} /> */}
-                {/* <Route exact path="/error" component={Error} /> */}
+              
                 <Route exact path="/forgotPassword" component={ForgotPassword}/>
                 <Route exact path="/checkValidToken" component={CheckValidToken}/>
                 <Route exact path="/resetPassword" component={ResetPassword}/>
@@ -72,9 +66,6 @@ function App(props) {
                 <Route exact path="/admin/customerOrderDetails" component={CustomerOrderDetails}/>
 
 
-                {/* <Route component={ErrorPage}/> */}
-        
-                {/* <Redirect to="/error" component={Error} /> */}
             </Switch>
         </Router>
     )

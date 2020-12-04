@@ -50,10 +50,9 @@ function Customers() {
                 AuthToken: authTokenStaff
             }
         }).then(res => {
-            // console.log(res.data)
             setData(res.data)
         })
-        .catch (err => console.error(err))
+        .catch ()
     },[authTokenStaff])
 
 
@@ -81,7 +80,6 @@ function Customers() {
                                             {
                                             icon: 'info',
                                             tooltip: 'View Customer Details',
-                                            //onClick: (event, rowData) => alert("You viewed " + rowData.firstName)
                                             onClick:(event, rowData) => {
                                                 console.log("in onclick")
                                                 history.push('/admin/customerDetails')

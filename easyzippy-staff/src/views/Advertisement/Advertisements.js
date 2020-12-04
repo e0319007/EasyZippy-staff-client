@@ -76,7 +76,6 @@ function Advertisements() {
     ]
 
     useEffect(() => {
-        console.log("retrieving approved advertisements // axios")
         axios.get("/approvedAdvertisements", {
             headers: {
                 AuthToken: authTokenStaff
@@ -91,12 +90,10 @@ function Advertisements() {
             }).then (res => {
                 setUnapprovedData(res.data)
             }).catch(function (error) {
-                console.log(error.response.data)
             })
         }).catch (function (error) {
-            console.log(error.response.data)
         })
-    }, [])
+    }, [authTokenStaff])
 
     const handleRowDelete = (oldData, resolve) => {
         axios.put("/deleteAdvertisement/"+oldData.id, {
@@ -107,7 +104,6 @@ function Advertisements() {
             AuthToken: authTokenStaff
         }
     }).then(res => {
-            console.log("axios call went through")
             const dataDelete = [...data];
             const index = oldData.tableData.id;
             dataDelete.splice(index, 1);
@@ -129,7 +125,6 @@ function Advertisements() {
             isSuccessful(false)
             isError(true)
             setError(errormsg)
-            console.log(error.response.data)
             resolve()
         })
     }   
@@ -144,33 +139,21 @@ function Advertisements() {
             return;
         }
 
-        //need to post the image first
         let formData = new FormData();
         formData.append(image.name, image)
-        console.log('form data values: ')
-        for (var v of formData.values()) {
-            console.log(v)
-        }
 
         axios.post("/advertisement/addImage", formData, {
             headers: {
                 AuthToken: authTokenStaff
             }
         }).then( res => {
-            console.log("image upload axios call went through")
             var imgString = res.data
-            console.log("image string: " + imgString)
-
-            //i think need to send back the dates in YYYY/MM/DD format
-            //so need to format from YYYY-MM-DD to that
 
             var startd = startDate
             startd = startd.toString().replace('/-/g', '/')
-            console.log(startd)
 
             var enddate = endDate
             enddate = enddate.toString().replace('/-/g', '/')
-            console.log(enddate)
 
             if (title === undefined || title === "") {
                 isInModal(true)
@@ -217,7 +200,6 @@ function Advertisements() {
                 AuthToken: authTokenStaff
             },
             }).then(res => {
-                console.log("create ad axios call went through")
                 isInModal(true)
                 isError(false)
                 isSuccessful(true)
@@ -233,7 +215,6 @@ function Advertisements() {
                 isSuccessful(false)
                 isError(true)
                 setError(errormsg)
-                console.log(error.response.data)
             })
         }).catch(function(error){
             let errormsg = error.response.data;
@@ -244,7 +225,6 @@ function Advertisements() {
 
             isInModal(true)
             isSuccessful(false)
-            console.log(error.response.data)
             isError(true)
             setError(errormsg)
         })
@@ -262,13 +242,11 @@ function Advertisements() {
 
     const onChangeStartDate = e => {
         const startDate = e.target.value;
-        console.log(startDate)
         setStartDate(startDate)
     }
 
     const onChangeEndDate = e => {
         const endDate = e.target.value;
-        console.log(endDate)
         setEndDate(endDate)
     }
 
@@ -279,18 +257,14 @@ function Advertisements() {
         }
     }
 
-    // to use when viewing 
     function formatDate(d) {
-        console.log(d)
         if (d === undefined){
             d = (new Date()).toISOString()
-            console.log(undefined)
         }
         let currDate = new Date(d);
         let year = currDate.getFullYear();
         let month = currDate.getMonth() + 1;
         let dt = currDate.getDate();
-        let time = currDate.toLocaleTimeString('en-SG')
 
         if (dt < 10) {
             dt = '0' + dt;
@@ -319,7 +293,6 @@ function Advertisements() {
                                     }
                                 }}
                                 options={{   
-                                    //sorting: true, 
                                     search: false,
                                     filtering: true,
                                     headerStyle: {
@@ -334,7 +307,6 @@ function Advertisements() {
                                             icon: 'info',
                                             tooltip: 'View Advertisement Details',
                                             onClick:(event, rowData) => {
-                                                console.log("in onclick")
                                                 history.push('/admin/advertisementDetails')
                                                 localStorage.setItem('advertisementToView', JSON.stringify(rowData.id))
                                                 }
@@ -375,7 +347,6 @@ function Advertisements() {
                                     }
                                 }}
                                 options={{   
-                                    //sorting: true, 
                                     search: false,
                                     filtering: true,
                                     headerStyle: {
@@ -390,7 +361,6 @@ function Advertisements() {
                                             icon: 'info',
                                             tooltip: 'View Advertisement Details',
                                             onClick:(event, rowData) => {
-                                                console.log("in onclick")
                                                 history.push('/admin/advertisementDetails')
                                                 localStorage.setItem('advertisementToView', JSON.stringify(rowData.id))
                                                 }

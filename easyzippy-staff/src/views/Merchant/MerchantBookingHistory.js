@@ -46,11 +46,9 @@ function MerchantBookingHistory() {
     ]
 
     const [data, setData] = useState([])
-    const [merchants, setMerchants] = useState([])
     const [lockerTypes, setLockerTypes] = useState([])
 
     useEffect(() => {
-        console.log("retrieving merchant bookings;; axios")
         axios.get(`/merchantBooking/${merchantId}`, 
         {
             headers: {
@@ -66,9 +64,9 @@ function MerchantBookingHistory() {
                 }
             }).then(res => {
                 setLockerTypes(res.data)
-            }).catch(err => console.error(err))
-        }).catch (err => console.error(err))
-    },[authTokenStaff])
+            }).catch()
+        }).catch ()
+    },[authTokenStaff,merchantId])
 
   
 
@@ -85,10 +83,8 @@ function MerchantBookingHistory() {
     function formatDate(d) {
         if (d === undefined){
             d = (new Date()).toISOString()
-            console.log(undefined)
         }
         let currDate = new Date(d);
-        console.log("currDate: " + currDate)
         let year = currDate.getFullYear();
         let month = currDate.getMonth() + 1;
         let dt = currDate.getDate();

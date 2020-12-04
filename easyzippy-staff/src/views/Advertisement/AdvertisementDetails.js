@@ -30,7 +30,6 @@ function AdvertisementDetails() {
 
     const history = useHistory()
     const authTokenStaff = (JSON.parse(Cookies.get('authTokenStaff'))).toString()
-    //console.log(authTokenStaff)
 
     const advertisementId = JSON.parse(localStorage.getItem('advertisementToView'))
 
@@ -48,7 +47,7 @@ function AdvertisementDetails() {
     const [tooltipOpenApproval, setTooltipApproval] = useState(false);
     const toggleTooltipApproval = () => setTooltipApproval(!tooltipOpenApproval);
 
-    const [approval, setApproval] = useState(true) //this is for on/off
+    const [approval, setApproval] = useState(true) 
 
     const [title, setTitle] = useState()
     const [description, setDescription] = useState()
@@ -59,7 +58,7 @@ function AdvertisementDetails() {
     const [expired, setExpired] = useState()
     const [advertiserMobile, setAdvertiserMobile] = useState()
     const [advertiserEmail, setAdvertiserEmail] = useState()
-    const [approved, setApproved] = useState() //for true/false
+    const [approved, setApproved] = useState() 
     const [staffId, setStaffId] = useState()
     const [merchantId, setMerchantId] = useState()
 
@@ -67,7 +66,6 @@ function AdvertisementDetails() {
     const [expireMsg, setExpireMsg] = useState()
 
     useEffect(() => {
-        console.log("getting advertisements axios")
         axios.get(`/advertisement/${advertisementId}`, {
             headers: {
                 AuthToken: authTokenStaff
@@ -83,21 +81,17 @@ function AdvertisementDetails() {
             setAmountPaid(res.data.amountPaid)
             setExpired(res.data.expired)
 
-            if (res.data.expired) { //if expired
+            if (res.data.expired) { 
                 setExpireMsg(" : Expired")
             }
 
             setAdvertiserMobile(res.data.advertiserMobile)
             setAdvertiserEmail(res.data.advertiserEmail)
 
-            //have to check the start date, compare to today's date and if start date is over
-            //should not allow them to approve
+            
             let startArray = res.data.startDate.substr(0,10).split("-") 
             var pastdate = new Date(startArray[0], startArray[1]-1, startArray[2])
-            console.log(pastdate)
             var today = new Date()
-
-            console.log(today > pastdate)
             
             if (today > pastdate) {
                 setCanApprove(false)
@@ -118,22 +112,19 @@ function AdvertisementDetails() {
                     'Content-Type': 'application/json'
                 }
             }).then (response => {
-                console.log('axios images thru')
                 var file = new File([response.data], {type:"image/png"})
                 let image = URL.createObjectURL(file)
                 setImage(image)
             }).catch(function (error) {
-                console.log(error.response.data)
             })
         }).catch(function(error) {
-            console.log(error.response.data)
         })
-    }, [])
+    }, [authTokenStaff, advertisementId])
 
     const onChangeTitle = e => {
         const title = e.target.value;
 
-        if (title.trim().length == 0) {
+        if (title.trim().length === 0) {
             setError("Title is a required field")
             isError(true)
         } else {
@@ -146,7 +137,7 @@ function AdvertisementDetails() {
     const onChangeDescription = e => {
         const description = e.target.value;
 
-        if (description.trim().length == 0) {
+        if (description.trim().length === 0) {
             setError("Description is a required field")
             isError(true)
         } else {
@@ -170,7 +161,7 @@ function AdvertisementDetails() {
         const mobile = e.target.value;
 
         var nums = /^[0-9]+$/
-        if (!mobile.match(nums)) { //if not all numbers
+        if (!mobile.match(nums)) { 
             setError("Please enter a valid mobile number")
             isError(true)
         } else {
@@ -194,7 +185,7 @@ function AdvertisementDetails() {
         const amountPaid = e.target.value;
 
         var nums = /^[0-9]+$/
-        if (!amountPaid.match(nums)) { //if not all numbers
+        if (!amountPaid.match(nums)) { 
             setError("Please enter a valid amount")
             isError(true)
         } else {
@@ -206,7 +197,6 @@ function AdvertisementDetails() {
 
     const updateAdvertisement = e => {
         e.preventDefault()
-        //add validation
 
         if (title === undefined || title === "") {
             isError(true)
@@ -224,11 +214,9 @@ function AdvertisementDetails() {
 
         var startd = startDate
         startd = startd.toString().replace('/-/g', '/')
-        console.log(startd)
 
         var enddate = endDate
         enddate = enddate.toString().replace('/-/g', '/')
-        console.log(enddate)
 
         if (startd === undefined || startd === "") {
             isError(true)
@@ -273,24 +261,19 @@ function AdvertisementDetails() {
             setStaffId(res.data[1][0].staffId)
             setMerchantId(res.data[1][0].merchantId)
 
-            console.log("update ad axios went through")
 
-            //set to approved if it can be approved
             if (approval === true && canApprove === true) {
-                console.log('*****authtoken: ' + authTokenStaff)
                 axios.put(`/approveAdvertisement/${advertisementId}`, {
                     id: 5
                 }, {
                     headers: {
                         AuthToken: authTokenStaff
                     }
-                }).then(res => {
-                    console.log("approval axios went through")
-                    console.log("data: " + res.data.approved)
+                }).then(res => {    
                     setData(res)
                     setApproval(res.data.approved)
                     setApproved(res.data.approved)
-                    // window.location.reload()
+     
 
                 }).catch (function(error) {
                     let errormsg = error.response.data;
@@ -300,7 +283,6 @@ function AdvertisementDetails() {
                     }
 
                     isSuccessful(false)
-                    console.log(error.response.data)
                     isError(true)
                     setError(errormsg)
                 })
@@ -316,15 +298,13 @@ function AdvertisementDetails() {
             }
 
             isSuccessful(false)
-            console.log(error.response.data)
             isError(true)
             setError(errormsg)
         })
     }
 
     const onApprovalChange = e => {
-        console.log(e.target.checked)
-        setApproval(e.target.checked) //"on" == true i.e. yes approved
+        setApproval(e.target.checked) 
     }
 
     const DisableSwitch = withStyles((theme) => ({
@@ -362,10 +342,8 @@ function AdvertisementDetails() {
         }))(Switch);
 
         let enabled = !data.disabled
-        console.log("Enabled: " + enabled)
 
         const handleChange = (event) => {
-            console.log("event.target.checked: " + event.target.checked)
             setData({
                 ...data,
                 disabled: !event.target.checked
@@ -378,9 +356,7 @@ function AdvertisementDetails() {
                     AuthToken: authTokenStaff
                 }
             }).then(res => {
-                console.log("axios call went through")
             }).catch (function(error) {
-                console.log(error.response.data)
                 isError(true)
                 isSuccessful(false)
                 setError(error.response.data)

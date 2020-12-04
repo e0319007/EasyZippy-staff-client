@@ -1,21 +1,15 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Cookies from 'js-cookie';
-import MaterialTable, { MTableToolbar } from "material-table"
+import MaterialTable from "material-table"
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
-import { useHistory } from 'react-router-dom';
 
 import {
     Row,
     Col,
     Card, 
-    Alert,
-    FormGroup, 
-    Label,
-    Input,
-    Button, Modal, ModalHeader, ModalBody, Tooltip, ModalFooter,
-    UncontrolledAlert
+
 } from "reactstrap";
 
 const theme = createMuiTheme({
@@ -30,14 +24,10 @@ function LockerActionsRecord() {
 
     const authTokenStaff = JSON.parse(Cookies.get('authTokenStaff'))
 
-    const history = useHistory()
-
     const[data, setData] = useState([])
     const lockerId = JSON.parse(localStorage.getItem('lockerToView'))
 
 
-
-    // DECLARING COLUMNS (created at can put inside details)
     var columns = [
         {title: "Id", field: "id", editable: "never"},
         {title: "Locker Action", field: "lockerActionEnum", editable: "never"},
@@ -47,14 +37,11 @@ function LockerActionsRecord() {
         }
     ]
  
-    // to use when viewing 
     function formatDate(d) {
         if (d === undefined){
             d = (new Date()).toISOString()
-            console.log(undefined)
         }
         let currDate = new Date(d);
-        console.log("currDate: " + currDate)
         let year = currDate.getFullYear();
         let month = currDate.getMonth() + 1;
         let dt = currDate.getDate();
@@ -79,8 +66,8 @@ function LockerActionsRecord() {
         }).then(res => {
             setData(res.data)
         })
-        .catch (err => console.error(err))
-    },[])
+        .catch ()
+    },[authTokenStaff,lockerId])
 
 
     return(
@@ -99,7 +86,7 @@ function LockerActionsRecord() {
                                     }
                                 }}
                                 options={{   
-                                    //sorting: true, 
+                     
                                     search: false,
                                     filtering: true,
                                     headerStyle: {

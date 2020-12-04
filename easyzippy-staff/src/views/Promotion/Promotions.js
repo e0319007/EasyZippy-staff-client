@@ -18,13 +18,9 @@ import {
     ModalBody,
     Label,
     FormGroup,
-    UncontrolledAlert,
     ModalFooter,
     Button,
-    CustomInput,
-    InputGroup,
-    InputGroupAddon,
-    InputGroupText
+ 
 } from "reactstrap";
 
 const theme = createMuiTheme({
@@ -122,10 +118,8 @@ function Promotions() {
             }).then (res => {
                 setMerchantData(res.data)
             }).catch (function (error) {
-                console.log(error.response.data)
             })
         }).catch(function (error) {
-            console.log(error.response.data)
         })
 
         axios.get("/merchants", 
@@ -136,7 +130,7 @@ function Promotions() {
         }).then(res => {
             setMerchants(res.data)
         })
-    },[])
+    },[authTokenStaff])
 
     //match merchant id to merchant name
     function getMerchantName(id) {
@@ -150,7 +144,6 @@ function Promotions() {
     const addMallPromotion = e => {
         var startd = startDate
         startd = startd.toString().replace('/-/g', '/')
-        console.log("start: " + startd)
 
         var enddate = endDate
         enddate = enddate.toString().replace('/-/g', '/')
@@ -158,7 +151,6 @@ function Promotions() {
         isInModal(true)
         isSuccessful(false)
 
-        //add validation
         if (promoCode === undefined || promoCode === "") {
             isError(true)
             setError("Unable to create new mall promotion. Please fill in the promo code field.")
@@ -203,9 +195,7 @@ function Promotions() {
         let startArray = startDate.split("-") 
         var pastdate = new Date(startArray[0], startArray[1]-1, startArray[2])
         var today = new Date()
-        //if start date is before today, dont allow to create
         if (today > pastdate) {
-            //invalid = true
             isError(true)
             setError("Unable to create promotion where Start Date is before today")
             isSuccessful(false)
@@ -239,7 +229,6 @@ function Promotions() {
                 AuthToken: authTokenStaff
             }
         }).then(res => {
-            console.log("create promo axios call went through")
             isInModal(true)
             isError(false)
             isSuccessful(true)
@@ -250,7 +239,6 @@ function Promotions() {
             isSuccessful(false)
             isError(true)
             setError(error.response.data)
-            console.log(error.response.data)
         })
     }
 
@@ -335,14 +323,12 @@ function Promotions() {
 
     const onChangeRadioPercentage = e => {
         const checked = e.target.checked
-        console.log("percentage checked: " + checked)
         setIsPercentage(checked)
         setIsFlat(!checked)
     }
 
     const onChangeRadioFlat = e => {
         const checked = e.target.checked
-        console.log("flat checked: " + checked)
         setIsPercentage(!checked)
         setIsFlat(checked)
     }
@@ -356,7 +342,6 @@ function Promotions() {
             AuthToken: authTokenStaff
         }
     }).then(res => {
-            console.log("axios call went through")
             const dataDelete = [...mallData];
             const index = oldData.tableData.id;
             dataDelete.splice(index, 1);
@@ -378,23 +363,19 @@ function Promotions() {
             isSuccessful(false)
             isError(true)
             setError(errormsg)
-            console.log(error.response.data)
             resolve()
         })
     }
 
     // to use when viewing 
     function formatDate(d) {
-        //console.log(d)
         if (d === undefined){
             d = (new Date()).toISOString()
-            console.log(undefined)
         }
         let currDate = new Date(d);
         let year = currDate.getFullYear();
         let month = currDate.getMonth() + 1;
         let dt = currDate.getDate();
-        //let time = currDate.toLocaleTimeString('en-SG')
 
         if (dt < 10) {
             dt = '0' + dt;
@@ -491,12 +472,7 @@ function Promotions() {
                                         tooltip: 'Click to view merchant promotions'
                                     }
                                 ]}
-                                // editable={{
-                                //     onRowDelete: (oldData) =>
-                                //         new Promise((resolve) => {
-                                //         handleRowDelete(oldData, resolve)
-                                //     })
-                                // }}
+                        
                                 />
                             }
                             { !inModal && err &&<Alert color="danger">{error}</Alert> }

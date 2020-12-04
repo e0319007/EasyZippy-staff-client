@@ -48,7 +48,6 @@ function Staffs() {
     const [successMsg, setMsg] = useState('') 
 
     useEffect(() => {
-        console.log("retrieving staffs;; axios")
         axios.get("/staff",
         {
             headers: {
@@ -57,11 +56,10 @@ function Staffs() {
         }).then(res => {
             setData(res.data)
         })
-        .catch (err => console.error(err))
+        .catch ()
     },[authTokenStaff])
 
     const handleRowAdd = (newData, resolve) => {
-        //validation: if name is empty
         if(newData.firstName === undefined || newData.firstName === ""){
             isError(true)
             setError("Unable to add new staff. Please fill in the first name field.")
@@ -116,7 +114,6 @@ function Staffs() {
             }
         })
         .then(res => {
-            console.log("axios call went through")
             let dataToAdd = [...data];
             dataToAdd.push(newData);
             setData(dataToAdd);
@@ -130,7 +127,6 @@ function Staffs() {
             isSuccessful(false)
             isError(true)
             setError(error.response.data)
-            console.log(error.response.data)
             resolve()
         })
     }
@@ -160,18 +156,13 @@ function Staffs() {
                                             icon: 'info',
                                             tooltip: 'View Staff Details',
                                             onClick:(event, rowData) => {
-                                                console.log("in onclick")
                                                 history.push('/admin/staffDetails')
                                                 localStorage.setItem('staffToView', JSON.stringify(rowData.id))
-                                                //localStorage.setItem('staffToView', JSON.stringify(rowData))
                                                 }
                                             },                                
                                         ]}
                                         editable={{
-                                            // onRowUpdate: (newData, oldData) =>
-                                            // new Promise((resolve) => {
-                                            //     handleRowUpdate(newData, oldData, resolve);
-                                            // }),
+                                   
                                             onRowAdd: (newData) =>
                                                 new Promise((resolve) => {
                                                 handleRowAdd(newData, resolve)

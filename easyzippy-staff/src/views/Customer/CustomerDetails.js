@@ -18,7 +18,6 @@ import {
     CardHeader, FormGroup, Label, Button, Tooltip, Modal, ModalBody, ModalHeader
 } from "reactstrap";
 import CustomerOrderHistory from "./CustomerOrderHistory";
-import CustomerBookingDetails from "views/Booking/CustomerBookingDetails";
 import CustomerBookingHistory from "./CustomerBookingHistory";
 import CustomerTransactionHistory from "./CustomerTransactionHistory";
 
@@ -34,7 +33,7 @@ function CustomerDetails() {
     
     const history = useHistory()
     const authTokenStaff = (JSON.parse(Cookies.get('authTokenStaff'))).toString()
-    console.log(authTokenStaff)
+
 
     const customerId = JSON.parse(localStorage.getItem('customerToView'))
 
@@ -65,7 +64,7 @@ function CustomerDetails() {
     const toggleModalTransaction = () => setModalTransaction(!modalTransaction);
 
     useEffect(() => {
-        console.log("getting customer details axios")
+       
         axios.get(`/customer/${customerId}`, 
         {
             headers: {
@@ -75,7 +74,7 @@ function CustomerDetails() {
             setData(res.data)
 
         }).catch(function(error) {
-            console.log(error)
+     
         })
 
         axios.get(`/customerBookingPackages/${customerId}`, 
@@ -95,12 +94,10 @@ function CustomerDetails() {
                                 AuthToken: authTokenStaff
                             }
                         }).then(res => {
-                            console.log("get booking package model thru")
                             setBookingPackageModel(res.data)
-                            console.log("Booking package model: ")
-                            console.log(res.data)
+                   
                         }).catch(function (error) {
-                            console.log(error)
+               
                         })
     
                         break;
@@ -108,10 +105,10 @@ function CustomerDetails() {
                 }
             }
         }).catch(function (error) {
-            console.log(error)
+       
         })
 
-    }, [])
+    }, [authTokenStaff,customerId])
 
 
     const DisableSwitch = withStyles((theme) => ({
@@ -148,7 +145,6 @@ function CustomerDetails() {
         checked: {},
         }))(Switch);
 
-        let enabled =!data.disabled 
 
         const handleChange = (event) => {
             setData({
@@ -163,9 +159,9 @@ function CustomerDetails() {
                     AuthToken: authTokenStaff
                 }
             }).then(res => {
-                console.log("axios call went through")
+              
             }).catch(function(error) {
-                console.log(error.response.data)
+    
             })
         };
 
@@ -173,10 +169,10 @@ function CustomerDetails() {
     function formatDate(d) {
         if (d === undefined){
             d = (new Date()).toISOString()
-            console.log(undefined)
+           
         }
         let currDate = new Date(d);
-        console.log("currDate: " + currDate)
+    
         let year = currDate.getFullYear();
         let month = currDate.getMonth() + 1;
         let dt = currDate.getDate();
@@ -252,7 +248,6 @@ function CustomerDetails() {
                                                     type="text" 
                                                     id="inputCreatedAt" 
                                                     placeholder="Created At" 
-                                                    //value={data.createdAt}
                                                     value={formatDate(data.createdAt)}
                                                     />
                                             </FormGroup>

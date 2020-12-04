@@ -27,10 +27,9 @@ function CustomerOrderDetails() {
 
     const history = useHistory()
     const authTokenStaff = (JSON.parse(Cookies.get('authTokenStaff'))).toString()
-    //console.log(authTokenStaff)
+    
 
     const orderId = JSON.parse(localStorage.getItem('orderToView'))
-    console.log("order id: " + orderId)
 
     const [order, setOrder] = useState([])
     const [items, setItems] = useState([])
@@ -38,11 +37,6 @@ function CustomerOrderDetails() {
     const [customers, setCustomers] = useState([])
     const [promotions, setPromotions] = useState([])
 
-    const [orderStatusEnum, setOrderStatusEnum] = useState(order.orderStatusEnum)
-    const [orderStatusesEnum, setOrderStatusesEnum] = useState([])
-
-    const [error, setError] = useState('')
-    const [err, isError] = useState(false)
 
     const [successful, isSuccessful] = useState(false)
     const [successMsg, setMsg] = useState('')
@@ -60,22 +54,11 @@ function CustomerOrderDetails() {
             }
         }).then(res => {
             setOrder(res.data.order)
-            setOrderStatusEnum(res.data.order.orderStatusEnum)
             setItems(res.data.items)
 
      
-        }).catch(err => console.error(err))
+        }).catch()
 
-        axios.get("/order/orderStatus", 
-        {
-            headers: {
-                AuthToken: authTokenStaff
-            }
-        }).then(res => {
-            setOrderStatusesEnum(res.data)
-            console.log("axios get all order status: ")
-            console.log(res.data)
-        }).catch(err => console.log(err))
 
         axios.get("/customers", 
         {
@@ -84,7 +67,7 @@ function CustomerOrderDetails() {
             }
         }).then(res => {
             setCustomers(res.data)
-        }).catch(err => console.log(err))
+        }).catch()
 
         axios.get("/promotions",
         {
@@ -93,38 +76,9 @@ function CustomerOrderDetails() {
             }
         }).then(res => {
             setPromotions(res.data)
-        }).catch(err => console.log(err))
-    },[])
+        }).catch()
+    },[authTokenStaff,orderId])
 
-    const onChangeOrderStatusEnum = e => {
-        console.log("in onChangeOrderStatusEnum")
-        const orderStatusEnum = e.target.value;
-        setOrderStatusEnum(orderStatusEnum)
-        console.log("on change: " + orderStatusEnum)
-    }
-
-    const updateOrderStatus = e => {
-        e.preventDefault()
-        axios.put(`/order/${orderId}`, {
-            orderStatus: orderStatusEnum
-        }, 
-        {
-            headers: {
-                AuthToken: authTokenStaff
-            }
-        }).then(res => {
-            setOrderStatusEnum(res.data.orderStatusEnum)
-            setOrder(res.data)
-            isError(false)
-            isSuccessful(true)
-            setMsg("Order status updated successfully!")
-        }).catch(function(error) {
-            console.log(error)
-            isError(true)
-            setError(error)
-            isSuccessful(false)
-        })
-    }
     const cancelOrder = e => {
         e.preventDefault()
 
@@ -137,19 +91,15 @@ function CustomerOrderDetails() {
                 AuthToken: authTokenStaff
             }
         }).then(res => {
-            console.log("axios cancel order went through")
-            //window.location.reload()
-            isError(false)
             isSuccessful(true)
             setMsg("Order successfully cancelled!")
         }).catch(function (error) {
-            console.log(error)
+        
         })
     }
 
     //match customer id to customer name
     function getCustomerName(id) {
-        console.log("customer id: " + id)
         for (var i in customers) {
             if (customers[i].id === id) {
                 return customers[i].firstName + " " + customers[i].lastName
@@ -158,7 +108,6 @@ function CustomerOrderDetails() {
     }
     //match promoIdUsed to promocode 
     function getPromoCode(id) {
-        console.log("promo code id: " + id)
         for (var i in promotions) {
             if (promotions[i].id === id) {
                 return promotions[i].promoCode
@@ -174,10 +123,9 @@ function CustomerOrderDetails() {
     function formatDate(d) {
         if (d === undefined){
             d = (new Date()).toISOString()
-            console.log(undefined)
+   
         }
         let currDate = new Date(d);
-        console.log("currDate: " + currDate)
         let year = currDate.getFullYear();
         let month = currDate.getMonth() + 1;
         let dt = currDate.getDate();
@@ -191,7 +139,6 @@ function CustomerOrderDetails() {
         }
 
         return dt + "/" + month + "/" + year + " " + time ;
-        //return dt + "/" + month + "/" + year;
         
     }
 
@@ -265,7 +212,6 @@ function CustomerOrderDetails() {
                                             </thead>
                                             <tbody>
                                                 {items.length > 0 && items.map((item,i) => (
-                                                    // item.product ? console.log(item.product.name) : console.log(item.productVariation.name)
                                                     <tr>      
                                                         <td>{item.product ? item.product.name : item.productVariation.name}</td>
                                                         <td>{item.product ? item.product.unitPrice : item.productVariation.unitPrice}</td>
@@ -274,35 +220,12 @@ function CustomerOrderDetails() {
                                                 ))}         
                                             </tbody>
                                         </Table>
-                                        {/* <fieldset>
-                                                <FormGroup>
-                                                    <Label for="inputOrderStatus">Order Status</Label>
-                                                    <Input
-                                                        type="select"
-                                                        name="select"
-                                                        id="inputOrderStatus"
-                                                        value={orderStatusEnum}
-                                                        onChange={onChangeOrderStatusEnum}
-                                                    >
-                                                        {
-                                                            orderStatusesEnum.map(orderStatusEnum => (
-                                                                <option key={orderStatusEnum.id}>{orderStatusEnum}</option>
-                                                            ))
-                                                        }
-                                                    </Input>
-                                                </FormGroup>  
-                                        </fieldset>
-                                        <Row>
-                                            <div className="update ml-auto mr-auto" >
-                                                <Button color="success" size="sm" type="submit" onClick={updateOrderStatus}>Update</Button>
-                                            </div>
-                                        </Row> */}
+                   
                                         <Row>
                                             <div className="update ml-auto mr-auto" >
                                                 <Button color="danger" size="sm" onClick={toggle}>Cancel Order</Button>                                              
                                             </div>
                                         </Row>
-                                        {err &&<Alert color="danger">{error}</Alert> }
                                         {successful &&<Alert color="success">{successMsg}</Alert>} 
                                         <Row>
                                             <Col md="12">

@@ -26,7 +26,6 @@ function Merchants() {
     const authTokenStaff = JSON.parse(Cookies.get('authTokenStaff'))
 
     // DECLARING COLUMNS 
-    //move created at to view merchant details
     var columns = [
         {title: "Id", field: "id", editable: "never"},
         {title: "Name", field:"name"},
@@ -36,25 +35,23 @@ function Merchants() {
             render: row => <span>{ parseFloat(row["creditBalance"]).toFixed(2) }</span>},
 
         {title: "Approved", field:"approved", lookup:{false: "Not Approved", true: "Approved"}},
-        // {title: "Created At", field:"createdAt"},
         {title: "Disabled", field:"disabled", lookup:{false: "Enabled", true: "Disabled"}},
     ]
 
     const[data, setData] = useState([])
 
     useEffect(() => {
-        console.log("retrieving merchants // axios")
         axios.get("/merchants", 
         {
             headers: {
                 AuthToken: authTokenStaff
             }
         }).then(res => {
-            // console.log(res.data)
+          
             setData(res.data)
         })
-        .catch (err => console.error(err))
-    },[])
+        .catch ()
+    },[authTokenStaff])
 
     return(
         <ThemeProvider theme={theme}>
@@ -67,7 +64,7 @@ function Merchants() {
                                 columns={columns}
                                 data={data}
                                 options={{   
-                                    //sorting: true, 
+                                    
                                     filtering:true,
                                     headerStyle: {
                                         backgroundColor: '#98D0E1',
@@ -80,18 +77,14 @@ function Merchants() {
                                             {
                                             icon: 'info',
                                             tooltip: 'View Merchant Details',
-                                            //onClick: (event, rowData) => alert("You viewed " + rowData.firstName)
                                             onClick:(event, rowData) => {
-                                                console.log("in onclick")
                                                 history.push('/admin/merchantDetails')
                                                 localStorage.setItem('merchantToView', JSON.stringify(rowData.id))
                                             }
                                         },
                                     ]}
                             />
-                            {/* <Modal isOpen={modal} toggle={toggle}>
-                                <ModalHeader toggle={toggle}> Customer Details</ModalHeader>                                          
-                            </Modal>  */}
+              
                         </Card>
                     </Col>
                 </Row>

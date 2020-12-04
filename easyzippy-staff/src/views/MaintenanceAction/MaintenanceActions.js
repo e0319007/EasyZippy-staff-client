@@ -49,7 +49,6 @@ function MaintenanceActions() {
         customFilterAndSearch: (term, rowData) => getKioskName(rowData.kioskId).toLowerCase().includes(term.toLowerCase()),
         render: row => <span>{ getKioskName(row["kioskId"]) }</span>},
         {title: "Description", field:"description"},
-        // {title: "Locker Id", field:"lockerId"}
         {title: "Locker Code", field: "lockerId", 
         customFilterAndSearch: (term, rowData) => getLockerCode(rowData.lockerId).toLowerCase().includes(term.toLowerCase()),
         render: row => <span>{ getLockerCode(row["lockerId"]) }</span>}
@@ -63,7 +62,6 @@ function MaintenanceActions() {
 
     const [maintenanceDate, setMaintenanceDate] = useState('')
     const [description, setDescription] = useState('')
-    //const [lockerId, setLockerId] = useState('')
     const [lockerCode, setLockerCode] = useState('')
     const [kioskId, setKioskId] = useState('')
 
@@ -80,14 +78,12 @@ function MaintenanceActions() {
     const toggle = () => setModal(!modal, setError(false), isSuccessful(false))
 
     useEffect(() => {
-        console.log("retrieving maintenance actions;; axios")
         axios.get("/maintenanceActions", 
         {
             headers: {
                 AuthToken: authTokenStaff
             }
         }).then(res => {
-            console.log(res.data)
             setData(res.data)
 
             axios.get("/lockers", 
@@ -97,9 +93,9 @@ function MaintenanceActions() {
                 }
             }).then(res => {
                 setLockers(res.data)
-            }).catch(err => console.error(err))
+            }).catch()
         })
-        .catch (err => console.error(err))
+        .catch ()
 
         axios.get("/kiosks", {
             headers: {
@@ -113,7 +109,6 @@ function MaintenanceActions() {
     //match kiosk id to kiosk address 
     function getKioskName(id) {
         for (var i in kiosks) {
-            //find the address match to the id
             if (kiosks[i].id === id) {
                 return kiosks[i].address
             }
@@ -128,7 +123,6 @@ function MaintenanceActions() {
     }
     function getLockerCode(id) {
         for (var i in lockers) {
-            //find the address match to the id
             if (lockers[i].id === id) {
                 return lockers[i].lockerCode
             }
@@ -147,20 +141,13 @@ function MaintenanceActions() {
             return;
         }
 
-        // if(lockerId === undefined || lockerId === "") {
-        //     isInModal(true)
-        //     isError(true)
-        //     setError("Unable to create new maintenance action. Please fill in the locker Id field.")
-        //     isSuccessful(false)
-        //     return;
-        // }
+     
 
         axios.post("/maintenanceAction", {
             maintenanceDate: d,
             kioskId: kioskId,
             description: description,
             lockerCode: lockerCode
-            //lockerId: lockerId,
         }, 
         {
             headers: {
@@ -178,7 +165,6 @@ function MaintenanceActions() {
             if ((error.response.data).startsWith("<!DOCTYPE html>")) {
                 errormsg = "An unexpected error has occurred. The maintenance action cannot be deleted."
             }
-            console.log(error.response.data)
             isInModal(true)
             isError(true)
             setError(errormsg)
@@ -192,10 +178,8 @@ function MaintenanceActions() {
         setMaintenanceDate(maintenanceDate)
     }
     const onChangeKiosk = e => {
-        console.log(e.target.value)
         setKiosk(e.target.value)
         const kioskid = getKioskId(e.target.value)
-        console.log("kiosk id: " + kioskid)
         setKioskId(kioskid)
     }
 
@@ -209,10 +193,6 @@ function MaintenanceActions() {
         setLockerCode(lockerCode)
     }
 
-    // const onChangeLockerId = e => {
-    //     const lockerId = e.target.value
-    //     setLockerId(lockerId)
-    // }
 
 
     const handleRowDelete = (oldData, resolve) => {
@@ -224,7 +204,6 @@ function MaintenanceActions() {
                 AuthToken: authTokenStaff
             }
         }).then(res => {
-                console.log("axios call went through")
                 const dataDelete = [...data];
                 const index = oldData.tableData.id;
                 dataDelete.splice(index, 1);
@@ -243,15 +222,13 @@ function MaintenanceActions() {
                 isSuccessful(false)
                 isError(true)
                 setError(errormsg)
-                console.log(error.response.data)
                 resolve()
             })
         }
-    // to use when viewing 
     function formatDate(d) {
         if (d === undefined){
             d = (new Date()).toISOString()
-            console.log(undefined)
+         
         }
         let currDate = new Date(d);
         let year = currDate.getFullYear();
@@ -264,11 +241,8 @@ function MaintenanceActions() {
         if (month < 10) {
             month = '0' + month;
         }
-        // console.log("getDate: " + dt)
 
-        // console.log("checking format date: " + dt + "/" + month + "/" + year)
         return dt + "/" + month + "/" + year;
-        //return year + "/" + month + "/" + dt;
     }
 
     return (
@@ -282,7 +256,6 @@ function MaintenanceActions() {
                                 columns={columns}
                                 data={data}
                                 options={{   
-                                    //sorting: true, 
                                     filtering: true,
                                     headerStyle: {
                                         backgroundColor: '#98D0E1',
@@ -303,7 +276,6 @@ function MaintenanceActions() {
                                     icon: 'info',
                                     tooltip: 'View Maintenance Action Details',
                                     onClick:(event, rowData) => {
-                                        console.log("in onclick")
                                         history.push('/admin/maintenanceActionDetails')
                                         localStorage.setItem('maintenanceActionToView', JSON.stringify(rowData.id))
                                         }
@@ -375,23 +347,7 @@ function MaintenanceActions() {
                                     onChange={onChangeLockerCode}
                                 />
                         </FormGroup>
-                        
-                        {/* <FormGroup>
-                            <Label for="inputLocker">Locker Id</Label>
-                                <Input
-                                    type="select"
-                                    id="inputLocker"
-                                    value={lockerId}
-                                    onChange={onChangeLockerId}
-                                >
-                                    <option>[select]</option>
-                                    {
-                                        lockers.map(locker => (
-                                            <option key={locker.id}>{locker.id}</option>
-                                        ))
-                                    }
-                                </Input>
-                        </FormGroup> */}
+               
                         { inModal && err && <UncontrolledAlert color="danger">{error}</UncontrolledAlert> }
                         { inModal && successful && <UncontrolledAlert color="success">{successMsg}</UncontrolledAlert> }
                     </form>

@@ -23,13 +23,10 @@ import {
 function Profile() {
 
     const staff = JSON.parse(localStorage.getItem('currentStaff'))
-    console.log("test " + staff.firstName)
 
     const staffid = parseInt(Cookies.get('staffUser'))
-    console.log(typeof staffid)
 
     const authTokenStaff = JSON.parse(Cookies.get('authTokenStaff'))
-    console.log(typeof authTokenStaff + " " + authTokenStaff)
 
     const [firstName, setFirstName] = useState(staff.firstName)
     const [lastName, setLastName] = useState(staff.lastName)
@@ -86,8 +83,8 @@ function Profile() {
     const onChangeNewPassword = e => {
         const newPw = e.target.value;
 
-        var reg = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})")
-        if (reg.test(newPw)) { //if valid
+        var reg = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})")
+        if (reg.test(newPw)) { 
             isError(false)
             isSuccessful(false)
         } else {
@@ -107,7 +104,6 @@ function Profile() {
 
     const updateProfile = e => {
         e.preventDefault()
-        console.log("in update profile")
 
         axios.put(`/staff/${staffid}`, {
             firstName: firstName,
@@ -120,14 +116,12 @@ function Profile() {
                 AuthToken: authTokenStaff
             }
         }).then((response) => {
-            console.log("axios call went through")
             // set response data to view
             setFirstName(response.data.firstName)
             setLastName(response.data.lastName)
             setEmail(response.data.email)
             setMobileNumber(response.data.mobileNumber)
             
-            // save new values to staff local storage
             staff_toupdate.firstName = response.data.firstName
             staff_toupdate.lastName = response.data.lastName
             staff_toupdate.mobileNum = response.data.mobileNumber
@@ -139,7 +133,6 @@ function Profile() {
             isSuccessful(true)
             setMsg("profile updated successfully!")
         }).catch(function (error) {
-            console.log(error.response.data)
             isInModal(false)
             isError(true)
             setError(error.response.data)
@@ -149,7 +142,6 @@ function Profile() {
 
     const updatePassword = e => {
         e.preventDefault()
-        console.log("inside update password")
 
         if (newPw !== newCfmPw) {
             isInModal(true)
@@ -174,7 +166,6 @@ function Profile() {
                 AuthToken: authTokenStaff
             }
         }).then((response) => {
-            console.log("axios call went through")
             isInModal(true)
             isError(false)
             isSuccessful(true)
@@ -183,7 +174,6 @@ function Profile() {
             setNewCfmPw('')
             setNewPw('')
         }).catch(function (error) {
-            console.log(error.response.data)
             isInModal(true)
             isError(true)
             setError(error.response.data)
@@ -193,7 +183,6 @@ function Profile() {
 
     const reset = e => {
         e.preventDefault()
-        console.log("inside reset form")
         setCurrentPw('')
         setNewPw('')
         setNewCfmPw('')

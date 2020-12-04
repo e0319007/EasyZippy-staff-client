@@ -26,13 +26,11 @@ function MaintenanceActionDetails() {
 
     const history = useHistory()
     const authTokenStaff = (JSON.parse(Cookies.get('authTokenStaff'))).toString()
-    console.log(authTokenStaff)
 
     const maintenanceActionId = JSON.parse(localStorage.getItem('maintenanceActionToView'))
     const [data, setData] = useState([])
 
     const [kiosks, setKiosks] = useState([])
-    const [kiosk, setKiosk] = useState('')
 
     //for error handling
     const [error, setError] = useState('')
@@ -63,7 +61,6 @@ function MaintenanceActionDetails() {
             setMaintenanceDate((res.data.maintenanceDate).substr(0,10))
             setDescription(res.data.description)
             setKioskId(res.data.kioskId)
-            //setLockerCode(res.data.lockerCode)
             setLockerId(res.data.lockerId)
 
             axios.get("/lockers", 
@@ -73,9 +70,8 @@ function MaintenanceActionDetails() {
                     }
                 }).then(res => {
                     setLockers(res.data)
-                }).catch(err => console.error(err))
+                }).catch()
         }).catch (function(error) {
-            console.log(error.response.data)
         })
 
         axios.get("/kiosks", {
@@ -85,14 +81,11 @@ function MaintenanceActionDetails() {
         }).then(res => {
             setKiosks(res.data)
         }).catch(function(error) {
-            console.log(error)
         })
-    },[])
+    },[authTokenStaff,maintenanceActionId])
 
-    //match kiosk id to kiosk address 
     function getKioskName(id) {
         for (var i in kiosks) {
-            //find the address match to the id
             if (kiosks[i].id === id) {
                 return kiosks[i].address
             }
@@ -106,7 +99,6 @@ function MaintenanceActionDetails() {
 
     function getLockerCode(id) {
         for (var i in lockers) {
-            //find the address match to the id
             if (lockers[i].id === id) {
                 return lockers[i].lockerCode
             }
@@ -130,7 +122,6 @@ function MaintenanceActionDetails() {
         axios.put(`/maintenanceAction/${maintenanceActionId}`, {
             maintenanceDate: maintenanceDate,
             description: description,
-            //lockerId: lockerId
             kioskId: kioskId,
             lockerCode: lockerCode
         },
@@ -148,7 +139,6 @@ function MaintenanceActionDetails() {
             setMsg("Maintenance action updated successfully")
         }).catch(function (error) {
             isSuccessful(false)
-            console.log(error)
             isError(true)
             setError(error)
         })

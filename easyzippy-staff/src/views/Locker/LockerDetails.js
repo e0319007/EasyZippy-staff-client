@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import Cookies, { get } from 'js-cookie';
+import Cookies from 'js-cookie';
 import { useHistory } from 'react-router-dom';
 import Switch from '@material-ui/core/Switch';
 import Grid from '@material-ui/core/Grid';
@@ -31,11 +31,9 @@ function LockerDetails() {
 
     const history = useHistory()
     const authTokenStaff = (JSON.parse(Cookies.get('authTokenStaff'))).toString()
-    console.log(authTokenStaff)
 
     const lockerId = JSON.parse(localStorage.getItem('lockerToView'))
 
-    //maybe add some validation for if the person accesses the page from the link itself
 
     const [data, setData] = useState([])
     const [kiosks, setKiosks] = useState([])
@@ -48,7 +46,6 @@ function LockerDetails() {
     const toggleModalLockerActionRecord = () => setModalLockerActionRecord(!modalLockerActionRecord);
 
     useEffect(() => {
-        console.log("getting locker type details axios")
         axios.get(`/locker/${lockerId}`, 
         {
             headers: {
@@ -64,8 +61,7 @@ function LockerDetails() {
                 }
             }).then(response => {
                 setKiosks(response.data)
-                console.log(response.data)
-            }).catch (err => console.error(err))
+            }).catch ()
 
             axios.get("/lockerTypes", {
                 headers: {
@@ -73,13 +69,11 @@ function LockerDetails() {
                 }
             }).then(response => {
                 setLockerTypes(response.data)
-                console.log(response.data)
-            }).catch (err => console.error(err))
+            }).catch ()
 
         }).catch(function(error) {
-            console.log(error.response.data)
         })
-    }, [])
+    }, [authTokenStaff,lockerId])
 
     const DisableSwitch = withStyles((theme) => ({
         root: {
@@ -115,7 +109,6 @@ function LockerDetails() {
         checked: {},
         }))(Switch);
 
-        let enabled =!data.disabled 
 
         const handleChange = (event) => {
             setData({
@@ -130,20 +123,14 @@ function LockerDetails() {
                     AuthToken: authTokenStaff
                 }
             }).then(res => {
-                console.log("axios call went through")
             }).catch(function(error) {
-                console.log(error.response.data)
             })
         };
 
     //match kiosk id to kiosk address 
     function getKioskName(id) {
-        console.log(id)
         for (var i in kiosks) {
-            console.log("id: " + typeof kiosks[i].id)
-            //find the address match to the id
             if (kiosks[i].id === id) {
-                console.log("address: " + kiosks[i].address)
                 return kiosks[i].address
             }
         }
@@ -160,10 +147,8 @@ function LockerDetails() {
     function formatDate(d) {
         if (d === undefined){
             d = (new Date()).toISOString()
-            console.log(undefined)
         }
         let currDate = new Date(d);
-        console.log("currDate: " + currDate)
         let year = currDate.getFullYear();
         let month = currDate.getMonth() + 1;
         let dt = currDate.getDate();

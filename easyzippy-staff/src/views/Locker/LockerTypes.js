@@ -47,23 +47,19 @@ function LockerTypes() {
     const [successMsg, setMsg] = useState('')
 
     useEffect(() => {
-        console.log("retrieving locker types // axios")
         axios.get("/lockerTypes", 
         {
             headers: {
                 AuthToken: authTokenStaff
             }
         }).then(res => {
-            // console.log(res.data)
             setData(res.data)
         })
-        .catch (err => console.error(err))
-    },[])
+        .catch ()
+    },[authTokenStaff])
 
-    // locker type creation
     const handleRowAdd = (newData, resolve) => {
         
-        //validation: if title is empty
         if(newData.name === undefined || newData.name === "") {
             isError(true)
             setError("Unable to add new locker type. Please fill in the title name.")
@@ -108,7 +104,6 @@ function LockerTypes() {
             }
         })
         .then(res => {
-            console.log("axios call went through")
             let dataToAdd = [...data];
             dataToAdd.push(newData);
             setData(dataToAdd);
@@ -122,7 +117,6 @@ function LockerTypes() {
             isSuccessful(false)
             isError(true)
             setError(error.response.data)
-            console.log(error.response.data)
             resolve()
         })
     }
@@ -142,7 +136,6 @@ function LockerTypes() {
             }
         })
         .then(res => {
-            console.log("axios call went through")
             const dataUpdate = [...data];
             const index = oldData.tableData.id;
             dataUpdate[index] = newData;
@@ -156,7 +149,6 @@ function LockerTypes() {
             isSuccessful(false)
             isError(true)
             setError(error.response.data)
-            console.log(error.response.data)
             resolve()
         })
     }
@@ -170,7 +162,6 @@ function LockerTypes() {
             AuthToken: authTokenStaff
         }
     }).then(res => {
-            console.log("axios call went through")
             const dataDelete = [...data];
             const index = oldData.tableData.id;
             dataDelete.splice(index, 1);
@@ -191,7 +182,6 @@ function LockerTypes() {
             isSuccessful(false)
             isError(true)
             setError(errormsg)
-            console.log(error.response.data)
             resolve()
         })
     }   
@@ -207,7 +197,7 @@ function LockerTypes() {
                                 columns={columns}
                                 data={data}
                                 options={{   
-                                    //sorting: true, 
+                                   
                                     filtering:true,
 
                                     headerStyle: {
@@ -221,9 +211,7 @@ function LockerTypes() {
                                         {
                                         icon: 'info',
                                         tooltip: 'View Locker Type Details',
-                                        //onClick: (event, rowData) => alert("You viewed " + rowData.firstName)
                                         onClick:(event, rowData) => {
-                                            console.log("in onclick")
                                             history.push('/admin/lockerTypeDetails')
                                             localStorage.setItem('lockerTypeToView', JSON.stringify(rowData.id))
                                             }

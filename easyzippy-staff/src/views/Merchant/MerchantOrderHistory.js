@@ -4,7 +4,6 @@ import Cookies from 'js-cookie';
 import MaterialTable from "material-table"
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
-import { useHistory } from 'react-router-dom';
 
 
 import {
@@ -26,7 +25,6 @@ function MerchantOrderHistory() {
 
     const authTokenStaff = JSON.parse(Cookies.get('authTokenStaff'))
 
-    const history = useHistory()
 
     // DECLARING COLUMNS
 
@@ -47,7 +45,6 @@ function MerchantOrderHistory() {
     const [orderData, setOrderData] = useState([])
     const [customers, setCustomers] = useState([])
     
-    //const merchantId = parseInt(Cookies.get('merchantUser'))
     const merchantId = JSON.parse(localStorage.getItem('merchantToView'))
 
 
@@ -59,10 +56,8 @@ function MerchantOrderHistory() {
             }
         }).then(res => {
             setOrderData(res.data)
-            console.log(res.data)
 
         }).catch(function (error) {
-            console.log(error.response.data)
         })
 
         axios.get("/customers", 
@@ -73,7 +68,7 @@ function MerchantOrderHistory() {
         }).then(res => {
             setCustomers(res.data)
         })
-    },[])
+    },[authTokenStaff, merchantId])
 
     //match merchant id to merchant name
     function getCustomerName(id) {
@@ -86,16 +81,14 @@ function MerchantOrderHistory() {
 
     // to use when viewing 
     function formatDate(d) {
-        //console.log(d)
         if (d === undefined){
             d = (new Date()).toISOString()
-            console.log(undefined)
+        
         }
         let currDate = new Date(d);
         let year = currDate.getFullYear();
         let month = currDate.getMonth() + 1;
         let dt = currDate.getDate();
-        //let time = currDate.toLocaleTimeString('en-SG')
 
         if (dt < 10) {
             dt = '0' + dt;

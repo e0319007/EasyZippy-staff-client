@@ -42,21 +42,18 @@ function Category() {
     const [successMsg, setMsg] = useState('')
 
     useEffect(() => {
-        console.log("retrieving categories // axios")
         axios.get("/categories", 
         {
             headers: {
                 AuthToken: authTokenStaff
             }
         }).then(res => {
-            // console.log(res.data)
             setData(res.data)
         })
-        .catch (err => console.error(err))
+        .catch ()
     },[authTokenStaff])
 
     const handleRowAdd = (newData, resolve) => {
-        //validation: if name is empty
         if(newData.name === undefined || newData.name === ""){
             isError(true)
             setError("Unable to add new category. Please fill in the name field.")
@@ -74,7 +71,6 @@ function Category() {
             }
         })
         .then(res => {
-            console.log("axios call went through")
             let dataToAdd = [...data];
             dataToAdd.push(newData);
             setData(dataToAdd);
@@ -88,13 +84,11 @@ function Category() {
             isSuccessful(false)
             isError(true)
             setError(error.response.data)
-            console.log(error.response.data)
             resolve()
         })
     }
 
     const handleRowUpdate = (newData, oldData, resolve) => {
-        //validation
         if(newData.name === undefined || newData.name === ""){
             isError(true)
             setError("Unable to update. Please fill in the name field for " + oldData.name + " category entry")
@@ -112,7 +106,6 @@ function Category() {
             }
         })
         .then(res => {
-            console.log("axios call went through")
             const dataUpdate = [...data];
             const index = oldData.tableData.id;
             dataUpdate[index] = newData;
@@ -132,7 +125,6 @@ function Category() {
             isSuccessful(false)
             isError(true)
             setError(errormsg)
-            console.log(error.response.data)
             resolve()
         })
     }
@@ -146,7 +138,6 @@ function Category() {
                 AuthToken: authTokenStaff
             }
         }).then(res => {
-                console.log("axios call went through")
                 const dataDelete = [...data];
                 const index = oldData.tableData.id;
                 dataDelete.splice(index, 1);
@@ -160,7 +151,6 @@ function Category() {
                 isSuccessful(false)
                 isError(true)
                 setError(error.response.data)
-                console.log(error.response.data)
                 resolve()
             })
         }

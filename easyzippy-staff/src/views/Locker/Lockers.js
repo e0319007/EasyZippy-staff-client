@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import Cookies from 'js-cookie';
-import MaterialTable, { MTableToolbar } from "material-table"
+import MaterialTable from "material-table"
 import { createMuiTheme } from '@material-ui/core/styles';
 import { ThemeProvider } from '@material-ui/styles';
 import { useHistory } from 'react-router-dom';
@@ -14,7 +14,7 @@ import {
     FormGroup, 
     Label,
     Input,
-    Button, Modal, ModalHeader, ModalBody, Tooltip, ModalFooter,
+    Button, Modal, ModalHeader, ModalBody, ModalFooter,
     UncontrolledAlert
 } from "reactstrap";
 
@@ -36,12 +36,10 @@ function Lockers() {
     const [kiosks, setKiosks] = useState([])
     const [lockerTypes, setLockerTypes] = useState([])
 
-    // const [filterLockerType, setFilterLockerType] = useState()
-    // const [filterKiosk, setFilterKiosk] = useState()
+
 
     const [kioskId, setKioskId] = useState()
     const [kiosk, setKiosk] = useState()
-    const [lockerTypeId, setLockerTypeId] = useState()
 
     //for error handling
     const [error, setError] = useState('')
@@ -59,7 +57,6 @@ function Lockers() {
     const [newLockerTypeId, setNewLockerTypeId] = useState('');
     const [lockerCode, setLockerCode] = useState('')
 
-    // DECLARING COLUMNS (created at can put inside details)
     var columns = [
         {title: "Id", field: "id", editable: "never"},
         {title: "Locker Code", field: "lockerCode", editable: "never"},
@@ -74,7 +71,6 @@ function Lockers() {
     ]
 
     useEffect(() => {
-        console.log("retrieving lockers // axios")
         axios.get("/lockers", 
         {
             headers: {
@@ -90,7 +86,7 @@ function Lockers() {
                 }
             }).then(response => {
                 setKiosks(response.data)
-            }).catch (err => console.error(err))
+            }).catch ()
 
             axios.get("/lockerTypes", {
                 headers: {
@@ -98,11 +94,11 @@ function Lockers() {
                 }
             }).then(response => {
                 setLockerTypes(response.data)
-            }).catch (err => console.error(err))
+            }).catch ()
 
         })
-        .catch (err => console.error(err))
-    },[])
+ 
+    },[authTokenStaff])
 
     const handleRowDelete = (oldData, resolve) => {
         axios.put("/deleteLocker/"+oldData.id, {
@@ -113,7 +109,6 @@ function Lockers() {
             AuthToken: authTokenStaff
         }
     }).then(res => {
-            console.log("axios call went through")
             const dataDelete = [...data];
             const index = oldData.tableData.id;
             dataDelete.splice(index, 1);
@@ -135,15 +130,12 @@ function Lockers() {
             isSuccessful(false)
             isError(true)
             setError(errormsg)
-            console.log(error.response.data)
             resolve()
         })
     }   
 
-    //match kiosk id to kiosk address 
     function getKioskName(id) {
         for (var i in kiosks) {
-            //find the address match to the id
             if (kiosks[i].id === id) {
                 return kiosks[i].address
             }
@@ -169,14 +161,12 @@ function Lockers() {
             AuthToken: authTokenStaff
         }
     }).then((response) => {
-        console.log("add locker axios went through")
         isInModal(true)
         isError(false)
         isSuccessful(true)
         setMsg("locker added successfully!")
         document.location.reload()
     }).catch(function (error) {
-        console.log(error.response.data)
         isInModal(true)
         isError(true)
         setError(error.response.data)
@@ -185,18 +175,14 @@ function Lockers() {
     }
 
     const onChangeNewLockerType = e => {
-        console.log(e.target.value)
         setNewLockerType(e.target.value)
         const lockerType = getLockerId(e.target.value);
-        console.log("new lt key: " + lockerType)
         setNewLockerTypeId(lockerType)
     }
 
     const onChangeKiosk = e => {
-        console.log(e.target.value)
         setKiosk(e.target.value)
         const kioskid = getKioskId(e.target.value)
-        console.log("kiosk id: " + kioskid)
         setKioskId(kioskid)
     }
 
@@ -221,20 +207,6 @@ function Lockers() {
         }
     }
 
-    // const onChangeLockerType = e => {
-    //     console.log("in onChangeLockerType")
-    //     const lockertype = e.target.value;
-    //     setFilterLockerType(lockertype)
-    //     console.log("filter locker type: " + lockertype)
-    // }
-
-    // const onChangeKiosk = e => {
-    //     console.log("in onChangeKiosk")
-    //     const kiosk = e.target.value;
-    //     setFilterKiosk(kiosk)
-    //     console.log("filter kiosk: " + kiosk)
-    // }
-
     return(
         <ThemeProvider theme={theme}>
             <div className="content">
@@ -251,7 +223,6 @@ function Lockers() {
                                     }
                                 }}
                                 options={{   
-                                    //sorting: true, 
                                     search: false,
                                     filtering: true,
                                     headerStyle: {
@@ -266,7 +237,6 @@ function Lockers() {
                                             icon: 'info',
                                             tooltip: 'View Locker Details',
                                             onClick:(event, rowData) => {
-                                                console.log("in onclick")
                                                 history.push('/admin/lockerDetails')
                                                 localStorage.setItem('lockerToView', JSON.stringify(rowData.id))
                                                 }

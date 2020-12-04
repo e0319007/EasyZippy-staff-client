@@ -15,7 +15,7 @@ import {
     Row,
     Col,
     Input,
-    CardHeader, FormGroup, Label, Button, Tooltip, Modal, ModalBody, ModalHeader
+    CardHeader, FormGroup, Label, Button
 } from "reactstrap";
 
 const theme = createMuiTheme({
@@ -30,16 +30,13 @@ function LockerTypeDetails() {
 
     const history = useHistory()
     const authTokenStaff = (JSON.parse(Cookies.get('authTokenStaff'))).toString()
-    console.log(authTokenStaff)
 
     const lockerTypeId = JSON.parse(localStorage.getItem('lockerTypeToView'))
 
-    //maybe add some validation for if the person accesses the page from the link itself
 
     const [data, setData] = useState([])
 
     useEffect(() => {
-        console.log("getting locker type details axios")
         axios.get(`/lockerType/${lockerTypeId}`, 
         {
             headers: {
@@ -48,9 +45,8 @@ function LockerTypeDetails() {
         }).then(res => {
             setData(res.data)
         }).catch(function(error) {
-            console.log(error.response.data)
         })
-    }, [])
+    }, [authTokenStaff,lockerTypeId])
 
     const DisableSwitch = withStyles((theme) => ({
         root: {
@@ -86,7 +82,6 @@ function LockerTypeDetails() {
         checked: {},
         }))(Switch);
 
-        let enabled =!data.disabled 
 
         const handleChange = (event) => {
             setData({
@@ -101,20 +96,15 @@ function LockerTypeDetails() {
                     AuthToken: authTokenStaff
                 }
             }).then(res => {
-                console.log("axios call went through")
             }).catch(function(error) {
-                console.log(error.response.data)
             })
         };
 
-    // to use when viewing 
     function formatDate(d) {
         if (d === undefined){
             d = (new Date()).toISOString()
-            console.log(undefined)
         }
         let currDate = new Date(d);
-        console.log("currDate: " + currDate)
         let year = currDate.getFullYear();
         let month = currDate.getMonth() + 1;
         let dt = currDate.getDate();

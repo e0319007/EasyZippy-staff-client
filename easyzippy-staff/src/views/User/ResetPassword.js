@@ -32,8 +32,8 @@ function ResetPassword() {
     const onChangePassword = e => {
         const password = e.target.value;
 
-        var reg = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#\$%\^&\*])(?=.{8,})")
-        if (reg.test(password)) { //if valid
+        var reg = new RegExp("^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})")
+        if (reg.test(password)) { 
             isError(false)
         } else {
             setError("Password is not strong enough (Have at least 1 Uppercase, 1 Lowercase, 1 Number and 1 Special Character)")
@@ -49,7 +49,6 @@ function ResetPassword() {
     }
 
     const resetPassword = e => {
-        console.log("inside update password")
         e.preventDefault()
 
         if (password !== password2) {
@@ -64,7 +63,6 @@ function ResetPassword() {
             email: email,
             newPassword: password,
         }).then((response) => {
-            console.log("axios call went through")
             isError(false)
             isSuccessful(true)
             setMsg("Password successfully reset!")
@@ -73,15 +71,12 @@ function ResetPassword() {
             localStorage.removeItem('email')
             history.push('/login')
         }).catch(function (error) {
-            console.log(error.response.data)
             isError(true)
             setError(error.response.data)
         })
     }
 
-    const redirect = () => {
-        history.push('/login')
-    }
+   
 
     return (
         <div style={{backgroundColor:'#f4f3ef', height:'100vh'}}>

@@ -29,7 +29,6 @@ function Kiosks() {
 
     const history = useHistory()
 
-    // DECLARING COLUMNS
     var columns = [
         {title: "Id", field: "id", editable: "never"},
         {title: "Address", field: "address"},
@@ -47,21 +46,18 @@ function Kiosks() {
     const [successMsg, setMsg] = useState('')
 
     useEffect(() => {
-        console.log("retrieving kiosks;; axios")
         axios.get("/kiosks", 
         {
             headers: {
                 AuthToken: authTokenStaff
             }
         }).then(res => {
-            // console.log(res.data)
             setData(res.data)
         })
-        .catch (err => console.error(err))
+        .catch ()
     },[authTokenStaff])
 
     const handleRowAdd = (newData, resolve) => {
-        //validation: if name is empty
         if(newData.address === undefined || newData.address === ""){
             isError(true)
             setError("Unable to add new kiosk. Please fill in the address field.")
@@ -72,7 +68,6 @@ function Kiosks() {
         axios.post("/kiosk", {
             address: newData.address,
             description: newData.description,
-            //disabled: newData.disabled
         },
         {
             headers: {
@@ -80,7 +75,6 @@ function Kiosks() {
             }
         })
         .then(res => {
-            console.log("axios call went through")
             let dataToAdd = [...data];
             dataToAdd.push(newData);
             setData(dataToAdd);
@@ -94,14 +88,12 @@ function Kiosks() {
             isSuccessful(false)
             isError(true)
             setError(error.response.data)
-            console.log(error.response.data)
             resolve()
         })
     }
 
     const handleRowUpdate = (newData, oldData, resolve) => {
-        //validation
-        if(newData.address === undefined || newData.address == ""){
+        if(newData.address === undefined || newData.address === ""){
             isError(true)
             setError("Unable to update. Please fill in the address field for kiosk entry")
             isSuccessful(false)
@@ -111,7 +103,6 @@ function Kiosks() {
         axios.put("/kiosk/"+oldData.id, {
             address: newData.address,
             description: newData.description,
-            //disabled: newData.disabled
         },
         {
             headers: {
@@ -119,7 +110,6 @@ function Kiosks() {
             }
         })
         .then(res => {
-            console.log("axios call went through")
             const dataUpdate = [...data];
             const index = oldData.tableData.id;
             dataUpdate[index] = newData;
@@ -133,7 +123,6 @@ function Kiosks() {
             isSuccessful(false)
             isError(true)
             setError(error.response.data)
-            console.log(error.response.data)
             resolve()
         })
     }
@@ -147,7 +136,6 @@ function Kiosks() {
                 AuthToken: authTokenStaff
             }
         }).then(res => {
-                console.log("axios call went through")
                 const dataDelete = [...data];
                 const index = oldData.tableData.id;
                 dataDelete.splice(index, 1);
@@ -167,7 +155,6 @@ function Kiosks() {
                 isSuccessful(false)
                 isError(true)
                 setError(errormsg)
-                console.log(error.response.data)
                 resolve()
             })
         }
@@ -183,7 +170,6 @@ function Kiosks() {
                                 columns={columns}
                                 data={data}
                                 options={{   
-                                    //sorting: true, 
                                     filtering:true,
                                     headerStyle: {
                                         backgroundColor: '#98D0E1',
@@ -212,7 +198,6 @@ function Kiosks() {
                                     icon: 'info',
                                     tooltip: 'View Kiosk Details',
                                     onClick:(event, rowData) => {
-                                        console.log("in onclick")
                                         history.push('/admin/kioskDetails')
                                         localStorage.setItem('kioskToView', JSON.stringify(rowData.id))
                                         }

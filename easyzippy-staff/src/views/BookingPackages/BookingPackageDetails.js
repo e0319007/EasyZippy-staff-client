@@ -30,7 +30,6 @@ function BookingPackageDetails() {
 
     const history = useHistory()
     const authTokenStaff = (JSON.parse(Cookies.get('authTokenStaff'))).toString()
-    console.log(authTokenStaff)
 
     const bookingPackageId = JSON.parse(localStorage.getItem('bookingPackageToView'))
     const [data, setData] = useState([])
@@ -49,7 +48,6 @@ function BookingPackageDetails() {
     const [duration, setDuration] = useState(data.duration)
 
     const [newLockerType, setNewLockerType] = useState(data.lockerTypeId);
-    console.log("new locker type: " + data.lockerTypeId)
     const [newLockerTypeId, setNewLockerTypeId] = useState('');
 
     const [lockerTypes, setLockerTypes] = useState([])
@@ -76,11 +74,11 @@ function BookingPackageDetails() {
                 }
             }).then(res => {
                 setLockerTypes(res.data)
-            }).catch(err => console.error(err))
+            }).catch()
         }).catch (function(error) {
-            console.log(error.response.data)
+      
         })
-    },[])
+    },[authTokenStaff,bookingPackageId])
 
     const onChangeName = e => {
         const name = e.target.value
@@ -103,10 +101,8 @@ function BookingPackageDetails() {
         setDuration(duration)
     }
     const onChangeNewLockerType = e => {
-        console.log(e.target.value)
         setNewLockerType(e.target.value)
         const lockerType = getLockerId(e.target.value);
-        console.log("new lt key: " + lockerType)
         setNewLockerTypeId(lockerType)
     }
 
@@ -147,15 +143,12 @@ function BookingPackageDetails() {
             setQuota(res.data.quota)
             setPrice(res.data.price)
             setDuration(res.data.duration)
-            //setNewLockerType(res.data.newLockerType)
             setNewLockerTypeId(res.data.newLockerTypeId)
-            console.log("new locker type in update: " + res.data.newLockerType)
             isError(false)
             isSuccessful(true)
             setMsg("Booking package updated successfully")
         }).catch(function (error) {
             isSuccessful(false)
-            console.log(error.response.data)
             isError(true)
             setError(error.response.data)
         })
@@ -194,11 +187,7 @@ function BookingPackageDetails() {
     checked: {},
     }))(Switch);
 
-    let enabled = !data.disabled
-    console.log("Enabled: " + enabled)
-
     const handleChange = (event) => {
-        console.log("event.target.checked: " + event.target.checked)
         setData({
             ...data,
             disabled: !event.target.checked
@@ -211,20 +200,15 @@ function BookingPackageDetails() {
                 AuthToken: authTokenStaff
             }
         }).then(res => {
-            console.log("axios call went through")
         }).catch (function(error) {
-            console.log(error.response.data)
         })
     };
 
-    // to use when viewing 
     function formatDate(d) {
         if (d === undefined){
             d = (new Date()).toISOString()
-            console.log(undefined)
         }
         let currDate = new Date(d);
-        console.log("currDate: " + currDate)
         let year = currDate.getFullYear();
         let month = currDate.getMonth() + 1;
         let dt = currDate.getDate();
