@@ -140,7 +140,6 @@ class Header extends React.Component {
         break;
       }
     }).catch (function(error){
-      console.log(error.response.data)
     })
     axios.get("/announcements", 
     {
@@ -151,7 +150,6 @@ class Header extends React.Component {
       const anncemts = res.data
       this.setState({announcements: anncemts})
     }).catch (function(error){
-      console.log(error.response.data)
     })
 
   }
@@ -184,7 +182,6 @@ class Header extends React.Component {
         }
         this.setState({notifications: notifs})
       }).catch (function(error){
-        console.log(error.response.data)
       })
     }
 
@@ -199,7 +196,6 @@ class Header extends React.Component {
         const anncemts = res.data
         this.setState({announcements: anncemts})
       }).catch (function(error){
-        console.log(error.response.data)
       })
     }
 

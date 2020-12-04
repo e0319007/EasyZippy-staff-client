@@ -43,7 +43,6 @@ function Customers() {
     const[data, setData] = useState([])
 
     useEffect(() => {
-        console.log("retrieving customers;; axios")
         axios.get("/customers", 
         {
             headers: {
@@ -81,7 +80,6 @@ function Customers() {
                                             icon: 'info',
                                             tooltip: 'View Customer Details',
                                             onClick:(event, rowData) => {
-                                                console.log("in onclick")
                                                 history.push('/admin/customerDetails')
                                                 localStorage.setItem('customerToView', JSON.stringify(rowData.id))
 
