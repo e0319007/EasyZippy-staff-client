@@ -26,6 +26,7 @@ import AdvertisementDetails from "views/Advertisement/AdvertisementDetails"
 import MerchantPromotionDetails from "views/Promotion/MerchantPromotionDetails.js";
 import MallPromotionDetails from "views/Promotion/MallPromotionDetails.js";
 import CustomerOrderDetails from "views/Customer/CustomerOrderDetails.js";
+import ErrorPage from "views/ErrorPage.js";
 
 
 const hist = createBrowserHistory();
@@ -46,6 +47,8 @@ function App(props) {
                 { document.cookie.indexOf('staffUser') > -1 && document.cookie.indexOf('authTokenStaff') > -1 && 
                     <Route path="/admin" render={(props) => <AdminLayout {...props} />} /> 
                 }
+                <Route exact path="/" component={Login} />
+                {/* <Route exact path="/error" component={ErrorPage} /> */}
               
                 <Route exact path="/forgotPassword" component={ForgotPassword}/>
                 <Route exact path="/checkValidToken" component={CheckValidToken}/>
@@ -64,6 +67,10 @@ function App(props) {
                 <Route exact path="/admin/merchantPromotionDetails" component={MerchantPromotionDetails}/>
                 <Route exact path="/admin/mallPromotionDetails" component={MallPromotionDetails}/>
                 <Route exact path="/admin/customerOrderDetails" component={CustomerOrderDetails}/>
+                <Route component={ErrorPage}/>
+        
+                {/* <Redirect to="/error" component={ErrorPage} /> */}
+
 
 
             </Switch>
